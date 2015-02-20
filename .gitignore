@@ -6,6 +6,11 @@
 *.user
 *.sln.docstates
 
+# Python 
+__pycache__/
+*.pyc
+*.pyo
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
