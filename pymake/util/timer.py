@@ -10,11 +10,11 @@ import time
 from pymake.util.logger import PymakeLogger
 
 class PymakeTimer(object):
-    """!
+    """
     The PymakeTimer class presents a simply timer using Python's native time module.
     """
     def __init__(self, message = None):
-        """!
+        """
         Initializes the instance with an default values.
 
         :param message:  The display message when using the time in a context manager (e.g the __enter__/__exit__ methods).
@@ -24,7 +24,7 @@ class PymakeTimer(object):
         self._stop  = 0
 
     def __enter__(self):
-        """!
+        """
         Convenience method to be used with Python's 'with' function.  Starts the timer.
 
         Example:
@@ -37,13 +37,13 @@ class PymakeTimer(object):
         return self
 
     def __exit__(self, type, value, tb):
-        """!
+        """
         Convenience method to be used with Python's 'with' function.  Stops the timer initiated with the __enter__ method.
         """
         self.stop(self._message)
 
     def start(self, message):
-        """!
+        """
         Manually starts timer with the message.
 
         :param message:  The display message.
@@ -52,7 +52,7 @@ class PymakeTimer(object):
         PymakeLogger.info("{0:<20} - Started".format(message))
 
     def stop(self, message):
-        """!
+        """
         Manually stops timer with the message.
 
         :param message:  The display message.
@@ -61,7 +61,7 @@ class PymakeTimer(object):
         PymakeLogger.info("{0:<20} - Finished [{1}s]".format(message, self.pprint(self._stop - self._start)))
 
     def pprint(self, seconds):
-        """!
+        """
         Pretty Prints seconds as Hours:Minutes:Seconds.MilliSeconds
 
         :param seconds:  The time in seconds.

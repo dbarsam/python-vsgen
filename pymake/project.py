@@ -34,6 +34,8 @@ class PymakeProject(PyWritable):
     :ivar PythonInterpreters:     The list of pyInterpreters that are base interpreters that will be available; if not provide the value is [].
     :ivar VirtualEnvironments:    The list of pyInterpreters that are virtual environments that will be available; if not provide the value is [].
     """
+    __writable_name__ = "Pymake Project"
+
     def __init__(self, **kwargs):
         """
         Constructor.

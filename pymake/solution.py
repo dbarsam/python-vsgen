@@ -17,6 +17,8 @@ class PymakeSolution(PyWritable):
     :ivar Name:     The display name of the solution; if not provide the value is "".        
     :ivar Projects: The list of PymakeProject derived classes; if not provide the value is [].
     """
+    __writable_name__ = "Pymake Solution"
+
     def __init__(self, **kwargs):
         """
         Constructor.

@@ -23,6 +23,7 @@
   <ItemGroup>
     <Compile Include="pymake\interpreter.py" />
     <Compile Include="pymake\project.py" />
+    <Compile Include="pymake\register.py" />
     <Compile Include="pymake\solution.py" />
     <Compile Include="pymake\util\logger.py" />
     <Compile Include="pymake\util\timer.py" />

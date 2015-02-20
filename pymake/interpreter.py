@@ -7,8 +7,9 @@ import os
 import csv
 import fnmatch
 import uuid
-    
-class PymakeInterpreter(object):
+from pymake.register import PyRegisterable
+
+class PymakeInterpreter(PyRegisterable):
     """
     PymakeInterpreter encapsulates the logic and data used to describe a Python interpreter or virtual environments
 
@@ -23,7 +24,8 @@ class PymakeInterpreter(object):
     :ivar LibraryPath:             The relative path to self.Path of the 'Lib' folder that is part of the python.exe distribution; if not provide the value is "".
     :ivar PathEnvironmentVariable: The name of the Environment variable to be uses as PYTHONPATH; if not provide the value is "".
     """
-    
+    __registerable_name__ = "Python Interpreter"
+
     #: A CSV file contains the values of an environment
     EnvDefintionFile = 'PTVSEnvironment.csv'
 
