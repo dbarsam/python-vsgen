@@ -4,7 +4,6 @@ Generates the Pymake Demo's Python Tools for Visual Studio IDE Solutions and Pro
 """
 import os
 import sys
-import time
 
 def main(argv=[]):
     """
@@ -12,8 +11,7 @@ def main(argv=[]):
 
     It will generate the Python Tools for Visual Studio IDE Solutions and Project as per configured.
     """
-    from pymake import PymakeWriter, PymakeLogger
-    from pymakedemo.settings import PymakeDemoSettings
+    from pymake import PyWriteCommand, PyRegisterCommand, PymakeLogger
     from pymakedemo.solutions import PymakeDemoSolution
 
     # logger
@@ -21,31 +19,18 @@ def main(argv=[]):
 
     # Solutions
     solutions = [PymakeDemoSolution()]
-    
-    # Solutions
-    solutions = sorted(solutions)
-    pylogger.info("PymakeDemo", "Writing Pymake Solutions")
-    start = time.clock()
-    PymakeWriter.write(solutions)
-    end = time.clock()
-    pylogger.info("PymakeDemo", "Wrote {0} solution files in {1} seconds:".format(len(solutions), end - start))
+    with PyWriteCommand('PymakeDemo', solutions) as command:
+        command.execute()
 
     # Projects
     projects = set(sorted((p for s in solutions for p in s.Projects), key=lambda x: x.Name))
-    pylogger.info("PymakeDemo", "Writing Pymake Projects")
-    start = time.clock()
-    PymakeWriter.write(projects)
-    end = time.clock()
-    pylogger.info("PymakeDemo", "Wrote {0} project files in {1} seconds:".format(len(projects), end - start))
+    with PyWriteCommand('PymakeDemo', projects) as command:
+        command.execute()
 
-    # Interpreters
-    interpreters = set(i for p in projects for i in p.PythonInterpreters)
-    pylogger.info("PymakeDemo", "Registering Pythong Interpreters.")
-    start = time.clock()
-    for i in interpreters:
-        i.register()
-    end = time.clock()
-    pylogger.info("PymakeDemo", "Registered {0} interpreters in {1} seconds:".format(len(interpreters), end - start))
+    # Interpretters
+    interpretters = set(i for p in projects for i in p.PythonInterpreters)
+    with PyRegisterCommand('PymakeDemo', interpretters) as command:
+        command.execute()
 
     return 0
 
