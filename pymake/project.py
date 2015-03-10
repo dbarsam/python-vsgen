@@ -154,7 +154,7 @@ class PymakeProject(PyWritable):
             f.write( '    <WorkingDirectory>{0}</WorkingDirectory>\n'.format(projectRelativeWorkingDirectory) )
             f.write( '    <OutputPath>{0}</OutputPath>\n'.format(projectRelativeOutputPath) )
             f.write( '    <RootNamespace>{0}</RootNamespace>\n'.format(self.RootNamespace) )
-            f.write( '    <IsWindowsApplication>False</IsWindowsApplication>\n' )
+            f.write( '    <IsWindowsApplication>{0}</IsWindowsApplication>\n'.format(self.IsWindowsApplication) )            
             if self.PythonInterpreters:
                 f.write( '    <InterpreterId>{{{0}}}</InterpreterId>\n'.format(str(self.PythonInterpreters[0].GUID).lower()) )
                 f.write( '    <InterpreterVersion>{0}</InterpreterVersion>\n'.format(self.PythonInterpreters[0].Version) )
