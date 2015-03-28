@@ -31,6 +31,7 @@ class PymakeProject(PyWritable):
     :ivar DirectoryExFilter:      A list of strings matching exactly with directories to be explicitly excluded during the item generation step; if not provided the value is [].
     :ivar CompileInFilter:        A list of strings matching exactly with file extensions ('.ext') of compile files to be included during the item generation step; if not provide the value is [].
     :ivar ContentInFilter:        A list of strings matching exactly with file extensions ('.ext') of content files to be included during the item generation step; if not provide the value is [].
+    :ivar PythonInterpreter:      The active interpreter. Either None or one of the values specified in PythonInterpreters or VirtualEnvironments; if not provide the value is None.
     :ivar PythonInterpreters:     The list of pyInterpreters that are base interpreters that will be available; if not provide the value is [].
     :ivar VirtualEnvironments:    The list of pyInterpreters that are virtual environments that will be available; if not provide the value is [].
     """
@@ -70,6 +71,7 @@ class PymakeProject(PyWritable):
         self.CompileExFilter       = datadict.get("CompileExFilter",[])
         self.ContentInFilter       = datadict.get("ContentInFilter",[])
         self.ContentExFilter       = datadict.get("ContentExFilter",[])
+        self.PythonInterpreter     = datadict.get("PythonInterpreter",None)
         self.PythonInterpreters    = datadict.get("PythonInterpreters",[])
         self.VirtualEnvironments   = datadict.get("VirtualEnvironments",[])
 
@@ -138,6 +140,7 @@ class PymakeProject(PyWritable):
         projectRelativeWorkingDirectory = os.path.relpath(self.WorkingDirectory, self.ProjectHome);
         projectRelativeOutputPath = os.path.relpath(self.OutputPath, self.ProjectHome);
         projectRelativeStartupFile = os.path.relpath(self.StartupFile, self.ProjectHome) if self.StartupFile else None
+        projectInterpreter = self.PythonInterpreter or next((p for p in self.PythonInterpreters), None)
         with open(projectFileName, 'wt') as f:
             f.write( '<?xml version="1.0" encoding="utf-8"?>\n' )
             f.write( '<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">\n' )
@@ -155,9 +158,9 @@ class PymakeProject(PyWritable):
             f.write( '    <OutputPath>{0}</OutputPath>\n'.format(projectRelativeOutputPath) )
             f.write( '    <RootNamespace>{0}</RootNamespace>\n'.format(self.RootNamespace) )
             f.write( '    <IsWindowsApplication>{0}</IsWindowsApplication>\n'.format(self.IsWindowsApplication) )            
-            if self.PythonInterpreters:
-                f.write( '    <InterpreterId>{{{0}}}</InterpreterId>\n'.format(str(self.PythonInterpreters[0].GUID).lower()) )
-                f.write( '    <InterpreterVersion>{0}</InterpreterVersion>\n'.format(self.PythonInterpreters[0].Version) )
+            if projectInterpreter:
+                f.write( '    <InterpreterId>{{{0}}}</InterpreterId>\n'.format(str(projectInterpreter.GUID).lower()) )
+                f.write( '    <InterpreterVersion>{0}</InterpreterVersion>\n'.format(projectInterpreter.Version) )
             f.write( '    <LaunchProvider>Standard Python launcher</LaunchProvider>\n' )
             f.write( '    <CommandLineArguments />\n' )
             f.write( '    <InterpreterPath />\n' )
