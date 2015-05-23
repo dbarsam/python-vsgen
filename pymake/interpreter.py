@@ -102,7 +102,7 @@ class PymakeInterpreter(PyRegisterable):
             pass
 
         try:
-            out, err = subprocess.Popen([python, '-c', 'import platform; print "AMD64" if "64bit" in platform.architecture() else "x86"'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            out, err = subprocess.Popen([python, '-c', 'import platform; print "Amd64" if "64bit" in platform.architecture() else "x86"'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
             args['Architecture'] = out.rstrip()
         except Exception:
             pass
