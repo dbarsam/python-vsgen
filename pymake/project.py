@@ -213,7 +213,7 @@ class PymakeProject(PyWritable):
             if self.VirtualEnvironments:
                 f.write( '  <ItemGroup>\n')
                 for venv in self.VirtualEnvironments:
-                    f.write( '    <Interpreter Include="{0}">\n'.format(venv.Path))
+                    f.write( '    <Interpreter Include="{0}">\n'.format(os.path.relpath(venv.Path, self.ProjectHome)))
                     f.write( '      <Id>{{{0}}}</Id>\n'.format(str(venv.GUID).upper()))
                     f.write( '      <BaseInterpreter>{{{0}}}</BaseInterpreter>\n'.format(str(venv.BaseInterpreter).upper()))
                     f.write( '      <Version>{0}</Version>\n'.format(venv.Version))
@@ -222,6 +222,7 @@ class PymakeProject(PyWritable):
                     f.write( '      <WindowsInterpreterPath>{0}</WindowsInterpreterPath>\n'.format(venv.WindowsInterpreterPath))
                     f.write( '      <LibraryPath>{0}</LibraryPath>\n'.format(venv.LibraryPath))
                     f.write( '      <PathEnvironmentVariable>{0}</PathEnvironmentVariable>\n'.format(venv.PathEnvironmentVariable))
+                    f.write( '      <Architecture>{0}</Architecture>\n'.format(venv.Architecture))
                     f.write( '    </Interpreter>\n')
                 f.write( '  </ItemGroup>\n' )
 
