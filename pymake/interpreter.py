@@ -7,6 +7,11 @@ import os
 import csv
 import fnmatch
 import uuid
+import subprocess
+try:
+    import winreg
+except ImportError:
+    import _winreg as winreg
 from pymake.register import PyRegisterable
 
 class PymakeInterpreter(PyRegisterable):
@@ -15,7 +20,7 @@ class PymakeInterpreter(PyRegisterable):
 
     :ivar GUID:                    The GUID of the Python Interpreter; if not provided one is generated automatically.
     :ivar BaseInterpreter:         The GUID of the base Python Interpreter (different if PymakeInterpreter is Virtual Environment); if not provided the value is self.GUID
-    :ivar Architecture:            The architecture (either x86 or x64). if not provide the value is "".
+    :ivar Architecture:            The architecture (either x86 or Amd64). if not provide the value is "".
     :ivar Version:                 The major.minor version string; if not provide the value is "".
     :ivar Description:             The human readable description string; if not provide the value is ""
     :ivar Path:                    The absolute path of the 'python.exe'; if not provide the value is ""
@@ -25,6 +30,9 @@ class PymakeInterpreter(PyRegisterable):
     :ivar PathEnvironmentVariable: The name of the Environment variable to be uses as PYTHONPATH; if not provide the value is "".
     """
     __registerable_name__ = "Python Interpreter"
+
+    #: PTVS Interpreter Register Location
+    regkey_name = r'Software\Microsoft\VisualStudio\11.0\PythonTools\Interpreters'
 
     #: A CSV file contains the values of an environment
     EnvDefintionFile = 'PTVSEnvironment.csv'
@@ -44,7 +52,7 @@ class PymakeInterpreter(PyRegisterable):
         Creates one or more PymakeInterpreter(s) from all PTVSEnvironment.csv files recursively found in the directory.
 
         :param directory: The absolute path to the root directory.
-        :return           List of PymakeInterpreter instances; an empty list otherwise.
+        :return           A valid PymakeInterpreter instance if succesful; None otherwise.
         """
         interpreters = []
         for root, dirnames, filenames in os.walk(directory):
@@ -52,6 +60,97 @@ class PymakeInterpreter(PyRegisterable):
                 interpreters.extend( PymakeInterpreter.from_file(os.path.join(root, filename)))
         return interpreters
     
+    @staticmethod
+    def from_virtual_environment(directory):
+        """
+        Creates a PymakeInterpreter from an Python Virtual Environment in the directory.
+
+        :param directory: The absolute path to the python installation directory.
+        :return           A valid PymakeInterpreter instance if succesful; None otherwise.
+        """
+        root = os.path.abspath(directory)
+        python = os.path.abspath(os.path.join(root, 'Scripts', 'python.exe'))
+        if not os.path.exists(python):
+            return None
+
+        root = os.path.abspath(directory)
+        origprefix = os.path.abspath(os.path.join(root, 'Lib', 'orig-prefix.txt'))
+        if not os.path.exists(origprefix):
+            return None
+        
+        with open(origprefix) as f:
+            basedir = os.path.abspath(f.readlines()[0])
+            baseinterpretter = PymakeInterpreter.from_python_installation(basedir)
+
+        args = {
+            'Path': root,
+            'BaseInterpreter': baseinterpretter.GUID,
+            'InterpreterPath': os.path.join('Scripts', 'python.exe'),
+            'Description': '{} ({})'.format(os.path.basename(root), baseinterpretter.Description),
+        }
+
+        if os.path.exists(os.path.join(root, 'Scripts', 'pythonw.exe')):
+            args['WindowsInterpreterPath'] = os.path.join('Scripts', 'pythonw.exe')
+
+        if os.path.exists(os.path.join(root, 'Lib')):
+            args['LibraryPath'] = 'Lib\\'
+
+        try:
+            out, err = subprocess.Popen([python, '-c', 'import sys;print ".".join(str(s) for s in sys.version_info[:2])'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            args['Version'] = out.rstrip()
+        except Exception as e:
+            pass
+
+        try:
+            out, err = subprocess.Popen([python, '-c', 'import platform; print "AMD64" if "64bit" in platform.architecture() else "x86"'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            args['Architecture'] = out.rstrip()
+        except Exception:
+            pass
+
+        interpreter = PymakeInterpreter(**args)
+        return interpreter
+
+    @staticmethod
+    def from_python_installation(directory):
+        """
+        Creates a PymakeInterpreter from an Python Installation in the directory.
+
+        :param directory: The absolute path to the python installation directory.
+        :return           A valid PymakeInterpreter instance if succesful; None otherwise.
+        """
+        root = os.path.abspath(directory)
+        python = os.path.abspath(os.path.join(root, 'python.exe'))
+        if not os.path.exists(python):
+            return None
+        
+        args = {
+            'Path': root,
+            'InterpreterPath': 'python.exe',
+            'Description': os.path.basename(root)
+        }
+
+        if os.path.exists(os.path.join(root, 'pythonw.exe')):
+            args['WindowsInterpreterPath'] = 'pythonw.exe'
+
+        if os.path.exists(os.path.join(root, 'Lib')):
+            args['LibraryPath'] = 'Lib\\'
+
+        try:
+            out, err = subprocess.Popen([python, '-c', 'import sys;print ".".join(str(s) for s in sys.version_info[:2])'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            args['Version'] = out.rstrip()
+        except Exception as e:
+            pass
+
+        try:
+            out, err = subprocess.Popen([python, '-c', 'import platform; print "Amd64" if "64bit" in platform.architecture() else "x86"'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            args['Architecture'] = out.rstrip()
+        except Exception:
+            pass
+
+        interpreter = PymakeInterpreter(**args)
+        interpreter.resolve()
+        return interpreter
+
     @staticmethod
     def from_file(filename):
         """
@@ -71,6 +170,29 @@ class PymakeInterpreter(PyRegisterable):
             pass
 
         return interpreters
+
+    @staticmethod
+    def from_registry_key(keyname):
+        """
+        Creates a PymakeInterpreter from a single registry key.
+
+        :param keyname:  The keyname under HKEY_CURRENT_USER referring to the environment.       
+        :return:         A valid PymakeInterpreter instance if succesful; None otherwise.
+        """
+        args = {}
+        try:
+            regkey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, keyname)
+            for k in ['Architecture', 'Description', 'InterpreterPath', 'LibraryPath', 'PathEnvironmentVariable', 'Version', 'WindowsInterpreterPath', 'PathEnvironmentVariable']:
+                args[k] = winreg.QueryValueEx(regkey, k)[0]        
+            winreg.CloseKey(regkey)
+        except WindowsError as ex:
+            pass
+
+        if 'InterpreterPath' in args:
+            args['Path'] = os.path.dirname(args['InterpreterPath'])
+            args['Id'] = os.path.basename(keyname)[1:-1]
+            return PymakeInterpreter(**args) 
+        return None
 
     def _import(self, datadict):
         """
@@ -92,26 +214,41 @@ class PymakeInterpreter(PyRegisterable):
         self.LibraryAbsPath             = datadict.get('LibraryAbsPath', self.LibraryPath if os.path.isabs(self.LibraryPath) else os.path.abspath(os.path.join(self.Path, self.LibraryPath)))
         self.PathEnvironmentVariable    = datadict.get('PathEnvironmentVariable', "")
 
+    def resolve(self):
+        """
+        'Resolves' the environment with existing environments in the windows registry.
+        """
+        regkey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, self.regkey_name)
+        try:
+            reginfo = winreg.QueryInfoKey(regkey)
+            for i in range(reginfo[0]):
+                regkey_name = '{0}\\{1}'.format(self.regkey_name, winreg.EnumKey(regkey, i))
+                interpreter = PymakeInterpreter.from_registry_key(regkey_name)
+                if interpreter and interpreter.InterpreterAbsPath == self.InterpreterAbsPath:
+                    self.GUID = uuid.UUID(interpreter.GUID)
+                    self.BaseInterpreter = self.GUID
+                    break
+        except WindowsError as ex:
+            pass
+
     def register(self):
         """
         'Registers' the environment into the windows registry.
 
         :..note: https://pytools.codeplex.com/workitem/2765
         """
-        import os
-        import _winreg
-        regkey_name = r'Software\Microsoft\VisualStudio\11.0\PythonTools\Interpreters\{{{0}}}'.format(str(self.GUID).lower())
+        regkey_name = '{0}\\{{{1}}}'.format(self.regkey_name, str(self.GUID).lower())
         try:
-            regkey = _winreg.CreateKey(_winreg.HKEY_CURRENT_USER, regkey_name)
-            _winreg.SetValueEx(regkey, 'Architecture', 0, _winreg.REG_SZ, self.Architecture)
-            _winreg.SetValueEx(regkey, 'Description', 0, _winreg.REG_SZ, self.Description)
-            _winreg.SetValueEx(regkey, 'InterpreterPath', 0, _winreg.REG_SZ, self.InterpreterAbsPath)
-            _winreg.SetValueEx(regkey, 'LibraryPath', 0, _winreg.REG_SZ, self.LibraryAbsPath)
-            _winreg.SetValueEx(regkey, 'PathEnvironmentVariable', 0, _winreg.REG_SZ, self.PathEnvironmentVariable)
-            _winreg.SetValueEx(regkey, 'Version', 0, _winreg.REG_SZ, self.Version)
-            _winreg.SetValueEx(regkey, 'WindowsInterpreterPath', 0, _winreg.REG_SZ, self.WindowsInterpreterAbsPath)
-            _winreg.SetValueEx(regkey, 'PathEnvironmentVariable', 0, _winreg.REG_SZ, self.PathEnvironmentVariable)
-            _winreg.CloseKey(regkey)
+            regkey = winreg.CreateKey(winreg.HKEY_CURRENT_USER, regkey_name)
+            winreg.SetValueEx(regkey, 'Architecture', 0, winreg.REG_SZ, self.Architecture)
+            winreg.SetValueEx(regkey, 'Description', 0, winreg.REG_SZ, self.Description)
+            winreg.SetValueEx(regkey, 'InterpreterPath', 0, winreg.REG_SZ, self.InterpreterAbsPath)
+            winreg.SetValueEx(regkey, 'LibraryPath', 0, winreg.REG_SZ, self.LibraryAbsPath)
+            winreg.SetValueEx(regkey, 'PathEnvironmentVariable', 0, winreg.REG_SZ, self.PathEnvironmentVariable)
+            winreg.SetValueEx(regkey, 'Version', 0, winreg.REG_SZ, self.Version)
+            winreg.SetValueEx(regkey, 'WindowsInterpreterPath', 0, winreg.REG_SZ, self.WindowsInterpreterAbsPath)
+            winreg.SetValueEx(regkey, 'PathEnvironmentVariable', 0, winreg.REG_SZ, self.PathEnvironmentVariable)
+            winreg.CloseKey(regkey)
         except WindowsError as ex:
             return False
         return True
