@@ -32,6 +32,7 @@ class PymakeProject(PyWritable):
     :ivar CompileInFilter:        A list of strings matching exactly with file extensions ('.ext') of compile files to be included during the item generation step; if not provide the value is [].
     :ivar ContentInFilter:        A list of strings matching exactly with file extensions ('.ext') of content files to be included during the item generation step; if not provide the value is [].
     :ivar PythonInterpreter:      The active interpreter. Either None or one of the values specified in PythonInterpreters or VirtualEnvironments; if not provide the value is None.
+    :ivar PythonInterpreterArgs:  The active interpreter's arguments.  If not provide the value is [].
     :ivar PythonInterpreters:     The list of pyInterpreters that are base interpreters that will be available; if not provide the value is [].
     :ivar VirtualEnvironments:    The list of pyInterpreters that are virtual environments that will be available; if not provide the value is [].
     """
@@ -72,6 +73,7 @@ class PymakeProject(PyWritable):
         self.ContentInFilter       = datadict.get("ContentInFilter",[])
         self.ContentExFilter       = datadict.get("ContentExFilter",[])
         self.PythonInterpreter     = datadict.get("PythonInterpreter",None)
+        self.PythonInterpreterArgs = datadict.get("PythonInterpreterArgs",[])
         self.PythonInterpreters    = datadict.get("PythonInterpreters",[])
         self.VirtualEnvironments   = datadict.get("VirtualEnvironments",[])
 
@@ -164,7 +166,10 @@ class PymakeProject(PyWritable):
             f.write( '    <LaunchProvider>Standard Python launcher</LaunchProvider>\n' )
             f.write( '    <CommandLineArguments />\n' )
             f.write( '    <InterpreterPath />\n' )
-            f.write( '    <InterpreterArguments />\n' )
+            if self.PythonInterpreterArgs:
+                f.write( '    <InterpreterArguments>{0}</InterpreterArguments>\n'.format(" ".join(self.PythonInterpreterArgs)))
+            else:
+                f.write( '    <InterpreterArguments />\n' )
             f.write( '    <VisualStudioVersion Condition="\'$(VisualStudioVersion)\' == \'\'">10.0</VisualStudioVersion>\n' )
             f.write( '    <VSToolsPath Condition="\'$(VSToolsPath)\' == \'\'">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\\v$(VisualStudioVersion)</VSToolsPath>\n' )
             f.write( '  </PropertyGroup>\n' )
