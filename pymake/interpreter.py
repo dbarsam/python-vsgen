@@ -78,7 +78,7 @@ class PymakeInterpreter(PyRegisterable):
         if not os.path.exists(origprefix):
             return None
         
-        with open(origprefix) as f:
+        with open(origprefix, 'rt') as f:
             basedir = next((line.rstrip() for line in f), None)
             baseinterpretter = PymakeInterpreter.from_python_installation(basedir)
         if not baseinterpretter:
@@ -99,13 +99,13 @@ class PymakeInterpreter(PyRegisterable):
 
         try:
             out, err = subprocess.Popen([python, '-c', 'import sys;print ".".join(str(s) for s in sys.version_info[:2])'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            args['Version'] = out.rstrip()
+            args['Version'] = out.decode("utf-8").rstrip()
         except Exception as e:
             pass
 
         try:
             out, err = subprocess.Popen([python, '-c', 'import platform; print "Amd64" if "64bit" in platform.architecture() else "x86"'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            args['Architecture'] = out.rstrip()
+            args['Architecture'] = out.decode("utf-8").rstrip()
         except Exception:
             pass
 
@@ -139,13 +139,13 @@ class PymakeInterpreter(PyRegisterable):
 
         try:
             out, err = subprocess.Popen([python, '-c', 'import sys;print ".".join(str(s) for s in sys.version_info[:2])'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            args['Version'] = out.rstrip()
+            args['Version'] = out.decode("utf-8").rstrip()
         except Exception as e:
             pass
 
         try:
             out, err = subprocess.Popen([python, '-c', 'import platform; print "Amd64" if "64bit" in platform.architecture() else "x86"'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            args['Architecture'] = out.rstrip()
+            args['Architecture'] = out.decode("utf-8").rstrip()
         except Exception:
             pass
 
@@ -163,7 +163,7 @@ class PymakeInterpreter(PyRegisterable):
         """
         interpreters = []
         try:
-            with open(filename, 'rb') as csvfile:
+            with open(filename, 'rt') as csvfile:
                 reader = csv.DictReader(csvfile, delimiter=',', quotechar='"')            
                 for line in reader:
                     line['Path'] = os.path.dirname(filename)
