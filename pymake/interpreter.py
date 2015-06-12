@@ -79,8 +79,10 @@ class PymakeInterpreter(PyRegisterable):
             return None
         
         with open(origprefix) as f:
-            basedir = os.path.abspath(f.readlines()[0])
+            basedir = next((line.rstrip() for line in f), None)
             baseinterpretter = PymakeInterpreter.from_python_installation(basedir)
+        if not baseinterpretter:
+            return None
 
         args = {
             'Path': root,
