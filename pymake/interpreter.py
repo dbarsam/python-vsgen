@@ -61,11 +61,12 @@ class PymakeInterpreter(PyRegisterable):
         return interpreters
     
     @staticmethod
-    def from_virtual_environment(directory):
+    def from_virtual_environment(directory, **kwargs):
         """
         Creates a PymakeInterpreter from an Python Virtual Environment in the directory.
 
         :param directory: The absolute path to the python installation directory.
+        :param **kwargs:  List of additional keyworded arguments to be passed into the PymakeInterpreter.
         :return           A valid PymakeInterpreter instance if succesful; None otherwise.
         """
         root = os.path.abspath(directory)
@@ -84,12 +85,11 @@ class PymakeInterpreter(PyRegisterable):
         if not baseinterpretter:
             return None
 
-        args = {
-            'Path': root,
-            'BaseInterpreter': baseinterpretter.GUID,
-            'InterpreterPath': os.path.join('Scripts', 'python.exe'),
-            'Description': '{} ({})'.format(os.path.basename(root), baseinterpretter.Description),
-        }
+        args = kwargs.copy()
+        args['Path'] = root
+        args['BaseInterpreter'] = baseinterpretter.GUID
+        args['InterpreterPath'] = os.path.join('Scripts', 'python.exe')
+        args.setdefault('Description', '{} ({})'.format(os.path.basename(root), baseinterpretter.Description))
 
         if os.path.exists(os.path.join(root, 'Scripts', 'pythonw.exe')):
             args['WindowsInterpreterPath'] = os.path.join('Scripts', 'pythonw.exe')
@@ -113,11 +113,12 @@ class PymakeInterpreter(PyRegisterable):
         return interpreter
 
     @staticmethod
-    def from_python_installation(directory):
+    def from_python_installation(directory, **kwargs):
         """
         Creates a PymakeInterpreter from an Python Installation in the directory.
 
         :param directory: The absolute path to the python installation directory.
+        :param **kwargs:  List of additional keyworded arguments to be passed into the PymakeInterpreter.
         :return           A valid PymakeInterpreter instance if succesful; None otherwise.
         """
         root = os.path.abspath(directory)
@@ -125,11 +126,10 @@ class PymakeInterpreter(PyRegisterable):
         if not os.path.exists(python):
             return None
         
-        args = {
-            'Path': root,
-            'InterpreterPath': 'python.exe',
-            'Description': os.path.basename(root)
-        }
+        args = kwargs.copy()
+        args['Path'] = root
+        args['InterpreterPath'] = 'python.exe'
+        args.setdefault('Description', os.path.basename(root))
 
         if os.path.exists(os.path.join(root, 'pythonw.exe')):
             args['WindowsInterpreterPath'] = 'pythonw.exe'
