@@ -32,7 +32,7 @@ class PymakeInterpreter(PyRegisterable):
     __registerable_name__ = "Python Interpreter"
 
     #: PTVS Interpreter Register Location
-    regkey_name = r'Software\Microsoft\VisualStudio\11.0\PythonTools\Interpreters'
+    regkey_name = r'Software\Microsoft\VisualStudio\{VSVersion}\PythonTools\Interpreters'
 
     #: A CSV file contains the values of an environment
     EnvDefintionFile = 'PTVSEnvironment.csv'
@@ -81,7 +81,7 @@ class PymakeInterpreter(PyRegisterable):
         
         with open(origprefix, 'rt') as f:
             basedir = next((line.rstrip() for line in f), None)
-            baseinterpretter = PymakeInterpreter.from_python_installation(basedir)
+            baseinterpretter = PymakeInterpreter.from_python_installation(basedir,  **kwargs)
         if not baseinterpretter:
             return None
 
@@ -215,12 +215,23 @@ class PymakeInterpreter(PyRegisterable):
         self.LibraryPath                = datadict.get('LibraryPath', "")
         self.LibraryAbsPath             = datadict.get('LibraryAbsPath', self.LibraryPath if os.path.isabs(self.LibraryPath) else os.path.abspath(os.path.join(self.Path, self.LibraryPath)))
         self.PathEnvironmentVariable    = datadict.get('PathEnvironmentVariable', "")
+        self.VSVersion                  = datadict.get('VSVersion', None)
 
     def resolve(self):
         """
         'Resolves' the environment with existing environments in the windows registry.
         """
-        regkey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, self.regkey_name)
+        if not self.VSVersion:
+            raise ValueError('Cannot resolve interpreter with invalid Visual Studio Version')
+
+        regkey_name = self.regkey_name.format(VSVersion=self.VSVersion)
+        try:
+            vs_regkey_name = os.path.dirname(regkey_name)
+            winreg.OpenKey(winreg.HKEY_CURRENT_USER, vs_regkey_name)
+        except WindowsError as ex:
+            raise ValueError('Cannot resolve interpreter with Visual Studio %s that is not installed.' % str(self.VSVersion))
+
+        regkey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, regkey_name)
         try:
             reginfo = winreg.QueryInfoKey(regkey)
             for i in range(reginfo[0]):
@@ -239,6 +250,16 @@ class PymakeInterpreter(PyRegisterable):
 
         :..note: https://pytools.codeplex.com/workitem/2765
         """
+        if not self.VSVersion:
+            raise ValueError('Cannot register interpreter with invalid Visual Studio Version')
+
+        regkey_name = self.regkey_name.format(VSVersion=self.VSVersion)
+        try:
+            vs_regkey_name = os.path.dirname(regkey_name)
+            winreg.OpenKey(winreg.HKEY_CURRENT_USER, vs_regkey_name)
+        except WindowsError as ex:
+            raise ValueError('Cannot register interpreter with Visual Studio %s that is not installed.' % str(self.VSVersion))
+
         regkey_name = '{0}\\{{{1}}}'.format(self.regkey_name, str(self.GUID).lower())
         try:
             regkey = winreg.CreateKey(winreg.HKEY_CURRENT_USER, regkey_name)

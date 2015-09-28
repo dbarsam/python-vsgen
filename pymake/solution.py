@@ -39,6 +39,7 @@ class PymakeSolution(PyWritable):
         self.FileName  = datadict.get("FileName","")
         self.Name      = datadict.get("Name","")
         self.Projects  = datadict.get("Projects", [])
+        self.VSVersion = datadict.get("VSVersion", None)
 
     def write(self):
         """

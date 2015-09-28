@@ -35,6 +35,7 @@ class PymakeProject(PyWritable):
     :ivar PythonInterpreterArgs:  The active interpreter's arguments.  If not provide the value is [].
     :ivar PythonInterpreters:     The list of pyInterpreters that are base interpreters that will be available; if not provide the value is [].
     :ivar VirtualEnvironments:    The list of pyInterpreters that are virtual environments that will be available; if not provide the value is [].
+    :ivar VSVersion:              The Visual Studio version; if not provide the value is None.
     """
     __writable_name__ = "Pymake Project"
 
@@ -76,6 +77,7 @@ class PymakeProject(PyWritable):
         self.PythonInterpreterArgs = datadict.get("PythonInterpreterArgs",[])
         self.PythonInterpreters    = datadict.get("PythonInterpreters",[])
         self.VirtualEnvironments   = datadict.get("VirtualEnvironments",[])
+        self.VSVersion             = datadict.get("VSVersion", None)
 
     def insert_files(self, rootpath, directoryInFilter=None, directoryExFilter=None, compileInFilter=None, compileExFilter=None, contentInFilter=None, contentExFilter=None):
         """
