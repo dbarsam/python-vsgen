@@ -235,8 +235,8 @@ class PymakeInterpreter(PyRegisterable):
         try:
             reginfo = winreg.QueryInfoKey(regkey)
             for i in range(reginfo[0]):
-                regkey_name = '{0}\\{1}'.format(self.regkey_name, winreg.EnumKey(regkey, i))
-                interpreter = PymakeInterpreter.from_registry_key(regkey_name)
+                interpreter_regkey_name = '{0}\\{1}'.format(regkey_name, winreg.EnumKey(regkey, i))
+                interpreter = PymakeInterpreter.from_registry_key(interpreter_regkey_name)
                 if interpreter and interpreter.InterpreterAbsPath == self.InterpreterAbsPath:
                     self.GUID = uuid.UUID(interpreter.GUID)
                     self.BaseInterpreter = self.GUID
@@ -260,9 +260,9 @@ class PymakeInterpreter(PyRegisterable):
         except WindowsError as ex:
             raise ValueError('Cannot register interpreter with Visual Studio %s that is not installed.' % str(self.VSVersion))
 
-        regkey_name = '{0}\\{{{1}}}'.format(self.regkey_name, str(self.GUID).lower())
+        interpreter_regkey_name = '{0}\\{{{1}}}'.format(regkey_name, str(self.GUID).lower())
         try:
-            regkey = winreg.CreateKey(winreg.HKEY_CURRENT_USER, regkey_name)
+            regkey = winreg.CreateKey(winreg.HKEY_CURRENT_USER, interpreter_regkey_name)
             winreg.SetValueEx(regkey, 'Architecture', 0, winreg.REG_SZ, self.Architecture)
             winreg.SetValueEx(regkey, 'Description', 0, winreg.REG_SZ, self.Description)
             winreg.SetValueEx(regkey, 'InterpreterPath', 0, winreg.REG_SZ, self.InterpreterAbsPath)
