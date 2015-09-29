@@ -19,14 +19,17 @@ class PyWriteCommand(object):
     """
     The PyWriteCommand class presents a simple command object to execute the writing methods of a collection of PyWritable objects.
     """
-    def __init__(self, logname, writables):
+    def __init__(self, logname, writables, parallel=True):
         """
         Initializes the instance with an default values.
 
-        @param message:  The display message when using the time in a context manager (e.g the __enter__/__exit__ methods).
+        :param str logname:  The python logger log name.
+        :param list writables:  The list of PyWritable class instances.
+        :param bool parallel: Flag to enable asynchronous writing.
         """
         self._logname = logname
         self._writables = writables
+        self._parallel = parallel
         writables_names = set([w.__writable_name__ for w in writables])
         if not writables_names:
             self._message = "Writing no files."
@@ -56,7 +59,7 @@ class PyWriteCommand(object):
 
         PymakeLogger.info(self._logname, self._message)
         start = time.clock()
-        PymakeWriter.write(self._writables)
+        PymakeWriter.write(self._writables, self._parallel)
         end = time.clock()
         PymakeLogger.info(self._logname, "Wrote %s files in %s seconds:", len(self._writables), end - start)
 
@@ -69,7 +72,7 @@ class PymakeWriter(threading.Thread):
         """
         PymakeProject encapsulates the logic needed to create a *.pyproject file.
 
-        :param pylist: A list of Pymake objects[PrProjects, PymakeSolutions, etc]
+        :param list pylist: A list of Pymake objects[PrProjects, PymakeSolutions, etc]
         """
         threading.Thread.__init__(self)
         if not hasattr(pylist, '__iter__'):
@@ -89,8 +92,8 @@ class PymakeWriter(threading.Thread):
         """
         Utility method to spawn a PymakeWriter for each element in a collection.
 
-        :param pylist:   A list of Pymake objects (PrProjects, PymakeSolutions, etc)
-        :param parallel: Flag to execute the process in parallel (i.e. use python threads).
+        :param list pylist:   A list of Pymake objects (PrProjects, PymakeSolutions, etc)
+        :param bool parallel: Flag to enable asynchronous writing.
         """
         threads = [PymakeWriter(o) for o in pylist]
         if parallel:
