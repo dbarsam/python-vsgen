@@ -20,6 +20,9 @@ class PyRegisterCommand(object):
     def __init__(self, logname, registerables):
         """
         Initializes the instance with an collection of registerables.
+
+        :param str logname:  The python logger log name.
+        :param list registerables:  The list of PyRegisterable class instances.
         """
         self._logname = logname
         self._registerables = registerables
