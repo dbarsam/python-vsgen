@@ -52,7 +52,12 @@ class PymakeSolution(PyWritable):
         projectFileName = os.path.normpath(self.FileName)
         with open(projectFileName, 'wt') as f:
             f.write( 'Microsoft Visual Studio Solution File, Format Version 12.00\n' )
-            f.write( '# Visual Studio 2012\n' )
+            if self.VSVersion == 14.0:
+                f.write( '# Visual Studio 14\n' )
+                f.write( 'VisualStudioVersion = 14.0.23107.0\n' )
+                f.write( 'MinimumVisualStudioVersion = 10.0.40219.1\n' )
+            else:
+                f.write( '# Visual Studio 2012\n' )
             for pInfo in self.Projects:
                 f.write( 'Project("{{{0}}}") = "{1}", "{2}", "{{{3}}}"\n'.format(str(self.GUID).upper(), pInfo.Name, os.path.relpath(pInfo.FileName, filepath), pInfo.GUID))
                 f.write( 'EndProject\n' )
