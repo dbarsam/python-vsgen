@@ -34,9 +34,6 @@ class PymakeInterpreter(PyRegisterable):
     #: PTVS Interpreter Register Location
     regkey_name = r'Software\Microsoft\VisualStudio\{VSVersion}\PythonTools\Interpreters'
 
-    #: A CSV file contains the values of an environment
-    EnvDefintionFile = 'PTVSEnvironment.csv'
-
     def __init__(self, **kwargs):
         """
         Constructor.
@@ -46,20 +43,6 @@ class PymakeInterpreter(PyRegisterable):
         super(PymakeInterpreter, self).__init__()
         self._import(kwargs)
 
-    @staticmethod
-    def from_directory(directory):
-        """
-        Creates one or more PymakeInterpreter(s) from all PTVSEnvironment.csv files recursively found in the directory.
-
-        :param directory: The absolute path to the root directory.
-        :return           A valid PymakeInterpreter instance if succesful; None otherwise.
-        """
-        interpreters = []
-        for root, dirnames, filenames in os.walk(directory):
-            for filename in fnmatch.filter(filenames, PymakeInterpreter.EnvDefintionFile):
-                interpreters.extend( PymakeInterpreter.from_file(os.path.join(root, filename)))
-        return interpreters
-    
     @staticmethod
     def from_virtual_environment(directory, **kwargs):
         """
@@ -152,26 +135,6 @@ class PymakeInterpreter(PyRegisterable):
         interpreter = PymakeInterpreter(**args)
         interpreter.resolve()
         return interpreter
-
-    @staticmethod
-    def from_file(filename):
-        """
-        Creates one or more PymakeInterpreter(s) from a single PTVSEnvironment.csv file.
-
-        :param filename:  The absolute path to the PTVSEnvironment.csv file.
-        :return           List of PymakeInterpreter instances; an empty list otherwise.
-        """
-        interpreters = []
-        try:
-            with open(filename, 'rt') as csvfile:
-                reader = csv.DictReader(csvfile, delimiter=',', quotechar='"')            
-                for line in reader:
-                    line['Path'] = os.path.dirname(filename)
-                    interpreters.append(PymakeInterpreter(**line))
-        except IOError:
-            pass
-
-        return interpreters
 
     @staticmethod
     def from_registry_key(keyname):
