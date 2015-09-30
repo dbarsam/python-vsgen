@@ -13,12 +13,13 @@ def main(argv=[]):
     """
     from pymake import PyWriteCommand, PyRegisterCommand, PymakeLogger
     from pymakedemo.solutions import PymakeDemoSolution
+    from pymakedemo.settings import PymakeDemoSettings
 
     # logger
     pylogger = PymakeLogger()
 
     # Solutions
-    solutions = [PymakeDemoSolution()]
+    solutions = [PymakeDemoSolution(VSVersion=PymakeDemoSettings.VSVersion)]
     with PyWriteCommand('PymakeDemo', solutions) as command:
         command.execute()
 

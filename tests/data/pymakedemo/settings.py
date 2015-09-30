@@ -16,6 +16,9 @@ class PymakeDemoSettings(object):
     PythonExeRoot   = os.path.join( MainRoot, 'bin', 'Python' )
     PythonVEnvRoot  = os.path.join( MainRoot, 'venv', 'PythonVEnv' )
 
+    # Visual Studio Version
+    VSVersion = 14.0
+
     # PTVS Output Directories
     SolutionRoot    = os.path.join( BuildRoot, '_projects', 'pymakedemo', ) 
     ProjectRoot     = os.path.join( BuildRoot, '_projects', 'pymakedemo', 'projs')

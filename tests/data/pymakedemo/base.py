@@ -12,11 +12,11 @@ class PymakeDemoBaseSolution(PymakeSolution):
     """
     PymakeDemoBaseSolution provides a base PymakeSolution for all PymakeSolutions in pymakedemo.pymake.
     """
-    def __init__(self, name):
+    def __init__(self, name, **kwargs):
         """
         Constructor.
         """
-        super(PymakeDemoBaseSolution, self).__init__()
+        super(PymakeDemoBaseSolution, self).__init__(**kwargs)
         self.FileName = os.path.join(PymakeDemoSettings.SolutionRoot, '{0}.sln'.format(name.lower()))
         self.Name = name
 
@@ -38,11 +38,11 @@ class PymakeDemoBaseProject(PymakeProject):
     """
     PymakeDemoBaseProject provides a base PymakeProject for all PymakeProjects in pymakedemo.pymake.
     """
-    def __init__(self, name, rootpath):
+    def __init__(self, name, rootpath, **kwargs):
         """
         Constructor.
         """
-        super(PymakeDemoBaseProject, self).__init__()
+        super(PymakeDemoBaseProject, self).__init__(**kwargs)
         self.Name = name
         self.FileName = os.path.join(PymakeDemoSettings.ProjectRoot, '{0}.pyproj'.format(name.lower()))
         self.ProjectHome = rootpath

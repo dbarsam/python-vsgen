@@ -12,8 +12,8 @@ class PymakeProject(PymakeDemoBaseProject):
     """
     RootPath = os.path.join( PymakeDemoSettings.MainRoot, 'pymake' )
 
-    def __init__(self):
-        super(PymakeProject, self).__init__('Pymake', self.RootPath)
+    def __init__(self, **kwargs):
+        super(PymakeProject, self).__init__('Pymake', self.RootPath, **kwargs)
 
     def initialize(self):
         """
@@ -27,8 +27,8 @@ class PymakeDemoProject(PymakeDemoBaseProject):
     """
     RootPath = os.path.join( PymakeDemoSettings.MainRoot, 'tests', 'data', 'pymakedemo' )
 
-    def __init__(self):
-        super(PymakeDemoProject, self).__init__('PymakeDemo', self.RootPath)
+    def __init__(self, **kwargs):
+        super(PymakeDemoProject, self).__init__('PymakeDemo', self.RootPath, **kwargs)
 
     def initialize(self):
         """

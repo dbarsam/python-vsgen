@@ -10,8 +10,8 @@ class PymakeDemoSolution(PymakeDemoBaseSolution):
     """
     PymakeDemoSolution implements a single PymakeSolution for all PymakeProjects in the Pymake demo.
     """
-    def __init__(self):
-        super(PymakeDemoSolution, self).__init__('PymakeDemo')
-        self.Projects.append(PymakeProject())
-        self.Projects.append(PymakeDemoProject())
+    def __init__(self, **kwargs):
+        super(PymakeDemoSolution, self).__init__('PymakeDemo', **kwargs)
+        self.Projects.append(PymakeProject(VSVersion=self.VSVersion))
+        self.Projects.append(PymakeDemoProject(VSVersion=self.VSVersion))
 
