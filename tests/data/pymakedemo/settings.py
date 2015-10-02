@@ -12,9 +12,6 @@ class PymakeDemoSettings(object):
     LocalDir        = os.path.dirname( os.path.realpath(__file__) )
     MainRoot        = os.path.normpath( os.path.join( LocalDir, '..', '..', '..') )
     BuildRoot       = os.path.join( MainRoot, 'tests', 'data', '_output', )
-    ExternRoot      = os.path.join( MainRoot, 'external' )
-    PythonExeRoot   = os.path.join( MainRoot, 'bin', 'Python' )
-    PythonVEnvRoot  = os.path.join( MainRoot, 'venv', 'PythonVEnv' )
 
     # Visual Studio Version
     VSVersion = 14.0
