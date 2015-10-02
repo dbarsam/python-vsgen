@@ -25,11 +25,14 @@
     <Compile Include="pymake\project.py" />
     <Compile Include="pymake\register.py" />
     <Compile Include="pymake\solution.py" />
+    <Compile Include="pymake\suite.py" />
+    <Compile Include="pymake\util\config.py" />
     <Compile Include="pymake\util\logger.py" />
     <Compile Include="pymake\util\timer.py" />
     <Compile Include="pymake\util\__init__.py" />
     <Compile Include="pymake\writer.py" />
     <Compile Include="pymake\__init__.py" />
+    <Compile Include="pymake\__main__.py" />
     <Compile Include="tests\data\pymakedemo\base.py" />
     <Compile Include="tests\data\pymakedemo\projects.py" />
     <Compile Include="tests\data\pymakedemo\settings.py" />
@@ -42,7 +45,11 @@
     <Folder Include="pymake\util" />
     <Folder Include="tests\" />
     <Folder Include="tests\data\" />
+    <Folder Include="tests\data\pymakecfg\" />
     <Folder Include="tests\data\pymakedemo" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tests\data\pymakecfg\setup.cfg" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
