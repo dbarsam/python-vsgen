@@ -56,7 +56,11 @@ class PymakeSolution(PyWritable):
                 f.write( '# Visual Studio 14\n' )
                 f.write( 'VisualStudioVersion = 14.0.23107.0\n' )
                 f.write( 'MinimumVisualStudioVersion = 10.0.40219.1\n' )
-            else:
+            elif self.VSVersion == 12.0:
+                f.write( '# Visual Studio 2013\n' )
+                f.write( 'VisualStudioVersion = 12.0.31101.0\n')
+                f.write( 'MinimumVisualStudioVersion = 10.0.40219.1\n')
+            elif self.VSVersion == 11.0:
                 f.write( '# Visual Studio 2012\n' )
             for pInfo in self.Projects:
                 f.write( 'Project("{{{0}}}") = "{1}", "{2}", "{{{3}}}"\n'.format(str(self.GUID).upper(), pInfo.Name, os.path.relpath(pInfo.FileName, filepath), pInfo.GUID))
