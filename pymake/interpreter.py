@@ -194,7 +194,7 @@ class PymakeInterpreter(PyRegisterable):
         except WindowsError as ex:
             raise ValueError('Cannot resolve the registry path HKCU\%s for Visual Studio %s\'s PTVS.  Is PTVS installed?' % (vs_regkey_name, str(self.VSVersion)))
 
-        regkey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, regkey_name)
+        regkey = winreg.CreateKey(winreg.HKEY_CURRENT_USER, regkey_name)
         try:
             reginfo = winreg.QueryInfoKey(regkey)
             for i in range(reginfo[0]):
