@@ -91,7 +91,7 @@ class PymakeSuite(object):
         p.PythonInterpreter = next((i for i in interpreters.get(interpreter, [])), None)
 
         virtual_environments = config.getlist(section, 'python_virtual_environments', fallback=[])
-        p.VirtualEnvironments = [ve for ve in self._getvirtualenvironment(config, next, VSVersion=p.VSVersion) for n in virtual_environments]
+        p.VirtualEnvironments = [ve for n in virtual_environments for ve in self._getvirtualenvironment(config, n, VSVersion=p.VSVersion) ]
 
         root_path = config.get(section, 'root_path', fallback="")
         p.insert_files(root_path)    
