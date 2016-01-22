@@ -45,9 +45,13 @@ class PymakeSuite(object):
         :return: A valid PymakeSolution instance if succesful; None otherwise.
         """
         s = PymakeSolution(**kwargs)
+
         s.Name = config.get(section, 'name', fallback=s.Name)
         s.FileName = os.path.normpath(config.get(section, 'filename', fallback=s.FileName))
-        s.VSVersion = config.getfloat(section, 'visual_studio_version', fallback=11)
+        s.VSVersion = config.getfloat(section, 'visual_studio_version', fallback=s.VSVersion)
+        if not s.VSVersion:
+            raise ValueError('Solution section [%s] requires a value for Visual Studio Version (visual_studio_version)' % section)
+
         project_sections = config.getlist(section, 'projects', fallback=[])
         for project_section in project_sections:
             project = self._getproject(config, project_section, VSVersion=s.VSVersion)
@@ -94,7 +98,8 @@ class PymakeSuite(object):
         p.VirtualEnvironments = [ve for n in virtual_environments for ve in self._getvirtualenvironment(config, n, VSVersion=p.VSVersion) ]
 
         root_path = config.get(section, 'root_path', fallback="")
-        p.insert_files(root_path)    
+        p.insert_files(root_path)
+
         return p
 
 
