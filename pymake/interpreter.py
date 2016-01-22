@@ -177,7 +177,7 @@ class PymakeInterpreter(PyRegisterable):
         self.WindowsInterpreterAbsPath  = datadict.get('WindowsInterpreterAbsPath', self.WindowsInterpreterPath if os.path.isabs(self.WindowsInterpreterPath) else os.path.abspath(os.path.join(self.Path, self.WindowsInterpreterPath)))
         self.LibraryPath                = datadict.get('LibraryPath', "")
         self.LibraryAbsPath             = datadict.get('LibraryAbsPath', self.LibraryPath if os.path.isabs(self.LibraryPath) else os.path.abspath(os.path.join(self.Path, self.LibraryPath)))
-        self.PathEnvironmentVariable    = datadict.get('PathEnvironmentVariable', "")
+        self.PathEnvironmentVariable    = datadict.get('PathEnvironmentVariable', "PYTHONPATH")
         self.VSVersion                  = datadict.get('VSVersion', None)
 
     def resolve(self):
@@ -230,7 +230,6 @@ class PymakeInterpreter(PyRegisterable):
             winreg.SetValueEx(regkey, 'Description', 0, winreg.REG_SZ, self.Description)
             winreg.SetValueEx(regkey, 'InterpreterPath', 0, winreg.REG_SZ, self.InterpreterAbsPath)
             winreg.SetValueEx(regkey, 'LibraryPath', 0, winreg.REG_SZ, self.LibraryAbsPath)
-            winreg.SetValueEx(regkey, 'PathEnvironmentVariable', 0, winreg.REG_SZ, self.PathEnvironmentVariable)
             winreg.SetValueEx(regkey, 'Version', 0, winreg.REG_SZ, self.Version)
             winreg.SetValueEx(regkey, 'WindowsInterpreterPath', 0, winreg.REG_SZ, self.WindowsInterpreterAbsPath)
             winreg.SetValueEx(regkey, 'PathEnvironmentVariable', 0, winreg.REG_SZ, self.PathEnvironmentVariable)
