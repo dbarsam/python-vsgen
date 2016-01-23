@@ -192,7 +192,7 @@ class PymakeInterpreter(PyRegisterable):
             vs_regkey_name = os.path.dirname(regkey_name)
             winreg.OpenKey(winreg.HKEY_CURRENT_USER, vs_regkey_name)
         except WindowsError as ex:
-            raise ValueError('Cannot resolve the registry path HKCU\%s for Visual Studio %s\'s PTVS.  Is PTVS installed?' % (vs_regkey_name, str(self.VSVersion)))
+            raise ValueError('Cannot resolve the registry path HKCU\%s for Visual Studio %s\'s PTVS.  Is PTVS installed?' % (vs_regkey_name, self.text(self.VSVersion)))
 
         regkey = winreg.CreateKey(winreg.HKEY_CURRENT_USER, regkey_name)
         try:
@@ -221,9 +221,9 @@ class PymakeInterpreter(PyRegisterable):
             vs_regkey_name = os.path.dirname(regkey_name)
             winreg.OpenKey(winreg.HKEY_CURRENT_USER, vs_regkey_name)
         except WindowsError as ex:
-            raise ValueError('Cannot register interpreter with Visual Studio %s that is not installed.' % str(self.VSVersion))
+            raise ValueError('Cannot register interpreter with Visual Studio %s that is not installed.' % self.text(self.VSVersion))
 
-        interpreter_regkey_name = '{0}\\{{{1}}}'.format(regkey_name, str(self.GUID).lower())
+        interpreter_regkey_name = '{0}\\{{{1}}}'.format(regkey_name, self.lower(self.GUID))
         try:
             regkey = winreg.CreateKey(winreg.HKEY_CURRENT_USER, interpreter_regkey_name)
             winreg.SetValueEx(regkey, 'Architecture', 0, winreg.REG_SZ, self.Architecture)

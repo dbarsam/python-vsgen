@@ -151,7 +151,7 @@ class PymakeProject(PyWritable):
             f.write( '  <PropertyGroup>\n' )
             f.write( '    <Configuration Condition=" \'$(Configuration)\' == \'\' ">Debug</Configuration>\n' )
             f.write( '    <SchemaVersion>2.0</SchemaVersion>\n' )
-            f.write( '    <ProjectGuid>{{{0}}}</ProjectGuid>\n'.format(str(self.GUID).lower()) )
+            f.write( '    <ProjectGuid>{{{0}}}</ProjectGuid>\n'.format(self.lower(self.GUID)) )
             f.write( '    <ProjectHome>{0}</ProjectHome>\n'.format(projectRelativeHome) )
             if projectRelativeStartupFile:
                 f.write( '    <StartupFile>{0}</StartupFile>\n'.format(projectRelativeStartupFile) )
@@ -163,7 +163,7 @@ class PymakeProject(PyWritable):
             f.write( '    <RootNamespace>{0}</RootNamespace>\n'.format(self.RootNamespace) )
             f.write( '    <IsWindowsApplication>{0}</IsWindowsApplication>\n'.format(self.IsWindowsApplication) )            
             if projectInterpreter:
-                f.write( '    <InterpreterId>{{{0}}}</InterpreterId>\n'.format(str(projectInterpreter.GUID).lower()) )
+                f.write( '    <InterpreterId>{{{0}}}</InterpreterId>\n'.format(self.lower(projectInterpreter.GUID)) )
                 f.write( '    <InterpreterVersion>{0}</InterpreterVersion>\n'.format(projectInterpreter.Version) )
             f.write( '    <LaunchProvider>Standard Python launcher</LaunchProvider>\n' )
             f.write( '    <CommandLineArguments />\n' )
@@ -190,13 +190,13 @@ class PymakeProject(PyWritable):
   
             if self.ContentFiles:
                 f.write( '  <ItemGroup>\n' )
-                for fn in [os.path.relpath(path, self.ProjectHome) for path in sorted(self.ContentFiles,key=str.lower) ]:
+                for fn in [os.path.relpath(path, self.ProjectHome) for path in sorted(self.ContentFiles, key=self.lower) ]:
                     f.write( '    <Content Include="' + fn + '" />\n' )
                 f.write( '  </ItemGroup>\n' )
 
             if self.CompileFiles:
                 f.write( '  <ItemGroup>\n' )
-                for fn in [os.path.relpath(path, self.ProjectHome) for path in sorted(self.CompileFiles,key=str.lower) ]:
+                for fn in [os.path.relpath(path, self.ProjectHome) for path in sorted(self.CompileFiles, key=self.lower) ]:
                     f.write( '    <Compile Include="' + fn + '" />\n' )
                 f.write( '  </ItemGroup>\n' )
 
@@ -221,8 +221,8 @@ class PymakeProject(PyWritable):
                 f.write( '  <ItemGroup>\n')
                 for venv in self.VirtualEnvironments:
                     f.write( '    <Interpreter Include="{0}">\n'.format(os.path.relpath(venv.Path, self.ProjectHome)))
-                    f.write( '      <Id>{{{0}}}</Id>\n'.format(str(venv.GUID).upper()))
-                    f.write( '      <BaseInterpreter>{{{0}}}</BaseInterpreter>\n'.format(str(venv.BaseInterpreter).upper()))
+                    f.write( '      <Id>{{{0}}}</Id>\n'.format(self.upper(venv.GUID)))
+                    f.write( '      <BaseInterpreter>{{{0}}}</BaseInterpreter>\n'.format(self.upper(venv.BaseInterpreter)))
                     f.write( '      <Version>{0}</Version>\n'.format(venv.Version))
                     f.write( '      <Description>{0}</Description>\n'.format(venv.Description))
                     f.write( '      <InterpreterPath>{0}</InterpreterPath>\n'.format(venv.InterpreterPath))
@@ -236,7 +236,7 @@ class PymakeProject(PyWritable):
             if self.PythonInterpreters:
                 f.write( '  <ItemGroup>\n')
                 for interpreter in self.PythonInterpreters:
-                    f.write( '    <InterpreterReference Include="{{{0}}}\\{1}" />\n'.format(str(interpreter.BaseInterpreter).upper(), interpreter.Version))
+                    f.write( '    <InterpreterReference Include="{{{0}}}\\{1}" />\n'.format(self.upper(interpreter.BaseInterpreter), interpreter.Version))
                 f.write( '  </ItemGroup>\n' )
 
             f.write( '  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />\n')

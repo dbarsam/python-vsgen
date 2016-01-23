@@ -63,7 +63,7 @@ class PymakeSolution(PyWritable):
             elif self.VSVersion == 11.0:
                 f.write( '# Visual Studio 2012\n' )
             for pInfo in self.Projects:
-                f.write( 'Project("{{{0}}}") = "{1}", "{2}", "{{{3}}}"\n'.format(str(self.GUID).upper(), pInfo.Name, os.path.relpath(pInfo.FileName, filepath), pInfo.GUID))
+                f.write( 'Project("{{{0}}}") = "{1}", "{2}", "{{{3}}}"\n'.format(self.upper(self.GUID), pInfo.Name, os.path.relpath(pInfo.FileName, filepath), pInfo.GUID))
                 f.write( 'EndProject\n' )
             f.write( 'Global\n' )
             f.write( '\tGlobalSection(SolutionConfigurationPlatforms) = preSolution\n' )
@@ -72,16 +72,16 @@ class PymakeSolution(PyWritable):
             f.write( '\tEndGlobalSection\n' )
             f.write( '\tGlobalSection(ProjectConfigurationPlatforms) = postSolution\n' )
             for pInfo in self.Projects:
-                f.write( '\t\t{{{0}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU\n'.format(str(pInfo.GUID).upper()) )
-                f.write( '\t\t{{{0}}}.Release|Any CPU.ActiveCfg = Release|Any CPU\n'.format(str(pInfo.GUID).upper()) )
+                f.write( '\t\t{{{0}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU\n'.format(self.upper(pInfo.GUID)) )
+                f.write( '\t\t{{{0}}}.Release|Any CPU.ActiveCfg = Release|Any CPU\n'.format(self.upper(pInfo.GUID)) )
             f.write( '\tEndGlobalSection\n' )
             f.write( '\tGlobalSection(SolutionProperties) = preSolution\n' )
             f.write( '\t\tHideSolutionNode = FALSE\n' )
             f.write( '\tEndGlobalSection\n' )
             f.write( '\tGlobalSection(SolutionConfigurationPlatf.ms) = postSolution\n' )
             for pInfo in self.Projects:
-                f.write( '\t\t{{{0}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU\n'.format(str(pInfo.GUID).upper()) )
-                f.write( '\t\t{{{0}}}.Release|Any CPU.ActiveCfg = Release|Any CPU\n'.format(str(pInfo.GUID).upper()) )
+                f.write( '\t\t{{{0}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU\n'.format(self.upper(pInfo.GUID)) )
+                f.write( '\t\t{{{0}}}.Release|Any CPU.ActiveCfg = Release|Any CPU\n'.format(self.upper(pInfo.GUID)) )
             f.write( '\tEndGlobalSection\n' )
             f.write( '\tGlobalSection(SolutionConfigurationPlatf.ms) = preSolution\n' )
             f.write( '\t\tDebug|Any CPU = Debug|Any CPU\n' )
@@ -89,9 +89,9 @@ class PymakeSolution(PyWritable):
             f.write( '\tEndGlobalSection\n' )
             f.write( '\tGlobalSection(ProjectConfigurationPlatf.ms) = postSolution\n' )
             for pInfo in self.Projects:
-                f.write( '\t\t{{{0}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU\n'.format(str(pInfo.GUID).upper()) )
-                f.write( '\t\t{{{0}}}.Debug|Any CPU.Build.0 = Debug|Any CPU\n'.format(str(pInfo.GUID).upper()) )
-                f.write( '\t\t{{{0}}}.Release|Any CPU.ActiveCfg = Release|Any CPU\n'.format(str(pInfo.GUID).upper()) )
-                f.write( '\t\t{{{0}}}.Release|Any CPU.Build.0 = Release|Any CPU\n'.format(str(pInfo.GUID).upper()) )
+                f.write( '\t\t{{{0}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU\n'.format(self.upper(pInfo.GUID)) )
+                f.write( '\t\t{{{0}}}.Debug|Any CPU.Build.0 = Debug|Any CPU\n'.format(self.upper(pInfo.GUID)) )
+                f.write( '\t\t{{{0}}}.Release|Any CPU.ActiveCfg = Release|Any CPU\n'.format(self.upper(pInfo.GUID)) )
+                f.write( '\t\t{{{0}}}.Release|Any CPU.Build.0 = Release|Any CPU\n'.format(self.upper(pInfo.GUID)) )
             f.write( '\tEndGlobalSection\n' )
             f.write( 'EndGlobal\n' )
