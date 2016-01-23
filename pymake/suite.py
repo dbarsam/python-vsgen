@@ -90,7 +90,7 @@ class PymakeSuite(object):
         p.PythonInterpreterArgs = config.getlist(section, 'python_interpreter_args', fallback=p.PythonInterpreterArgs)
 
         interpreter = config.get(section, 'python_interpreter', fallback=None)
-        interpreters = {n:[p for p in self._getinterpreter(config, n, VSVersion=p.VSVersion)] for n in config.getlist(section, 'python_interpreters')}        
+        interpreters = {n:[i for i in self._getinterpreter(config, n, VSVersion=p.VSVersion)] for n in config.getlist(section, 'python_interpreters')}        
         p.PythonInterpreters = [i for v in interpreters.values() for i in v]
         p.PythonInterpreter = next((i for i in interpreters.get(interpreter, [])), None)
 
