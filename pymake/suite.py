@@ -17,10 +17,15 @@ from pymake.util.config import PymakeConfigParser
 class PymakeSuite(object):
     
     def __init__(self, filename):
-        
-       # Read the configuration file
+        """
+        Constructor.
+
+        :param str filename:  The fully qualified path to the Pymake configuration file.
+        """ 
+        # Read the configuration file
         config = PymakeConfigParser(interpolation=configparser.ExtendedInterpolation())
-        config.read(filename)
+        if filename not in config.read(filename):
+            raise ValueError('Could not read Pymake configuration file %s.' % filename)
 
         # Resolve the root path
         root = config.get('pymake', 'root', fallback=None)
