@@ -33,7 +33,7 @@ class PymakeSuite(object):
         # Build the Pymake Solutions
         self._solutions = [self._getsolution(config, s) for s in config.sections() if 'pymake.solution' in s]
 
-        return super().__init__()
+        return super(PymakeSuite, self).__init__()
     
     def _getsolution(self, config, section, **kwargs):
         """
