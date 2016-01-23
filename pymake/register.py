@@ -2,6 +2,7 @@
 """
 This module provides a simple register utility for Pymake objects.
 """
+import sys
 import time
 
 class PyRegisterable(object):
@@ -10,8 +11,38 @@ class PyRegisterable(object):
     """
     __resgisterable_name__ = "Unknown Resgisterable"
 
-    def register( self ):
+    def register(self):
+        """
+        Interface method to 'register' the object.
+        """
         raise NotImplementedError( "Should have implemented this" )
+
+    def text(self, value):
+        """
+        Converts a value to text in a way compatible with Python2 and Python 3.
+        
+        :param obj value:  The value to convert.
+        :return:  The value as text.
+        """
+        return unicode(value) if sys.version_info < (3,) else str(value)
+    
+    def upper(self, value):
+        """
+        Converts a value to upper case text in a way compatible with Python2 and Python 3.
+        
+        :param obj value:  The value to convert.
+        :return:  The value as upper case text.
+        """
+        return self.text(value).upper()
+
+    def lower(self, value):
+        """
+        Converts a value to lower case in a way compatible with Python2 and Python 3.
+        
+        :param obj value:  The value to convert.
+        :return:  The value as lower case text.
+        """
+        return self.text(value).lower()
 
 class PyRegisterCommand(object):
     """

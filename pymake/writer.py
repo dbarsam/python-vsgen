@@ -2,7 +2,7 @@
 """
 This module provides a simple multi-threaded writer utility for PymakeProjects and PymakeSolutions
 """
-
+import sys
 import time
 import threading
 
@@ -13,7 +13,37 @@ class PyWritable(object):
     __writable_name__ = "Unknown Writable"
 
     def write( self ):
+        """
+        Interface method to 'write' the object.
+        """
         raise NotImplementedError( "Should have implemented this" )
+
+    def text(self, value):
+        """
+        Converts a value to text in a way compatible with Python2 and Python 3.
+        
+        :param obj value:  The value to convert.
+        :return:  The value as text.
+        """
+        return unicode(value) if sys.version_info < (3,) else str(value)
+    
+    def upper(self, value):
+        """
+        Converts a value to upper case text in a way compatible with Python2 and Python 3.
+        
+        :param obj value:  The value to convert.
+        :return:  The value as upper case text.
+        """
+        return self.text(value).upper()
+
+    def lower(self, value):
+        """
+        Converts a value to lower case in a way compatible with Python2 and Python 3.
+        
+        :param obj value:  The value to convert.
+        :return:  The value as lower case text.
+        """
+        return self.text(value).lower()
 
 class PyWriteCommand(object):
     """
