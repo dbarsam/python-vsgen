@@ -5,7 +5,6 @@ This module provides all functionality for extending Python's suite class of fun
 The module defines the class PymakeSuite.  The PymakeSuite class groups the different functionalities into a single class.
 """
 import os
-import configparser
 
 from pymake.solution import PymakeSolution
 from pymake.project import PymakeProject
@@ -23,7 +22,7 @@ class PymakeSuite(object):
         :param str filename:  The fully qualified path to the Pymake configuration file.
         """ 
         # Read the configuration file
-        config = PymakeConfigParser(interpolation=configparser.ExtendedInterpolation())
+        config = PymakeConfigParser()
         if filename not in config.read(filename):
             raise ValueError('Could not read Pymake configuration file %s.' % filename)
 
@@ -155,4 +154,3 @@ class PymakeSuite(object):
         interpreters = set(i for p in projects for i in p.PythonInterpreters)
         with PyRegisterCommand('Registering Python Interpreters', interpreters) as command:
             command.execute()
-

@@ -12,32 +12,61 @@ import configparser
 class PymakeConfigParser( configparser.ConfigParser ):
     """
     The Pymake ConfigParser extends Python's ConfigParser class with Pymake specific functionality.
-    """
 
-    def getlist(self, section, option, fallback=[]):
+    :note:  PymakeConfigParser uses :class:`~configparser.ExtendedInterpolation` as the default interpolation.
+    """
+    def __init__(self, *args, **kwargs):
+        """
+        Constructor
+
+        :param *args:     List of arguments passed to the :class:`~configparser.ConfigParser`
+        :param **kwargs:  List of arbitrary keyworded arguments passed to :class:`~configparser.ConfigParser`
+        """
+        kwargs.setdefault('interpolation', configparser.ExtendedInterpolation())
+        return super(PymakeConfigParser, self).__init__(*args, **kwargs)
+    
+    def _convert_to_list(self, value):
+        """
+        Return a list value translating from other types if necessary.
+
+        :param str value:  The value to convert.
+        """
+        return [l.strip() for l in value.split(',')] if value else []
+
+    def _convert_to_path(self, value):
+        """
+        Return a os path value translating from other types if necessary.
+
+        :param str value:  The value to convert.
+        """
+        return os.path.normpath(value)
+
+    def getlist(self, section, option, raw=False, vars=None, fallback=[]):
         """
         A convenience method which coerces the option in the specified section to a list of strings.
         """
-        v = self.get(section, option, fallback=fallback)
-        return [l.strip() for l in v.split(',')] if v else fallback
+        v = self.get(section, option, raw=raw, vars=vars, fallback=fallback)
+        return self._convert_to_list(v)
 
-    def getfile(self, section, option, fallback=""):
+    def getfile(self, section, option, raw=False, vars=None, fallback="", validate=False):
         """
         A convenience method which coerces the option in the specified section to a file.
         """
-        v = self.get(section, option, fallback=fallback)
-        return os.path.normpath(v) if os.path.isfile(v) else None
+        v = self.get(section, option, raw=raw, vars=vars, fallback=fallback)
+        v = self._convert_to_path(v)
+        return v if not validate or os.path.isfile(v) else fallback
 
-    def getdir(self, section, option, fallback=""):
+    def getdir(self, section, option, raw=False, vars=None, fallback="", validate=False):
         """
         A convenience method which coerces the option in the specified section to a directory.
         """
-        v = self.get(section, option, fallback=fallback)        
-        return os.path.normpath(v) if os.path.isdir(v) else None
+        v = self.get(section, option, raw=raw, vars=vars, fallback=fallback)
+        v = self._convert_to_path(v)
+        return v if not validate or os.path.isdir(v) else fallback
 
-    def getdirs(self, section, option, fallback=[]):
+    def getdirs(self, section, option, raw=False, vars=None, fallback=[]):
         """
         A convenience method which coerces the option in the specified section to a list of directories.
         """
-        globs = self.getlist(section, option, [])
+        globs = self.getlist(section, option, fallback=[])
         return [f for g in globs for f in glob.glob(g) if os.path.isdir(f)]
