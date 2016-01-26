@@ -48,6 +48,9 @@ class PymakeSuite(object):
         :param **kwargs:  List of additional keyworded arguments to be passed into the PymakeSolution.
         :return: A valid PymakeSolution instance if succesful; None otherwise.
         """
+        if section not in config:
+            raise ValueError('Section [{}] not found in [{}]'.format(section, ', '.join(config.sections())))
+
         s = PymakeSolution(**kwargs)
 
         s.Name = config.get(section, 'name', fallback=s.Name)
@@ -72,6 +75,9 @@ class PymakeSuite(object):
         :param **kwargs:  List of additional keyworded arguments to be passed into the PymakeProject.
         :return: A valid PymakeProject instance if succesful; None otherwise.
         """
+        if section not in config:
+            raise ValueError('Section [{}] not found in [{}]'.format(section, ', '.join(config.sections())))
+
         p = PymakeProject(**kwargs)
             
         p.Name = config.get(section, 'name', fallback=p.Name)
@@ -116,6 +122,9 @@ class PymakeSuite(object):
         :param **kwargs:  List of additional keyworded arguments to be passed into the PymakeInterpreter.
         :return: A valid PymakeInterpreter instance if succesful; None otherwise.
         """
+        if section not in config:
+            raise ValueError('Section [{}] not found in [{}]'.format(section, ', '.join(config.sections())))
+
         interpreter_paths = config.getdirs(section, 'interpreter_paths', fallback=[])
         if interpreter_paths:
             return [PymakeInterpreter.from_python_installation( p, **kwargs) for p in interpreter_paths]
@@ -131,6 +140,9 @@ class PymakeSuite(object):
         :param **kwargs:  List of additional keyworded arguments to be passed into the PymakeInterpreter.
         :return: A valid PymakeInterpreter instance if succesful; None otherwise.
         """
+        if section not in config:
+            raise ValueError('Section [{}] not found in [{}]'.format(section, ', '.join(config.sections())))
+
         environment_paths = config.getdirs(section, 'environment_paths', fallback=[])
         if environment_paths:
             return [PymakeInterpreter.from_virtual_environment( p, **kwargs ) for p in environment_paths]
