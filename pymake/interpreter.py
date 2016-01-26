@@ -200,7 +200,7 @@ class PymakeInterpreter(PyRegisterable):
             for i in range(reginfo[0]):
                 interpreter_regkey_name = '{0}\\{1}'.format(regkey_name, winreg.EnumKey(regkey, i))
                 interpreter = PymakeInterpreter.from_registry_key(interpreter_regkey_name)
-                if interpreter and interpreter.InterpreterAbsPath == self.InterpreterAbsPath:
+                if interpreter and interpreter.InterpreterAbsPath.lower() == self.InterpreterAbsPath.lower():
                     self.GUID = uuid.UUID(interpreter.GUID)
                     self.BaseInterpreter = self.GUID
                     break
