@@ -125,11 +125,15 @@ class PymakeSuite(object):
         if section not in config:
             raise ValueError('Section [{}] not found in [{}]'.format(section, ', '.join(config.sections())))
 
+        interpreters = []
         interpreter_paths = config.getdirs(section, 'interpreter_paths', fallback=[])
         if interpreter_paths:
-            return [PymakeInterpreter.from_python_installation( p, **kwargs) for p in interpreter_paths]
-        return []
+            interpreters = [PymakeInterpreter.from_python_installation( p, **kwargs) for p in interpreter_paths]
 
+        for i in interpreters:
+            i.Description = config.get(section, 'description', fallback=i.Description)
+        
+        return interpreters
 
     def _getvirtualenvironment(self, config, section, **kwargs):
         """
@@ -142,11 +146,16 @@ class PymakeSuite(object):
         """
         if section not in config:
             raise ValueError('Section [{}] not found in [{}]'.format(section, ', '.join(config.sections())))
-
+        
+        environments = []
         environment_paths = config.getdirs(section, 'environment_paths', fallback=[])
         if environment_paths:
-            return [PymakeInterpreter.from_virtual_environment( p, **kwargs ) for p in environment_paths]
-        return []
+            environments = [PymakeInterpreter.from_virtual_environment( p, **kwargs ) for p in environment_paths]
+
+        for e in environments:
+            e.Description = config.get(section, 'description', fallback=e.Description)
+
+        return environments
 
     def write(self, parallel=True):
         """
