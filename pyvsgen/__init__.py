@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from pymake.project import PymakeProject
-from pymake.solution import PymakeSolution
-from pymake.interpreter import PymakeInterpreter
-from pymake.register import PyRegisterable, PyRegisterCommand
-from pymake.writer import PymakeWriter, PyWritable, PyWriteCommand
-from pymake.suite import PymakeSuite
-from pymake.util.logger import PymakeLogger
-from pymake.util.timer import PymakeTimer
-from pymake.util.config import PymakeConfigParser
+from pyvsgen.project import PyvsgenProject
+from pyvsgen.solution import PyvsgenSolution
+from pyvsgen.interpreter import PyvsgenInterpreter
+from pyvsgen.register import PyRegisterable, PyRegisterCommand
+from pyvsgen.writer import PyvsgenWriter, PyWritable, PyWriteCommand
+from pyvsgen.suite import PyvsgenSuite
+from pyvsgen.util.logger import PyvsgenLogger
+from pyvsgen.util.timer import PyvsgenTimer
+from pyvsgen.util.config import PyvsgenConfigParser

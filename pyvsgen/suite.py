@@ -2,56 +2,56 @@
 """
 This module provides all functionality for extending Python's suite class of functionality.
 
-The module defines the class PymakeSuite.  The PymakeSuite class groups the different functionalities into a single class.
+The module defines the class PyvsgenSuite.  The PyvsgenSuite class groups the different functionalities into a single class.
 """
 import os
 
-from pymake.solution import PymakeSolution
-from pymake.project import PymakeProject
-from pymake.interpreter import PymakeInterpreter
-from pymake.writer import PyWriteCommand
-from pymake.register import PyRegisterCommand
-from pymake.util.config import PymakeConfigParser
+from pyvsgen.solution import PyvsgenSolution
+from pyvsgen.project import PyvsgenProject
+from pyvsgen.interpreter import PyvsgenInterpreter
+from pyvsgen.writer import PyWriteCommand
+from pyvsgen.register import PyRegisterCommand
+from pyvsgen.util.config import PyvsgenConfigParser
 
-class PymakeSuite(object):
+class PyvsgenSuite(object):
     
     def __init__(self, filename):
         """
         Constructor.
 
-        :param str filename:  The fully qualified path to the Pymake configuration file.
+        :param str filename:  The fully qualified path to the Pyvsgen configuration file.
         """ 
         # Read the configuration file
-        config = PymakeConfigParser()
+        config = PyvsgenConfigParser()
         if filename not in config.read(filename):
-            raise ValueError('Could not read Pymake configuration file %s.' % filename)
+            raise ValueError('Could not read Pyvsgen configuration file %s.' % filename)
 
         # Resolve the root path
-        root = config.get('pymake', 'root', fallback=None)
+        root = config.get('pyvsgen', 'root', fallback=None)
         if not root:
-            raise ValueError('Expected option "root" in section [pymake].')
+            raise ValueError('Expected option "root" in section [pyvsgen].')
 
         root = os.path.normpath(os.path.join(os.path.dirname(filename), root))
-        config.set('pymake', 'root', root)
+        config.set('pyvsgen', 'root', root)
 
-        # Build the Pymake Solutions
-        self._solutions = [self._getsolution(config, s) for s in config.sections() if 'pymake.solution' in s]
+        # Build the Pyvsgen Solutions
+        self._solutions = [self._getsolution(config, s) for s in config.sections() if 'pyvsgen.solution' in s]
 
-        return super(PymakeSuite, self).__init__()
+        return super(PyvsgenSuite, self).__init__()
     
     def _getsolution(self, config, section, **kwargs):
         """
-        Creates a Pymake solution from a configparser instance.
+        Creates a Pyvsgen solution from a configparser instance.
 
         :param obj config: The instance of the configparser class
         :param str section: The section name to read.
-        :param **kwargs:  List of additional keyworded arguments to be passed into the PymakeSolution.
-        :return: A valid PymakeSolution instance if succesful; None otherwise.
+        :param **kwargs:  List of additional keyworded arguments to be passed into the PyvsgenSolution.
+        :return: A valid PyvsgenSolution instance if succesful; None otherwise.
         """
         if section not in config:
             raise ValueError('Section [{}] not found in [{}]'.format(section, ', '.join(config.sections())))
 
-        s = PymakeSolution(**kwargs)
+        s = PyvsgenSolution(**kwargs)
 
         s.Name = config.get(section, 'name', fallback=s.Name)
         s.FileName = os.path.normpath(config.get(section, 'filename', fallback=s.FileName))
@@ -68,17 +68,17 @@ class PymakeSuite(object):
 
     def _getproject(self, config, section, **kwargs):
         """
-        Creates a Pymake project from a configparser instance.
+        Creates a Pyvsgen project from a configparser instance.
 
         :param obj config: The instance of the configparser class
         :param str section: The section name to read.
-        :param **kwargs:  List of additional keyworded arguments to be passed into the PymakeProject.
-        :return: A valid PymakeProject instance if succesful; None otherwise.
+        :param **kwargs:  List of additional keyworded arguments to be passed into the PyvsgenProject.
+        :return: A valid PyvsgenProject instance if succesful; None otherwise.
         """
         if section not in config:
             raise ValueError('Section [{}] not found in [{}]'.format(section, ', '.join(config.sections())))
 
-        p = PymakeProject(**kwargs)
+        p = PyvsgenProject(**kwargs)
             
         p.Name = config.get(section, 'name', fallback=p.Name)
         p.FileName = config.getfile(section, 'filename', fallback=p.FileName)
@@ -115,12 +115,12 @@ class PymakeSuite(object):
 
     def _getinterpreter(self, config, section, **kwargs):
         """
-        Creates a Pymake Interpreter from a configparser instance.
+        Creates a Pyvsgen Interpreter from a configparser instance.
 
         :param obj config: The instance of the configparser class
         :param str section: The section name to read.
-        :param **kwargs:  List of additional keyworded arguments to be passed into the PymakeInterpreter.
-        :return: A valid PymakeInterpreter instance if succesful; None otherwise.
+        :param **kwargs:  List of additional keyworded arguments to be passed into the PyvsgenInterpreter.
+        :return: A valid PyvsgenInterpreter instance if succesful; None otherwise.
         """
         if section not in config:
             raise ValueError('Section [{}] not found in [{}]'.format(section, ', '.join(config.sections())))
@@ -128,7 +128,7 @@ class PymakeSuite(object):
         interpreters = []
         interpreter_paths = config.getdirs(section, 'interpreter_paths', fallback=[])
         if interpreter_paths:
-            interpreters = [PymakeInterpreter.from_python_installation( p, **kwargs) for p in interpreter_paths]
+            interpreters = [PyvsgenInterpreter.from_python_installation( p, **kwargs) for p in interpreter_paths]
 
         for i in interpreters:
             i.Description = config.get(section, 'description', fallback=i.Description)
@@ -137,12 +137,12 @@ class PymakeSuite(object):
 
     def _getvirtualenvironment(self, config, section, **kwargs):
         """
-        Creates a Pymake Interpreter (Virtual Environment) from a configparser instance.
+        Creates a Pyvsgen Interpreter (Virtual Environment) from a configparser instance.
 
         :param obj config: The instance of the configparser class
         :param str section: The section name to read.
-        :param **kwargs:  List of additional keyworded arguments to be passed into the PymakeInterpreter.
-        :return: A valid PymakeInterpreter instance if succesful; None otherwise.
+        :param **kwargs:  List of additional keyworded arguments to be passed into the PyvsgenInterpreter.
+        :return: A valid PyvsgenInterpreter instance if succesful; None otherwise.
         """
         if section not in config:
             raise ValueError('Section [{}] not found in [{}]'.format(section, ', '.join(config.sections())))
@@ -150,7 +150,7 @@ class PymakeSuite(object):
         environments = []
         environment_paths = config.getdirs(section, 'environment_paths', fallback=[])
         if environment_paths:
-            environments = [PymakeInterpreter.from_virtual_environment( p, **kwargs ) for p in environment_paths]
+            environments = [PyvsgenInterpreter.from_virtual_environment( p, **kwargs ) for p in environment_paths]
 
         for e in environments:
             e.Description = config.get(section, 'description', fallback=e.Description)
@@ -163,12 +163,12 @@ class PymakeSuite(object):
         """
         # Write the Solution files
         solutions = sorted(self._solutions, key=lambda x: x.Name)
-        with PyWriteCommand('Writing Pymake Solution', solutions, parallel) as command:
+        with PyWriteCommand('Writing Pyvsgen Solution', solutions, parallel) as command:
             command.execute()
 
         # Write the Projects files
         projects = set(sorted((p for s in solutions for p in s.Projects), key=lambda x: x.Name))
-        with PyWriteCommand('Writing Pymake Projects', projects, parallel) as command:
+        with PyWriteCommand('Writing Pyvsgen Projects', projects, parallel) as command:
             command.execute()
 
         # Write the Interpreters files

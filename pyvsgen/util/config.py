@@ -2,18 +2,18 @@
 """
 This module provides all functionality for extending Python's config parser functionality.
 
-The module defines the class PymakeConfigParser.  The PymakeConfigParser class provides the main functionality of using Python's native config parser.
+The module defines the class PyvsgenConfigParser.  The PyvsgenConfigParser class provides the main functionality of using Python's native config parser.
 """
 
 import os
 import glob
 import configparser
 
-class PymakeConfigParser( configparser.ConfigParser ):
+class PyvsgenConfigParser( configparser.ConfigParser ):
     """
-    The Pymake ConfigParser extends Python's ConfigParser class with Pymake specific functionality.
+    The Pyvsgen ConfigParser extends Python's ConfigParser class with Pyvsgen specific functionality.
 
-    :note:  PymakeConfigParser uses :class:`~configparser.ExtendedInterpolation` as the default interpolation.
+    :note:  PyvsgenConfigParser uses :class:`~configparser.ExtendedInterpolation` as the default interpolation.
     """
     def __init__(self, *args, **kwargs):
         """
@@ -23,7 +23,7 @@ class PymakeConfigParser( configparser.ConfigParser ):
         :param **kwargs:  List of arbitrary keyworded arguments passed to :class:`~configparser.ConfigParser`
         """
         kwargs.setdefault('interpolation', configparser.ExtendedInterpolation())
-        return super(PymakeConfigParser, self).__init__(*args, **kwargs)
+        return super(PyvsgenConfigParser, self).__init__(*args, **kwargs)
     
     def _convert_to_list(self, value):
         """

@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-This module provides all functionality for the timing actions during an Pymake process.
+This module provides all functionality for the timing actions during an Pyvsgen process.
 
-The module defines the class PymakeTimer.  The PymakeTimer is a simple timer to time processes.
+The module defines the class PyvsgenTimer.  The PyvsgenTimer is a simple timer to time processes.
 """
 
 import time
 
-from pymake.util.logger import PymakeLogger
+from pyvsgen.util.logger import PyvsgenLogger
 
-class PymakeTimer(object):
+class PyvsgenTimer(object):
     """
-    The PymakeTimer class presents a simply timer using Python's native time module.
+    The PyvsgenTimer class presents a simply timer using Python's native time module.
     """
     def __init__(self, message = None):
         """
@@ -29,7 +29,7 @@ class PymakeTimer(object):
 
         Example:
 
-            with PymakeTimer("message") as simple_timer:
+            with PyvsgenTimer("message") as simple_timer:
                 ...
 
         """
@@ -49,7 +49,7 @@ class PymakeTimer(object):
         :param message:  The display message.
         """
         self._start = time.clock()
-        PymakeLogger.info("{0:<20} - Started".format(message))
+        PyvsgenLogger.info("{0:<20} - Started".format(message))
 
     def stop(self, message):
         """
@@ -58,7 +58,7 @@ class PymakeTimer(object):
         :param message:  The display message.
         """
         self._stop = time.clock()
-        PymakeLogger.info("{0:<20} - Finished [{1}s]".format(message, self.pprint(self._stop - self._start)))
+        PyvsgenLogger.info("{0:<20} - Finished [{1}s]".format(message, self.pprint(self._stop - self._start)))
 
     def pprint(self, seconds):
         """

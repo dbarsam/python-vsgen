@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-This module provides the neccessary defintions for PymakeDemo's shared settings.
+This module provides the neccessary defintions for PyvsgenDemo's shared settings.
 """
 import os
 
-class PymakeDemoSettings(object):
+class PyvsgenDemoSettings(object):
     """
-    PymakeDemoSettings provides a class for all static settings values in pymakedemo.pymake.
+    PyvsgenDemoSettings provides a class for all static settings values in pyvsgendemo.pyvsgen.
     """
     # Directory Information
     LocalDir        = os.path.dirname( os.path.realpath(__file__) )
@@ -17,5 +17,5 @@ class PymakeDemoSettings(object):
     VSVersion = 14.0
 
     # PTVS Output Directories
-    SolutionRoot    = os.path.join( BuildRoot, '_projects', 'pymakedemo', ) 
-    ProjectRoot     = os.path.join( BuildRoot, '_projects', 'pymakedemo', 'projs')
+    SolutionRoot    = os.path.join( BuildRoot, '_projects', 'pyvsgendemo', ) 
+    ProjectRoot     = os.path.join( BuildRoot, '_projects', 'pyvsgendemo', 'projs')

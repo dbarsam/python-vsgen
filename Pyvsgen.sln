@@ -1,7 +1,7 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Pymake", "Pymake.pyproj", "{466BE881-DAE0-418B-9CF5-788E20E18216}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Pyvsgen", "Pyvsgen.pyproj", "{466BE881-DAE0-418B-9CF5-788E20E18216}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-This module provides the neccessary solution definitions for PymakeDemo's PTVS solutions.
+This module provides the neccessary solution definitions for PyvsgenDemo's PTVS solutions.
 """
 import os
-from pymakedemo.projects import PymakeProject, PymakeDemoProject
-from pymakedemo.base import PymakeDemoBaseSolution
+from pyvsgendemo.projects import PyvsgenProject, PyvsgenDemoProject
+from pyvsgendemo.base import PyvsgenDemoBaseSolution
 
-class PymakeDemoSolution(PymakeDemoBaseSolution):
+class PyvsgenDemoSolution(PyvsgenDemoBaseSolution):
     """
-    PymakeDemoSolution implements a single PymakeSolution for all PymakeProjects in the Pymake demo.
+    PyvsgenDemoSolution implements a single PyvsgenSolution for all PyvsgenProjects in the Pyvsgen demo.
     """
     def __init__(self, **kwargs):
-        super(PymakeDemoSolution, self).__init__('PymakeDemo', **kwargs)
-        self.Projects.append(PymakeProject(VSVersion=self.VSVersion))
-        self.Projects.append(PymakeDemoProject(VSVersion=self.VSVersion))
+        super(PyvsgenDemoSolution, self).__init__('PyvsgenDemo', **kwargs)
+        self.Projects.append(PyvsgenProject(VSVersion=self.VSVersion))
+        self.Projects.append(PyvsgenDemoProject(VSVersion=self.VSVersion))
 

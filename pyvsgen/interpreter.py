@@ -12,14 +12,14 @@ try:
     import winreg
 except ImportError:
     import _winreg as winreg
-from pymake.register import PyRegisterable
+from pyvsgen.register import PyRegisterable
 
-class PymakeInterpreter(PyRegisterable):
+class PyvsgenInterpreter(PyRegisterable):
     """
-    PymakeInterpreter encapsulates the logic and data used to describe a Python interpreter or virtual environments
+    PyvsgenInterpreter encapsulates the logic and data used to describe a Python interpreter or virtual environments
 
     :ivar GUID:                    The GUID of the Python Interpreter; if not provided one is generated automatically.
-    :ivar BaseInterpreter:         The GUID of the base Python Interpreter (different if PymakeInterpreter is Virtual Environment); if not provided the value is self.GUID
+    :ivar BaseInterpreter:         The GUID of the base Python Interpreter (different if PyvsgenInterpreter is Virtual Environment); if not provided the value is self.GUID
     :ivar Architecture:            The architecture (either x86 or Amd64). if not provide the value is "".
     :ivar Version:                 The major.minor version string; if not provide the value is "".
     :ivar Description:             The human readable description string; if not provide the value is ""
@@ -40,17 +40,17 @@ class PymakeInterpreter(PyRegisterable):
 
         :param **kwargs:         List of arbitrary keyworded arguments to be processed as instance variable data
         """
-        super(PymakeInterpreter, self).__init__()
+        super(PyvsgenInterpreter, self).__init__()
         self._import(kwargs)
 
     @staticmethod
     def from_virtual_environment(directory, **kwargs):
         """
-        Creates a PymakeInterpreter from an Python Virtual Environment in the directory.
+        Creates a PyvsgenInterpreter from an Python Virtual Environment in the directory.
 
         :param directory: The absolute path to the python installation directory.
-        :param **kwargs:  List of additional keyworded arguments to be passed into the PymakeInterpreter.
-        :return           A valid PymakeInterpreter instance if succesful; None otherwise.
+        :param **kwargs:  List of additional keyworded arguments to be passed into the PyvsgenInterpreter.
+        :return           A valid PyvsgenInterpreter instance if succesful; None otherwise.
         """
         root = os.path.abspath(directory)
         python = os.path.abspath(os.path.join(root, 'Scripts', 'python.exe'))
@@ -64,7 +64,7 @@ class PymakeInterpreter(PyRegisterable):
         
         with open(origprefix, 'rt') as f:
             basedir = next((line.rstrip() for line in f), None)
-            baseinterpretter = PymakeInterpreter.from_python_installation(basedir,  **kwargs)
+            baseinterpretter = PyvsgenInterpreter.from_python_installation(basedir,  **kwargs)
         if not baseinterpretter:
             return None
 
@@ -92,17 +92,17 @@ class PymakeInterpreter(PyRegisterable):
         except Exception:
             pass
 
-        interpreter = PymakeInterpreter(**args)
+        interpreter = PyvsgenInterpreter(**args)
         return interpreter
 
     @staticmethod
     def from_python_installation(directory, **kwargs):
         """
-        Creates a PymakeInterpreter from an Python Installation in the directory.
+        Creates a PyvsgenInterpreter from an Python Installation in the directory.
 
         :param directory: The absolute path to the python installation directory.
-        :param **kwargs:  List of additional keyworded arguments to be passed into the PymakeInterpreter.
-        :return           A valid PymakeInterpreter instance if succesful; None otherwise.
+        :param **kwargs:  List of additional keyworded arguments to be passed into the PyvsgenInterpreter.
+        :return           A valid PyvsgenInterpreter instance if succesful; None otherwise.
         """
         root = os.path.abspath(directory)
         python = os.path.abspath(os.path.join(root, 'python.exe'))
@@ -132,17 +132,17 @@ class PymakeInterpreter(PyRegisterable):
         except Exception:
             pass
 
-        interpreter = PymakeInterpreter(**args)
+        interpreter = PyvsgenInterpreter(**args)
         interpreter.resolve()
         return interpreter
 
     @staticmethod
     def from_registry_key(keyname):
         """
-        Creates a PymakeInterpreter from a single registry key.
+        Creates a PyvsgenInterpreter from a single registry key.
 
         :param keyname:  The keyname under HKEY_CURRENT_USER referring to the environment.       
-        :return:         A valid PymakeInterpreter instance if succesful; None otherwise.
+        :return:         A valid PyvsgenInterpreter instance if succesful; None otherwise.
         """
         args = {}
         try:
@@ -156,7 +156,7 @@ class PymakeInterpreter(PyRegisterable):
         if 'InterpreterPath' in args:
             args['Path'] = os.path.dirname(args['InterpreterPath'])
             args['Id'] = os.path.basename(keyname)[1:-1]
-            return PymakeInterpreter(**args) 
+            return PyvsgenInterpreter(**args) 
         return None
 
     def _import(self, datadict):
@@ -199,7 +199,7 @@ class PymakeInterpreter(PyRegisterable):
             reginfo = winreg.QueryInfoKey(regkey)
             for i in range(reginfo[0]):
                 interpreter_regkey_name = '{0}\\{1}'.format(regkey_name, winreg.EnumKey(regkey, i))
-                interpreter = PymakeInterpreter.from_registry_key(interpreter_regkey_name)
+                interpreter = PyvsgenInterpreter.from_registry_key(interpreter_regkey_name)
                 if interpreter and interpreter.InterpreterAbsPath.lower() == self.InterpreterAbsPath.lower():
                     self.GUID = uuid.UUID(interpreter.GUID)
                     self.BaseInterpreter = self.GUID

@@ -6,18 +6,18 @@ This module provides the neccessary defintions to generate a Solution File.
 import os
 import uuid
 
-from pymake.writer import PyWritable
+from pyvsgen.writer import PyWritable
 
-class PymakeSolution(PyWritable):
+class PyvsgenSolution(PyWritable):
     """
-    PymakeSolution encapsulates the logic needed to create a *.sln file.
+    PyvsgenSolution encapsulates the logic needed to create a *.sln file.
 
     :ivar GUID:     The GUI of the solution; if not provided one is generated automatically.
     :ivar FileName: The absolute filename of the solution file; if not provided the value is ""
     :ivar Name:     The display name of the solution; if not provide the value is "".        
-    :ivar Projects: The list of PymakeProject derived classes; if not provide the value is [].
+    :ivar Projects: The list of PyvsgenProject derived classes; if not provide the value is [].
     """
-    __writable_name__ = "Pymake Solution"
+    __writable_name__ = "Pyvsgen Solution"
 
     def __init__(self, **kwargs):
         """
@@ -25,7 +25,7 @@ class PymakeSolution(PyWritable):
 
         :param **kwargs:         List of arbitrary keyworded arguments to be processed as instance variable data
         """
-        super(PymakeSolution, self).__init__()
+        super(PyvsgenSolution, self).__init__()
 
         self._import(kwargs)
 

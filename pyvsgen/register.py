@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-This module provides a simple register utility for Pymake objects.
+This module provides a simple register utility for Pyvsgen objects.
 """
 import sys
 import time
@@ -82,12 +82,12 @@ class PyRegisterCommand(object):
         """
         Executes the command.
         """
-        from pymake.util.logger import PymakeLogger
+        from pyvsgen.util.logger import PyvsgenLogger
 
-        PymakeLogger.info(self._logname, self._message)
+        PyvsgenLogger.info(self._logname, self._message)
         start = time.clock()
         for i in self._registerables:
             i.register()
         end = time.clock()
-        PymakeLogger.info(self._logname, "Register %s items in %s seconds:", len(self._registerables), end - start)
+        PyvsgenLogger.info(self._logname, "Register %s items in %s seconds:", len(self._registerables), end - start)
         self._start = time.clock()

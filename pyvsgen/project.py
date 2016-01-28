@@ -8,11 +8,11 @@ import csv
 import fnmatch
 import uuid
 
-from pymake.writer import PyWritable
+from pyvsgen.writer import PyWritable
 
-class PymakeProject(PyWritable):
+class PyvsgenProject(PyWritable):
     """
-    PymakeProject encapsulates the data and logic needed to create a *.pyproject file.
+    PyvsgenProject encapsulates the data and logic needed to create a *.pyproject file.
 
     :ivar GUID:                   The GUID of the project; if not provided one is generated automatically.
     :ivar FileName:               The absolute filename of the project file; if not provided the value is ""
@@ -37,7 +37,7 @@ class PymakeProject(PyWritable):
     :ivar VirtualEnvironments:    The list of pyInterpreters that are virtual environments that will be available; if not provide the value is [].
     :ivar VSVersion:              The Visual Studio version; if not provide the value is None.
     """
-    __writable_name__ = "Pymake Project"
+    __writable_name__ = "Pyvsgen Project"
 
     def __init__(self, **kwargs):
         """
@@ -45,7 +45,7 @@ class PymakeProject(PyWritable):
 
         :param **kwargs:         List of arbitrary keyworded arguments to be processed as instance variable data
         """
-        super(PymakeProject, self).__init__()
+        super(PyvsgenProject, self).__init__()
         self._import(kwargs)
 
     def _import(self, datadict):
@@ -131,7 +131,7 @@ class PymakeProject(PyWritable):
 
     def write(self):
         """
-        Creates the PymakeProject
+        Creates the PyvsgenProject
         """
         npath = os.path.normpath(self.FileName)
         (filepath, filename) = os.path.split(npath)

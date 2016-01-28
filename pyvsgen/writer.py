@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-This module provides a simple multi-threaded writer utility for PymakeProjects and PymakeSolutions
+This module provides a simple multi-threaded writer utility for PyvsgenProjects and PyvsgenSolutions
 """
 import sys
 import time
@@ -8,7 +8,7 @@ import threading
 
 class PyWritable(object):
     """
-    An interface class defining methods necessary for PymakeWriter
+    An interface class defining methods necessary for PyvsgenWriter
     """
     __writable_name__ = "Unknown Writable"
 
@@ -85,24 +85,24 @@ class PyWriteCommand(object):
         """
         Executes the command.
         """
-        from pymake.util.logger import PymakeLogger
+        from pyvsgen.util.logger import PyvsgenLogger
 
-        PymakeLogger.info(self._logname, self._message)
+        PyvsgenLogger.info(self._logname, self._message)
         start = time.clock()
-        PymakeWriter.write(self._writables, self._parallel)
+        PyvsgenWriter.write(self._writables, self._parallel)
         end = time.clock()
-        PymakeLogger.info(self._logname, "Wrote %s files in %s seconds:", len(self._writables), end - start)
+        PyvsgenLogger.info(self._logname, "Wrote %s files in %s seconds:", len(self._writables), end - start)
 
 
-class PymakeWriter(threading.Thread):
+class PyvsgenWriter(threading.Thread):
     """
-    PymakeWriter encapsulates the logic needed to write any Pymake object to disk.
+    PyvsgenWriter encapsulates the logic needed to write any Pyvsgen object to disk.
     """
     def __init__(self, pylist):
         """
-        PymakeProject encapsulates the logic needed to create a *.pyproject file.
+        PyvsgenProject encapsulates the logic needed to create a *.pyproject file.
 
-        :param list pylist: A list of Pymake objects[PrProjects, PymakeSolutions, etc]
+        :param list pylist: A list of Pyvsgen objects[PrProjects, PyvsgenSolutions, etc]
         """
         threading.Thread.__init__(self)
         if not hasattr(pylist, '__iter__'):
@@ -120,12 +120,12 @@ class PymakeWriter(threading.Thread):
     @staticmethod
     def write(pylist, parallel=True):
         """
-        Utility method to spawn a PymakeWriter for each element in a collection.
+        Utility method to spawn a PyvsgenWriter for each element in a collection.
 
-        :param list pylist:   A list of Pymake objects (PrProjects, PymakeSolutions, etc)
+        :param list pylist:   A list of Pyvsgen objects (PrProjects, PyvsgenSolutions, etc)
         :param bool parallel: Flag to enable asynchronous writing.
         """
-        threads = [PymakeWriter(o) for o in pylist]
+        threads = [PyvsgenWriter(o) for o in pylist]
         if parallel:
             for t in threads:
                 t.start()
