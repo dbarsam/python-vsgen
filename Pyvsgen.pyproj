@@ -21,8 +21,6 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="pyvsgen\interpreter.py" />
-    <Compile Include="pyvsgen\project.py" />
     <Compile Include="pyvsgen\ptvs\interpreter.py" />
     <Compile Include="pyvsgen\ptvs\project.py" />
     <Compile Include="pyvsgen\ptvs\suite.py" />
