@@ -9,10 +9,11 @@ import fnmatch
 import uuid
 
 from pyvsgen.writer import PyWritable
+from pyvsgen.register import PyRegisterable
 
-class PyvsgenProject(PyWritable):
+class PTVSProject(PyWritable, PyRegisterable):
     """
-    PyvsgenProject encapsulates the data and logic needed to create a *.pyproject file.
+    PTVSProject encapsulates the data and logic needed to create a *.pyproject file.
 
     :ivar GUID:                   The GUID of the project; if not provided one is generated automatically.
     :ivar FileName:               The absolute filename of the project file; if not provided the value is ""
@@ -37,7 +38,9 @@ class PyvsgenProject(PyWritable):
     :ivar VirtualEnvironments:    The list of pyInterpreters that are virtual environments that will be available; if not provide the value is [].
     :ivar VSVersion:              The Visual Studio version; if not provide the value is None.
     """
-    __writable_name__ = "Pyvsgen Project"
+    __writable_name__ = "Visual Studio PTVS Project"
+
+    __registerable_name__ = "Visual Studio PTVS Python Interpreter"
 
     def __init__(self, **kwargs):
         """
@@ -45,7 +48,7 @@ class PyvsgenProject(PyWritable):
 
         :param **kwargs:         List of arbitrary keyworded arguments to be processed as instance variable data
         """
-        super(PyvsgenProject, self).__init__()
+        super(PTVSProject, self).__init__()
         self._import(kwargs)
 
     def _import(self, datadict):
@@ -78,6 +81,13 @@ class PyvsgenProject(PyWritable):
         self.PythonInterpreters    = datadict.get("PythonInterpreters",[])
         self.VirtualEnvironments   = datadict.get("VirtualEnvironments",[])
         self.VSVersion             = datadict.get("VSVersion", None)
+
+    @property
+    def registerables(self):
+        """
+        Property to return the collection of Registerables
+        """
+        return self.PythonInterpreters
 
     def insert_files(self, rootpath, directoryInFilter=None, directoryExFilter=None, compileInFilter=None, compileExFilter=None, contentInFilter=None, contentExFilter=None):
         """
@@ -131,7 +141,7 @@ class PyvsgenProject(PyWritable):
 
     def write(self):
         """
-        Creates the PyvsgenProject
+        Creates the PTVSProject
         """
         npath = os.path.normpath(self.FileName)
         (filepath, filename) = os.path.split(npath)
@@ -242,3 +252,11 @@ class PyvsgenProject(PyWritable):
             f.write( '  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />\n')
             f.write( '  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />\n')
             f.write( '</Project>' )
+
+    def register(self):
+        """
+        'Resolves' the environment with existing environments in the windows registry.
+        """
+        # Interpretters
+        for i in set(self.PythonInterpreters):
+            i.register()

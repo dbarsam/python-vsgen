@@ -5,7 +5,7 @@ PyvsgenDemo Pyvsgen Base
 This module provides the neccessary defintions for PyvsgenDemo base python projects and solutions.
 """
 import os
-from pyvsgen import PyvsgenProject, PyvsgenSolution
+from pyvsgen import PTVSProject, PyvsgenSolution
 from pyvsgendemo.settings import PyvsgenDemoSettings
 
 class PyvsgenDemoBaseSolution(PyvsgenSolution):
@@ -34,7 +34,7 @@ class PyvsgenDemoBaseSolution(PyvsgenSolution):
         return super(PyvsgenDemoBaseSolution, self).write()
 
 
-class PyvsgenDemoBaseProject(PyvsgenProject):
+class PyvsgenDemoBaseProject(PTVSProject):
     """
     PyvsgenDemoBaseProject provides a base PyvsgenProject for all PyvsgenProjects in pyvsgendemo.pyvsgen.
     """
