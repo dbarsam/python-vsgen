@@ -36,16 +36,16 @@ class PyvsgenLogger( object ):
             """
             return record.levelno in self._level
 
-    def __init__(self, filepath=None, theshold=logging.INFO):
+    def __init__(self, filepath=None, threshold=logging.INFO):
         """
         Creates a logger with the given name (the name prefixes each log line).
 
         :param filepath:  The optional output path for the logger messages.
-        :param threshold: The threshold for messages; logging messages which are less severe than 'theshold' will be ignored.
+        :param threshold: The threshold for messages; logging messages which are less severe than 'threshold' will be ignored.
         """
         # Create the Logger
         self._logger = self.getLogger(None)
-        self._logger.setLevel(theshold)
+        self._logger.setLevel(threshold)
 
         # Handler management
         self._fileHandlers = []
