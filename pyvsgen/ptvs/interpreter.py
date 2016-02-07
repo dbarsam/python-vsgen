@@ -19,20 +19,20 @@ class PTVSInterpreter(PyRegisterable):
     PTVSInterpreter encapsulates the logic and data used to describe a Python interpreter or virtual environments
 
     :ivar GUID:                    The GUID of the Python Interpreter; if not provided one is generated automatically.
-    :ivar BaseInterpreter:         The GUID of the base Python Interpreter (different if PTVSInterpreter is Virtual Environment); if not provided the value is self.GUID
+    :ivar BaseInterpreter:         The GUID of the base Python Interpreter (different if PTVSInterpreter is Virtual Environment); if not provided the value is :attr:`GUID`
     :ivar Architecture:            The architecture (either x86 or Amd64). if not provide the value is "".
     :ivar Version:                 The major.minor version string; if not provide the value is "".
     :ivar Description:             The human readable description string; if not provide the value is ""
-    :ivar Path:                    The absolute path of the 'python.exe'; if not provide the value is ""
-    :ivar InterpreterPath:         The relative path to self.Path of the 'python.exe'; if not provide the value is ""
-    :ivar WindowsInterpreterPath:  The relative path to self.Path of the 'pythonw.exe'; if not provide the value is ""
-    :ivar LibraryPath:             The relative path to self.Path of the 'Lib' folder that is part of the python.exe distribution; if not provide the value is "".
-    :ivar PathEnvironmentVariable: The name of the Environment variable to be uses as PYTHONPATH; if not provide the value is "".
+    :ivar Path:                    The absolute path of the `python.exe`; if not provide the value is ""
+    :ivar InterpreterPath:         The relative path to self.Path of the `python.exe`; if not provide the value is ""
+    :ivar WindowsInterpreterPath:  The relative path to self.Path of the `pythonw.exe`; if not provide the value is ""
+    :ivar LibraryPath:             The relative path to self.Path of the `Lib` folder that is part of the python.exe distribution; if not provide the value is "".
+    :ivar PathEnvironmentVariable: The name of the environment variable to be uses as `PYTHONPATH`; if not provide the value is "PYTHONPATH".
     """
     __registerable_name__ = "Python Interpreter"
 
-    #: PTVS Interpreter Register Location
-    regkey_name = r'Software\Microsoft\VisualStudio\{VSVersion}\PythonTools\Interpreters'
+    #: PTVS Interpreter Registry Location
+    _regkey_name = r'Software\Microsoft\VisualStudio\{VSVersion}\PythonTools\Interpreters'
 
     def __init__(self, **kwargs):
         """
@@ -46,11 +46,11 @@ class PTVSInterpreter(PyRegisterable):
     @staticmethod
     def from_virtual_environment(directory, **kwargs):
         """
-        Creates a PTVSInterpreter from an Python Virtual Environment in the directory.
+        Creates a :class:`~pyvsgen.ptvs.interpreter.PTVSInterpreter` from an Python Virtual Environment in the directory.
 
-        :param directory: The absolute path to the python installation directory.
-        :param **kwargs:  List of additional keyworded arguments to be passed into the PTVSInterpreter.
-        :return           A valid PTVSInterpreter instance if succesful; None otherwise.
+        :param directory: The absolute path to the python virtual environment directory.
+        :param **kwargs:  List of additional keyworded arguments to be passed into the :class:`~pyvsgen.ptvs.interpreter.PTVSInterpreter`.
+        :return:          A valid :class:`~pyvsgen.ptvs.interpreter.PTVSInterpreter` instance if succesful; None otherwise.
         """
         root = os.path.abspath(directory)
         python = os.path.abspath(os.path.join(root, 'Scripts', 'python.exe'))
@@ -98,11 +98,11 @@ class PTVSInterpreter(PyRegisterable):
     @staticmethod
     def from_python_installation(directory, **kwargs):
         """
-        Creates a PTVSInterpreter from an Python Installation in the directory.
+        Creates a :class:`~pyvsgen.ptvs.interpreter.PTVSInterpreter` from an Python installation in the directory.
 
         :param directory: The absolute path to the python installation directory.
-        :param **kwargs:  List of additional keyworded arguments to be passed into the PTVSInterpreter.
-        :return           A valid PTVSInterpreter instance if succesful; None otherwise.
+        :param **kwargs:  List of additional keyworded arguments to be passed into the :class:`~pyvsgen.ptvs.interpreter.PTVSInterpreter`.
+        :return:          A valid :class:`~pyvsgen.ptvs.interpreter.PTVSInterpreter` instance if succesful; None otherwise.
         """
         root = os.path.abspath(directory)
         python = os.path.abspath(os.path.join(root, 'python.exe'))
@@ -139,15 +139,15 @@ class PTVSInterpreter(PyRegisterable):
     @staticmethod
     def from_registry_key(keyname):
         """
-        Creates a PTVSInterpreter from a single registry key.
+        Creates a :class:`~pyvsgen.ptvs.interpreter.PTVSInterpreter` from a single registry key.
 
-        :param keyname:  The keyname under HKEY_CURRENT_USER referring to the environment.       
-        :return:         A valid PTVSInterpreter instance if succesful; None otherwise.
+        :param keyname:  The keyname under `HKEY_CURRENT_USER` referring to the environment.       
+        :return:         A valid :class:`~pyvsgen.ptvs.interpreter.PTVSInterpreter` instance if succesful; None otherwise.
         """
         args = {}
         try:
             regkey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, keyname)
-            for k in ['Architecture', 'Description', 'InterpreterPath', 'LibraryPath', 'PathEnvironmentVariable', 'Version', 'WindowsInterpreterPath', 'PathEnvironmentVariable']:
+            for k in ['Architecture', 'Description', 'InterpreterPath', 'LibraryPath', 'PathEnvironmentVariable', 'Version', 'WindowsInterpreterPath']:
                 args[k] = winreg.QueryValueEx(regkey, k)[0]        
             winreg.CloseKey(regkey)
         except WindowsError as ex:
@@ -182,12 +182,14 @@ class PTVSInterpreter(PyRegisterable):
 
     def resolve(self):
         """
-        'Resolves' the environment with existing environments in the windows registry.
+        Resolves the environment with one already existing in the windows registry.
+
+        :note: We're explictly writing the environment to the registry to facilitate sharing so to avoid duplication we try to match the environment to an existing one first.
         """
         if not self.VSVersion:
             raise ValueError('Cannot resolve interpreter with invalid Visual Studio Version')
 
-        regkey_name = self.regkey_name.format(VSVersion=self.VSVersion)
+        regkey_name = self._regkey_name.format(VSVersion=self.VSVersion)
         try:
             vs_regkey_name = os.path.dirname(regkey_name)
             winreg.OpenKey(winreg.HKEY_CURRENT_USER, vs_regkey_name)
@@ -209,9 +211,9 @@ class PTVSInterpreter(PyRegisterable):
 
     def register(self):
         """
-        'Registers' the environment into the windows registry.
+        Registers the environment into the windows registry.
 
-        :..note: https://pytools.codeplex.com/workitem/2765
+        :note: We're explictly writing the environment to the registry to facilitate sharing. See `How to share pyproj across team with custom environments <https://pytools.codeplex.com/workitem/2765>`_ for motivation.
         """
         if not self.VSVersion:
             raise ValueError('Cannot register interpreter with invalid Visual Studio Version')
