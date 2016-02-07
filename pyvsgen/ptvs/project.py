@@ -21,7 +21,7 @@ class PTVSProject(PyWritable, PyRegisterable):
     :ivar SearchPath:             The list of absolute directories that will be added to the Python search path; if not provide the value is [].
     :ivar WorkingDirectory:       The absolute directory that will be the working directory of the project; if not provide the value is ""
     :ivar OutputPath:             The absolute directory that will be the output directory of the project; if not provide the value is "".
-    :ivar RootNamespace:          The name of the root namespace of the project; if not provide the value is "". <ignored >
+    :ivar RootNamespace:          The name of the root namespace of the project; if not provide the value is "". `Ignored`.
     :ivar ProjectHome:            The absolute directory of the project's source root folder; if not provide the value is ""
     :ivar StartupFile:            The absolute path to the Startup file; if not provide the value is ""
     :ivar CompileFiles:           The list of absolute files that will comprise the projects compile group; if not provide the value is [].
@@ -30,13 +30,13 @@ class PTVSProject(PyWritable, PyRegisterable):
     :ivar IsWindowsApplication:   The boolean flag to launch the application as a *.pyw file or not; if not provide the value is False.
     :ivar DirectoryInFilter:      A list of strings matching exactly with directories to be explicitly included during the item generation step; if not provided the value is [].
     :ivar DirectoryExFilter:      A list of strings matching exactly with directories to be explicitly excluded during the item generation step; if not provided the value is [].
-    :ivar CompileInFilter:        A list of strings matching exactly with file extensions ('.ext') of compile files to be included during the item generation step; if not provide the value is [].
-    :ivar ContentInFilter:        A list of strings matching exactly with file extensions ('.ext') of content files to be included during the item generation step; if not provide the value is [].
+    :ivar CompileInFilter:        A list of strings matching exactly with file extensions (`.ext`) of compile files to be included during the item generation step; if not provide the value is [].
+    :ivar ContentInFilter:        A list of strings matching exactly with file extensions (`.ext`) of content files to be included during the item generation step; if not provide the value is [].
     :ivar PythonInterpreter:      The active interpreter. Either None or one of the values specified in PythonInterpreters or VirtualEnvironments; if not provide the value is None.
     :ivar PythonInterpreterArgs:  The active interpreter's arguments.  If not provide the value is [].
     :ivar PythonInterpreters:     The list of pyInterpreters that are base interpreters that will be available; if not provide the value is [].
     :ivar VirtualEnvironments:    The list of pyInterpreters that are virtual environments that will be available; if not provide the value is [].
-    :ivar VSVersion:              The Visual Studio version; if not provide the value is None.
+    :ivar VSVersion:              The Visual Studio version; if not provide the value is `None`.
     """
     __writable_name__ = "Visual Studio PTVS Project"
 
@@ -82,24 +82,17 @@ class PTVSProject(PyWritable, PyRegisterable):
         self.VirtualEnvironments   = datadict.get("VirtualEnvironments",[])
         self.VSVersion             = datadict.get("VSVersion", None)
 
-    @property
-    def registerables(self):
-        """
-        Property to return the collection of Registerables
-        """
-        return self.PythonInterpreters
-
     def insert_files(self, rootpath, directoryInFilter=None, directoryExFilter=None, compileInFilter=None, compileExFilter=None, contentInFilter=None, contentExFilter=None):
         """
         Inserts files by recursive traversing the rootpath and inserting files according the addition filter parameters.
         
-        :param rootpath:           The absolute path to the root directory.
-        :param directoryInFilter:  A list of strings matching exactly with directories to be included.  A None value will default to self.DirectoryInFilter.
-        :param directoryExFilter:  A list of strings matching exactly with directories to be excluded.  A None value will default to self.DirectoryExFilter.
-        :param compileInFilter:    A list of strings matching exactly with file extensions ('.ext') of compile files to be included.  A None value will default to self.CompileInFilter. 
-        :param compileExFilter:    A list of strings matching exactly with file extensions ('.ext') of compile files to be included.  A None value will default to self.CompileExFilter. 
-        :param contentInFilter:    A list of strings matching exactly with file extensions ('.ext') of content files to be includes.  A None value will default to self.ContentInFilter.        
-        :param contentExFilter:    A list of strings matching exactly with file extensions ('.ext') of content files to be includes.  A None value will default to self.ContentExFilter.
+        :param str rootpath:            The absolute path to the root directory.
+        :param list directoryInFilter:  A list of strings matching exactly with directories to be included.  A `None` value will default to :attr:`DirectoryInFilter`.
+        :param list directoryExFilter:  A list of strings matching exactly with directories to be excluded.  A `None` value will default to :attr:`DirectoryExFilter`.
+        :param list compileInFilter:    A list of strings matching exactly with file extensions (`.ext`) of compile files to be included.  A `None` value will default to :attr:`CompileInFilter`. 
+        :param list compileExFilter:    A list of strings matching exactly with file extensions (`.ext`) of compile files to be included.  A `None` value will default to :attr:`CompileExFilter`. 
+        :param list contentInFilter:    A list of strings matching exactly with file extensions (`.ext`) of content files to be includes.  A `None` value will default to :attr:`ContentInFilter`.        
+        :param list contentExFilter:    A list of strings matching exactly with file extensions (`.ext`) of content files to be includes.  A `None` value will default to :attr:`ContentExFilter`.
         """
         # Overrides
         directoryInFilter = self.DirectoryInFilter if directoryInFilter == None else directoryInFilter
@@ -141,7 +134,7 @@ class PTVSProject(PyWritable, PyRegisterable):
 
     def write(self):
         """
-        Creates the PTVSProject
+        Creates the PTVS project file.
         """
         npath = os.path.normpath(self.FileName)
         (filepath, filename) = os.path.split(npath)
@@ -255,7 +248,7 @@ class PTVSProject(PyWritable, PyRegisterable):
 
     def register(self):
         """
-        'Resolves' the environment with existing environments in the windows registry.
+        Registers the project's python environments.
         """
         # Interpretters
         for i in set(self.PythonInterpreters):
