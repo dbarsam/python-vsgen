@@ -1,68 +1,68 @@
 # -*- coding: utf-8 -*-
 """
-PyvsgenDemo Pyvsgen Base
+VSGDemo VSG Base
 
-This module provides the neccessary defintions for PyvsgenDemo base python projects and solutions.
+This module provides the neccessary defintions for VSGDemo base python projects and solutions.
 """
 import os
-from pyvsgen import PTVSProject, PyvsgenSolution
-from pyvsgendemo.settings import PyvsgenDemoSettings
+from vsgen import PTVSProject, VSGSolution
+from vsgendemo.settings import VSGDemoSettings
 
-class PyvsgenDemoBaseSolution(PyvsgenSolution):
+class VSGDemoBaseSolution(VSGSolution):
     """
-    PyvsgenDemoBaseSolution provides a base PyvsgenSolution for all PyvsgenSolutions in pyvsgendemo.pyvsgen.
+    VSGDemoBaseSolution provides a base VSGSolution for all VSGSolutions in vsgendemo.vsgen.
     """
     def __init__(self, name, **kwargs):
         """
         Constructor.
         """
-        super(PyvsgenDemoBaseSolution, self).__init__(**kwargs)
-        self.FileName = os.path.join(PyvsgenDemoSettings.SolutionRoot, '{0}.sln'.format(name.lower()))
+        super(VSGDemoBaseSolution, self).__init__(**kwargs)
+        self.FileName = os.path.join(VSGDemoSettings.SolutionRoot, '{0}.sln'.format(name.lower()))
         self.Name = name
 
     def initialize(self):
         """
-        Initializes the PyvsgenSolution by overriding the default values with instance specific values.
+        Initializes the VSGSolution by overriding the default values with instance specific values.
         """
         pass
 
     def write(self):
         """
-        Override the PyvsgenDemoBaseProject write method.
+        Override the VSGDemoBaseProject write method.
         """
         self.initialize()
-        return super(PyvsgenDemoBaseSolution, self).write()
+        return super(VSGDemoBaseSolution, self).write()
 
 
-class PyvsgenDemoBaseProject(PTVSProject):
+class VSGDemoBaseProject(PTVSProject):
     """
-    PyvsgenDemoBaseProject provides a base PyvsgenProject for all PyvsgenProjects in pyvsgendemo.pyvsgen.
+    VSGDemoBaseProject provides a base VSGProject for all VSGProjects in vsgendemo.vsgen.
     """
     def __init__(self, name, rootpath, **kwargs):
         """
         Constructor.
         """
-        super(PyvsgenDemoBaseProject, self).__init__(**kwargs)
+        super(VSGDemoBaseProject, self).__init__(**kwargs)
         self.Name = name
-        self.FileName = os.path.join(PyvsgenDemoSettings.ProjectRoot, '{0}.pyproj'.format(name.lower()))
+        self.FileName = os.path.join(VSGDemoSettings.ProjectRoot, '{0}.pyproj'.format(name.lower()))
         self.ProjectHome = rootpath
         self.SearchPath.append(rootpath)
         self.WorkingDirectory = rootpath
         self.OutputPath = rootpath
-        self.RootNamespace = 'PyvsgenDemo'
+        self.RootNamespace = 'VSGDemo'
         self.CompileInFilter.extend([ '.py', '.pyw' ])
         self.ContentInFilter.extend(['.bat', '.txt', '.cmd', '.ico', '.png', '.md'])
 
     def initialize(self):
         """
-        Initializes the PyvsgenSolution by overriding the default values with instance specific values.
+        Initializes the VSGSolution by overriding the default values with instance specific values.
         """
         pass
 
     def write(self):
         """
-        Override the PyvsgenDemoBaseProject write method.
+        Override the VSGDemoBaseProject write method.
         """
         self.initialize()
-        return super(PyvsgenDemoBaseProject, self).write()
+        return super(VSGDemoBaseProject, self).write()
     

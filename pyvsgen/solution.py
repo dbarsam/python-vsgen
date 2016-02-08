@@ -6,18 +6,18 @@ This module provides the neccessary defintions to generate a Solution File.
 import os
 import uuid
 
-from pyvsgen.writer import PyWritable
+from vsgen.writer import VSGWritable
 
-class PyvsgenSolution(PyWritable):
+class VSGSolution(VSGWritable):
     """
-    PyvsgenSolution encapsulates the logic needed to create a *.sln file.
+    VSGSolution encapsulates the logic needed to create a *.sln file.
 
     :ivar GUID:     The GUI of the solution; if not provided one is generated automatically.
     :ivar FileName: The absolute filename of the solution file; if not provided the value is ""
     :ivar Name:     The display name of the solution; if not provide the value is "".        
-    :ivar Projects: The list of PyvsgenProject derived classes; if not provide the value is [].
+    :ivar Projects: The list of VSGProject derived classes; if not provide the value is [].
     """
-    __writable_name__ = "Pyvsgen Solution"
+    __writable_name__ = "VSG Solution"
 
     def __init__(self, **kwargs):
         """
@@ -25,7 +25,7 @@ class PyvsgenSolution(PyWritable):
 
         :param **kwargs:         List of arbitrary keyworded arguments to be processed as instance variable data
         """
-        super(PyvsgenSolution, self).__init__()
+        super(VSGSolution, self).__init__()
 
         self._import(kwargs)
 

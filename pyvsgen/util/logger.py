@@ -1,28 +1,28 @@
 # -*- coding: utf-8 -*-
 """
-This module provides all functionality for the tracking events during an Pyvsgen process.
+This module provides all functionality for the tracking events during an VSG process.
 
-The module defines the class PyvsgenLogger.  The PyvsgenLogger class provides the main functionality of using Python's native logging process.  Since Python allows period-separated hierarchical value (e.g. "Pyvsgen.Module.ModuleFeature") and loggers that are further down in the hierarchical list are children of loggers higher up in the list, the Pyvsgen Logger manages the hierarchy of loggers in the Pyvsgen namespace (i.e. Pyvsgen.*).
+The module defines the class VSGLogger.  The VSGLogger class provides the main functionality of using Python's native logging process.  Since Python allows period-separated hierarchical value (e.g. "VSG.Module.ModuleFeature") and loggers that are further down in the hierarchical list are children of loggers higher up in the list, the VSG Logger manages the hierarchy of loggers in the VSG namespace (i.e. VSG.*).
 
-For completeness, all logging activing in Pyvsgen package must go through the Pyvsgen Logger.
+For completeness, all logging activing in VSG package must go through the VSG Logger.
 """
 
 import os
 import sys
 import logging
 
-class PyvsgenLogger( object ):
+class VSGLogger( object ):
     """
-    The Pyvsgen Logger manages messages associate with various priority level.
+    The VSG Logger manages messages associate with various priority level.
 
     Optional, it can redirect the messages to any output channel (usually a file).
     """
 
-    BASENAME = "Pyvsgen"
+    BASENAME = "VSG"
 
     class LevelFilter(logging.Filter):
         """
-        The LevelFilter class implements a Filter Object specific to the PyvsgenLogger
+        The LevelFilter class implements a Filter Object specific to the VSGLogger
         """
         def __init__(self, levels=None):
             """
@@ -54,13 +54,13 @@ class PyvsgenLogger( object ):
         # Register the Standard Output handler
         stdoutHandler = logging.StreamHandler(sys.stdout)
         stdoutHandler.setFormatter(logging.Formatter("%(name)-15s : %(levelname)-8s %(message)s"))
-        stdoutHandler.addFilter(PyvsgenLogger.LevelFilter([logging.DEBUG, logging.INFO, logging.WARNING]))
+        stdoutHandler.addFilter(VSGLogger.LevelFilter([logging.DEBUG, logging.INFO, logging.WARNING]))
         self._registerHandler(stdoutHandler)
 
         # Register the Standard Error handler
         stderrHandler = logging.StreamHandler(sys.stderr)
         stderrHandler.setFormatter(logging.Formatter("%(name)-15 : %(levelname)-8s %(message)s"))
-        stderrHandler.addFilter(PyvsgenLogger.LevelFilter([logging.ERROR, logging.CRITICAL]))
+        stderrHandler.addFilter(VSGLogger.LevelFilter([logging.ERROR, logging.CRITICAL]))
         self._registerHandler(stderrHandler)
 
         # Register a File Handler
@@ -100,7 +100,7 @@ class PyvsgenLogger( object ):
                 except KeyError:
                     # Depending on the Python version, it's possible for this call
                     # to fail most likely because some logging module objects get
-                    # garbage collected before the PyvsgenLogger object is.
+                    # garbage collected before the VSGLogger object is.
                     pass
 
     @classmethod
@@ -108,7 +108,7 @@ class PyvsgenLogger( object ):
         """
         Retrieves the Python native logger
 
-        :param name:    The name of the logger instance in the Pyvsgen namespace (Pyvsgen.<name>); a None value will use the Pyvsgen root.
+        :param name:    The name of the logger instance in the VSG namespace (VSG.<name>); a None value will use the VSG root.
         @return        The instacne of the Python logger object.
         """
         return logging.getLogger("{0}.{1}".format(cls.BASENAME, name) if name else cls.BASENAME)
@@ -119,7 +119,7 @@ class PyvsgenLogger( object ):
         """
         Convenience function to log a message at the DEBUG level.
 
-        :param name:    The name of the logger instance in the Pyvsgen namespace (Pyvsgen.<name>)
+        :param name:    The name of the logger instance in the VSG namespace (VSG.<name>)
         :param message: A message format string.
         :param args:    The arguments that are are merged into msg using the string formatting operator.
         :..note:        The native logger's **kwargs are not used in this function.
@@ -131,7 +131,7 @@ class PyvsgenLogger( object ):
         """
         Convenience function to log a message at the INFO level.
 
-        :param name:    The name of the logger instance in the Pyvsgen namespace (Pyvsgen.<name>)
+        :param name:    The name of the logger instance in the VSG namespace (VSG.<name>)
         :param message: A message format string.
         :param args:    The arguments that are are merged into msg using the string formatting operator.
         :..note:        The native logger's **kwargs are not used in this function.
@@ -143,7 +143,7 @@ class PyvsgenLogger( object ):
         """
         Convenience function to log a message at the WARNING level.
 
-        :param name:    The name of the logger instance in the Pyvsgen namespace (Pyvsgen.<name>)
+        :param name:    The name of the logger instance in the VSG namespace (VSG.<name>)
         :param message: A message format string.
         :param args:    The arguments that are are merged into msg using the string formatting operator.
         :..note:        The native logger's **kwargs are not used in this function.
@@ -155,7 +155,7 @@ class PyvsgenLogger( object ):
         """
         Convenience function to log a message at the ERROR level.
 
-        :param name:    The name of the logger instance in the Pyvsgen namespace (Pyvsgen.<name>)
+        :param name:    The name of the logger instance in the VSG namespace (VSG.<name>)
         :param message: A message format string.
         :param args:    The arguments that are are merged into msg using the string formatting operator.
         :..note:        The native logger's **kwargs are not used in this function.
@@ -167,7 +167,7 @@ class PyvsgenLogger( object ):
         """
         Convenience function to log a message at the CRITICAL level.
 
-        :param name:    The name of the logger instance in the Pyvsgen namespace (Pyvsgen.<name>)
+        :param name:    The name of the logger instance in the VSG namespace (VSG.<name>)
         :param message: A message format string.
         :param args:    The arguments that are are merged into msg using the string formatting operator.
         :..note:        The native logger's **kwargs are not used in this function.
@@ -179,7 +179,7 @@ class PyvsgenLogger( object ):
         """
         Convenience function to log a message at the ERROR level with additonal exception information.
 
-        :param name:    The name of the logger instance in the Pyvsgen namespace (Pyvsgen.<name>)
+        :param name:    The name of the logger instance in the VSG namespace (VSG.<name>)
         :param message: A message format string.
         :param args:    The arguments that are are merged into msg using the string formatting operator.
         :..note:        This method should only be called from an exception handler.
@@ -196,17 +196,17 @@ class PyvsgenLogger( object ):
 if __name__=="__main__":
 
     logfile = os.path.join(os.path.dirname(__file__), 'log.txt')
-    logger = PyvsgenLogger(logfile, logging.DEBUG)
-    PyvsgenLogger.debug("DebugLogger", "Debug = %d", int(logging.DEBUG))
+    logger = VSGLogger(logfile, logging.DEBUG)
+    VSGLogger.debug("DebugLogger", "Debug = %d", int(logging.DEBUG))
     try:
         raise NotImplementedError("This has not been implemented")
     except:
-        PyvsgenLogger.exception(__name__ , "Something bad happened.")
-    PyvsgenLogger.info(__name__, "This is a multiline logger message:\n %s \n %s \n %s", '****************', 'Message!', '****************')
-    PyvsgenLogger.info(__name__, "Info = %d", int(logging.INFO))
-    PyvsgenLogger.error("MyName", "Error = %d", int(logging.ERROR))
-    PyvsgenLogger.critical("YourName", "Critical = %d" , int(logging.CRITICAL))
-    PyvsgenLogger.warning(__name__, "Warning = %d", int(logging.WARNING))
+        VSGLogger.exception(__name__ , "Something bad happened.")
+    VSGLogger.info(__name__, "This is a multiline logger message:\n %s \n %s \n %s", '****************', 'Message!', '****************')
+    VSGLogger.info(__name__, "Info = %d", int(logging.INFO))
+    VSGLogger.error("MyName", "Error = %d", int(logging.ERROR))
+    VSGLogger.critical("YourName", "Critical = %d" , int(logging.CRITICAL))
+    VSGLogger.warning(__name__, "Warning = %d", int(logging.WARNING))
 
     import webbrowser
     webbrowser.open(logfile)

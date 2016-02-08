@@ -2,57 +2,57 @@
 """
 This module provides all functionality for extending Python's suite class of functionality.
 
-The module defines the class PyvsgenSuite.  The PyvsgenSuite class groups the different functionalities into a single class.
+The module defines the class VSGSuite.  The VSGSuite class groups the different functionalities into a single class.
 """
 import sys
 import os
 import inspect
 import importlib
 
-from pyvsgen.solution import PyvsgenSolution
-from pyvsgen.writer import PyWriteCommand
-from pyvsgen.register import PyRegisterCommand
-from pyvsgen.util.config import PyvsgenConfigParser
+from vsgen.solution import VSGSolution
+from vsgen.writer import VSGWriteCommand
+from vsgen.register import VSGRegisterCommand
+from vsgen.util.config import VSGConfigParser
 
-class PyvsgenSuite(object):
+class VSGSuite(object):
     
     def __init__(self, filename):
         """
         Constructor.
 
-        :param str filename:  The fully qualified path to the Pyvsgen configuration file.
+        :param str filename:  The fully qualified path to the VSG configuration file.
         """ 
         # Read the configuration file
-        config = PyvsgenConfigParser()
+        config = VSGConfigParser()
         if filename not in config.read(filename):
-            raise ValueError('Could not read Pyvsgen configuration file %s.' % filename)
+            raise ValueError('Could not read VSG configuration file %s.' % filename)
 
         # Resolve the root path
-        root = config.get('pyvsgen', 'root', fallback=None)
+        root = config.get('vsgen', 'root', fallback=None)
         if not root:
-            raise ValueError('Expected option "root" in section [pyvsgen].')
+            raise ValueError('Expected option "root" in section [vsgen].')
 
         root = os.path.normpath(os.path.join(os.path.dirname(filename), root))
-        config.set('pyvsgen', 'root', root)
+        config.set('vsgen', 'root', root)
 
-        # Build the Pyvsgen Solutions
-        self._solutions = [self._getsolution(config, s) for s in config.sections() if 'pyvsgen.solution' in s]
+        # Build the VSG Solutions
+        self._solutions = [self._getsolution(config, s) for s in config.sections() if 'vsgen.solution' in s]
 
-        return super(PyvsgenSuite, self).__init__()
+        return super(VSGSuite, self).__init__()
     
     def _getsolution(self, config, section, **kwargs):
         """
-        Creates a Pyvsgen solution from a configparser instance.
+        Creates a VSG solution from a configparser instance.
 
         :param obj config: The instance of the configparser class
         :param str section: The section name to read.
-        :param **kwargs:  List of additional keyworded arguments to be passed into the PyvsgenSolution.
-        :return: A valid PyvsgenSolution instance if succesful; None otherwise.
+        :param **kwargs:  List of additional keyworded arguments to be passed into the VSGSolution.
+        :return: A valid VSGSolution instance if succesful; None otherwise.
         """
         if section not in config:
             raise ValueError('Section [{}] not found in [{}]'.format(section, ', '.join(config.sections())))
 
-        s = PyvsgenSolution(**kwargs)
+        s = VSGSolution(**kwargs)
 
         s.Name = config.get(section, 'name', fallback=s.Name)
         s.FileName = os.path.normpath(config.get(section, 'filename', fallback=s.FileName))
@@ -69,12 +69,12 @@ class PyvsgenSuite(object):
 
     def _getproject(self, config, section, **kwargs):
         """
-        Creates a Pyvsgen project from a configparser instance.
+        Creates a VSG project from a configparser instance.
 
         :param obj config: The instance of the configparser class
         :param str section: The section name to read.
-        :param **kwargs:  List of additional keyworded arguments to be passed into the PyvsgenProject.
-        :return: A valid PyvsgenProject instance if succesful; None otherwise.
+        :param **kwargs:  List of additional keyworded arguments to be passed into the VSGProject.
+        :return: A valid VSGProject instance if succesful; None otherwise.
         """
         if section not in config:
             raise ValueError('Section [{}] not found in [{}]'.format(section, ', '.join(config.sections())))
@@ -84,7 +84,7 @@ class PyvsgenSuite(object):
             raise ValueError('Section [{}] mandatory option "{}" not found'.format(section, "type"))
 
         try:
-            module = importlib.import_module("pyvsgen.{}".format(type))
+            module = importlib.import_module("vsgen.{}".format(type))
         except ImportError:
             raise ValueError('Cannot resolve option "{}" to a recognised type in section [{}].'.format("type", section))
 
@@ -103,15 +103,15 @@ class PyvsgenSuite(object):
         """
         # Write the Solution files
         solutions = sorted(self._solutions, key=lambda x: x.Name)
-        with PyWriteCommand('Writing Pyvsgen Solution', solutions, parallel) as command:
+        with VSGWriteCommand('Writing VSG Solution', solutions, parallel) as command:
             command.execute()
 
         # Write the Projects files
         projects = set(sorted((p for s in solutions for p in s.Projects), key=lambda x: x.Name))
-        with PyWriteCommand('Writing Pyvsgen Projects', projects, parallel) as command:
+        with VSGWriteCommand('Writing VSG Projects', projects, parallel) as command:
             command.execute()
 
         # Register the registerables
         registerables = set(sorted((p for s in solutions for p in s.Projects), key=lambda x: x.Name))
-        with PyRegisterCommand('Registering Project Registerables', registerables) as command:
+        with VSGRegisterCommand('Registering Project Registerables', registerables) as command:
             command.execute()

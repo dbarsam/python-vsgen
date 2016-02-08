@@ -8,11 +8,11 @@ import csv
 import fnmatch
 import uuid
 
-from pyvsgen.writer import PyWritable
-from pyvsgen.register import PyRegisterable
-from pyvsgen.ptvs.interpreter import PTVSInterpreter
+from vsgen.writer import VSGWritable
+from vsgen.register import VSGRegisterable
+from vsgen.ptvs.interpreter import PTVSInterpreter
 
-class PTVSProject(PyWritable, PyRegisterable):
+class PTVSProject(VSGWritable, VSGRegisterable):
     """
     PTVSProject encapsulates the data and logic needed to create a *.pyproject file.
 
@@ -88,12 +88,12 @@ class PTVSProject(PyWritable, PyRegisterable):
     @classmethod
     def from_section(cls, config, section, **kwargs):
         """
-        Creates a :class:`~pyvsgen.ptvs.interpreter.PTVSProject` from a :class:`~configparser.ConfigParser` section.
+        Creates a :class:`~vsgen.ptvs.interpreter.PTVSProject` from a :class:`~configparser.ConfigParser` section.
 
         :param obj config:   A :class:`~configparser.ConfigParser` instance.
         :param str section:  A :class:`~configparser.ConfigParser`'s section key.
-        :param kwargs:       List of additional keyworded arguments to be passed into the :class:`~pyvsgen.ptvs.project.PTVSProject`.
-        :return:             A valid :class:`~pyvsgen.ptvs.project.PTVSProject` instance if succesful; None otherwise.
+        :param kwargs:       List of additional keyworded arguments to be passed into the :class:`~vsgen.ptvs.project.PTVSProject`.
+        :return:             A valid :class:`~vsgen.ptvs.project.PTVSProject` instance if succesful; None otherwise.
         """
         p = PTVSProject(**kwargs)
         

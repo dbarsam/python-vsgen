@@ -2,18 +2,18 @@
 """
 This module provides all functionality for extending Python's config parser functionality.
 
-The module defines the class PyvsgenConfigParser.  The PyvsgenConfigParser class provides the main functionality of using Python's native config parser.
+The module defines the class VSGConfigParser.  The VSGConfigParser class provides the main functionality of using Python's native config parser.
 """
 
 import os
 import glob
 import configparser
 
-class PyvsgenConfigParser( configparser.ConfigParser ):
+class VSGConfigParser( configparser.ConfigParser ):
     """
-    The Pyvsgen ConfigParser extends Python's ConfigParser class with Pyvsgen specific functionality.
+    The VSG ConfigParser extends Python's ConfigParser class with VSG specific functionality.
 
-    :note:  PyvsgenConfigParser uses :class:`~configparser.ExtendedInterpolation` as the default interpolation.
+    :note:  VSGConfigParser uses :class:`~configparser.ExtendedInterpolation` as the default interpolation.
     """
     def __init__(self, *args, **kwargs):
         """
@@ -23,7 +23,7 @@ class PyvsgenConfigParser( configparser.ConfigParser ):
         :param **kwargs:  List of arbitrary keyworded arguments passed to :class:`~configparser.ConfigParser`
         """
         kwargs.setdefault('interpolation', configparser.ExtendedInterpolation())
-        return super(PyvsgenConfigParser, self).__init__(*args, **kwargs)
+        return super(VSGConfigParser, self).__init__(*args, **kwargs)
     
     def _convert_to_list(self, value):
         """

@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-This module provides the neccessary solution definitions for PyvsgenDemo's PTVS solutions.
+This module provides the neccessary solution definitions for VSGDemo's PTVS solutions.
 """
 import os
-from pyvsgendemo.projects import PyvsgenProject, PyvsgenDemoProject
-from pyvsgendemo.base import PyvsgenDemoBaseSolution
+from vsgendemo.projects import VSGProject, VSGDemoProject
+from vsgendemo.base import VSGDemoBaseSolution
 
-class PyvsgenDemoSolution(PyvsgenDemoBaseSolution):
+class VSGDemoSolution(VSGDemoBaseSolution):
     """
-    PyvsgenDemoSolution implements a single PyvsgenSolution for all PyvsgenProjects in the Pyvsgen demo.
+    VSGDemoSolution implements a single VSGSolution for all VSGProjects in the VSG demo.
     """
     def __init__(self, **kwargs):
-        super(PyvsgenDemoSolution, self).__init__('PyvsgenDemo', **kwargs)
-        self.Projects.append(PyvsgenProject(VSVersion=self.VSVersion))
-        self.Projects.append(PyvsgenDemoProject(VSVersion=self.VSVersion))
+        super(VSGDemoSolution, self).__init__('VSGDemo', **kwargs)
+        self.Projects.append(VSGProject(VSVersion=self.VSVersion))
+        self.Projects.append(VSGDemoProject(VSVersion=self.VSVersion))
 

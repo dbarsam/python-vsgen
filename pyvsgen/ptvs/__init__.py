@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
-from pyvsgen.ptvs.interpreter import PTVSInterpreter
-from pyvsgen.ptvs.project import PTVSProject
+from vsgen.ptvs.interpreter import PTVSInterpreter
+from vsgen.ptvs.project import PTVSProject

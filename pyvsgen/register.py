@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-This module provides a simple register utility for Pyvsgen objects.
+This module provides a simple register utility for VSGenerate objects.
 """
 import sys
 import time
 
-class PyRegisterable(object):
+class VSGRegisterable(object):
     """
-    An interface class defining methods necessary for PyRegisterable
+    An interface class defining methods necessary for VSGRegisterable
     """
     __resgisterable_name__ = "Unknown Resgisterable"
 
@@ -44,16 +44,16 @@ class PyRegisterable(object):
         """
         return self.text(value).lower()
 
-class PyRegisterCommand(object):
+class VSGRegisterCommand(object):
     """
-    The PyRegisterCommand class presents a simple command object to execute the register methods of a collection of PyRegisterable objects.
+    The VSGRegisterCommand class presents a simple command object to execute the register methods of a collection of VSGRegisterable objects.
     """
     def __init__(self, logname, registerables):
         """
         Initializes the instance with an collection of registerables.
 
         :param str logname:  The python logger log name.
-        :param list registerables:  The list of PyRegisterable class instances.
+        :param list registerables:  The list of VSGRegisterable class instances.
         """
         self._logname = logname
         self._registerables = registerables
@@ -82,12 +82,12 @@ class PyRegisterCommand(object):
         """
         Executes the command.
         """
-        from pyvsgen.util.logger import PyvsgenLogger
+        from vsgen.util.logger import VSGLogger
 
-        PyvsgenLogger.info(self._logname, self._message)
+        VSGLogger.info(self._logname, self._message)
         start = time.clock()
         for i in self._registerables:
             i.register()
         end = time.clock()
-        PyvsgenLogger.info(self._logname, "Register %s items in %s seconds:", len(self._registerables), end - start)
+        VSGLogger.info(self._logname, "Register %s items in %s seconds:", len(self._registerables), end - start)
         self._start = time.clock()

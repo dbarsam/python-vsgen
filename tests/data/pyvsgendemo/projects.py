@@ -1,38 +1,38 @@
 # -*- coding: utf-8 -*-
 """
-This module provides the neccessary project defintions for PyvsgenDemo's PTVS projects
+This module provides the neccessary project defintions for VSGDemo's PTVS projects
 """
 import os
-from pyvsgendemo.base import PyvsgenDemoBaseProject 
-from pyvsgendemo.settings import PyvsgenDemoSettings
+from vsgendemo.base import VSGDemoBaseProject 
+from vsgendemo.settings import VSGDemoSettings
 
-class PyvsgenProject(PyvsgenDemoBaseProject):
+class VSGProject(VSGDemoBaseProject):
     """
-    PyvsgenDemoProject provides a PyvsgenProject for the main Pyvsgen project
+    VSGDemoProject provides a VSGProject for the main VSG project
     """
-    RootPath = os.path.join( PyvsgenDemoSettings.MainRoot, 'pyvsgen' )
+    RootPath = os.path.join( VSGDemoSettings.MainRoot, 'vsgen' )
 
     def __init__(self, **kwargs):
-        super(PyvsgenProject, self).__init__('Pyvsgen', self.RootPath, **kwargs)
+        super(VSGProject, self).__init__('VSG', self.RootPath, **kwargs)
 
     def initialize(self):
         """
-        Initializes the PyvsgenProject by overriding the default values with instance specific values.
+        Initializes the VSGProject by overriding the default values with instance specific values.
         """
         self.insert_files(self.RootPath)
 
-class PyvsgenDemoProject(PyvsgenDemoBaseProject):
+class VSGDemoProject(VSGDemoBaseProject):
     """
-    PyvsgenDemoProject provides a PyvsgenProject for the PyvsgenDemo project
+    VSGDemoProject provides a VSGProject for the VSGDemo project
     """
-    RootPath = os.path.join( PyvsgenDemoSettings.MainRoot, 'tests', 'data', 'pyvsgendemo' )
+    RootPath = os.path.join( VSGDemoSettings.MainRoot, 'tests', 'data', 'vsgendemo' )
 
     def __init__(self, **kwargs):
-        super(PyvsgenDemoProject, self).__init__('PyvsgenDemo', self.RootPath, **kwargs)
+        super(VSGDemoProject, self).__init__('VSGDemo', self.RootPath, **kwargs)
 
     def initialize(self):
         """
-        Initializes the PyvsgenProject by overriding the default values with instance specific values.
+        Initializes the VSGProject by overriding the default values with instance specific values.
         """
         self.insert_files(self.RootPath)
 

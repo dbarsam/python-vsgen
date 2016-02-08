@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-This module provides a simple multi-threaded writer utility for PyvsgenProjects and PyvsgenSolutions
+This module provides a simple multi-threaded writer utility for VSGProjects and VSGSolutions
 """
 import sys
 import time
 import threading
 
-class PyWritable(object):
+class VSGWritable(object):
     """
-    An interface class defining methods necessary for PyvsgenWriter
+    An interface class defining methods necessary for VSGWriter
     """
     __writable_name__ = "Unknown Writable"
 
@@ -45,16 +45,16 @@ class PyWritable(object):
         """
         return self.text(value).lower()
 
-class PyWriteCommand(object):
+class VSGWriteCommand(object):
     """
-    The PyWriteCommand class presents a simple command object to execute the writing methods of a collection of PyWritable objects.
+    The VSGWriteCommand class presents a simple command object to execute the writing methods of a collection of VSGWritable objects.
     """
     def __init__(self, logname, writables, parallel=True):
         """
         Initializes the instance with an default values.
 
         :param str logname:  The python logger log name.
-        :param list writables:  The list of PyWritable class instances.
+        :param list writables:  The list of VSGWritable class instances.
         :param bool parallel: Flag to enable asynchronous writing.
         """
         self._logname = logname
@@ -85,24 +85,24 @@ class PyWriteCommand(object):
         """
         Executes the command.
         """
-        from pyvsgen.util.logger import PyvsgenLogger
+        from vsgen.util.logger import VSGLogger
 
-        PyvsgenLogger.info(self._logname, self._message)
+        VSGLogger.info(self._logname, self._message)
         start = time.clock()
-        PyvsgenWriter.write(self._writables, self._parallel)
+        VSGWriter.write(self._writables, self._parallel)
         end = time.clock()
-        PyvsgenLogger.info(self._logname, "Wrote %s files in %s seconds:", len(self._writables), end - start)
+        VSGLogger.info(self._logname, "Wrote %s files in %s seconds:", len(self._writables), end - start)
 
 
-class PyvsgenWriter(threading.Thread):
+class VSGWriter(threading.Thread):
     """
-    PyvsgenWriter encapsulates the logic needed to write any Pyvsgen object to disk.
+    VSGWriter encapsulates the logic needed to write any VSG object to disk.
     """
     def __init__(self, pylist):
         """
-        PyvsgenProject encapsulates the logic needed to create a *.pyproject file.
+        VSGProject encapsulates the logic needed to create a *.pyproject file.
 
-        :param list pylist: A list of Pyvsgen objects[PrProjects, PyvsgenSolutions, etc]
+        :param list pylist: A list of VSG objects[PrProjects, VSGSolutions, etc]
         """
         threading.Thread.__init__(self)
         if not hasattr(pylist, '__iter__'):
@@ -120,12 +120,12 @@ class PyvsgenWriter(threading.Thread):
     @staticmethod
     def write(pylist, parallel=True):
         """
-        Utility method to spawn a PyvsgenWriter for each element in a collection.
+        Utility method to spawn a VSGWriter for each element in a collection.
 
-        :param list pylist:   A list of Pyvsgen objects (PrProjects, PyvsgenSolutions, etc)
+        :param list pylist:   A list of VSG objects (PrProjects, VSGSolutions, etc)
         :param bool parallel: Flag to enable asynchronous writing.
         """
-        threads = [PyvsgenWriter(o) for o in pylist]
+        threads = [VSGWriter(o) for o in pylist]
         if parallel:
             for t in threads:
                 t.start()

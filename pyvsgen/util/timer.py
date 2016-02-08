@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-This module provides all functionality for the timing actions during an Pyvsgen process.
+This module provides all functionality for the timing actions during an VSG process.
 
-The module defines the class PyvsgenTimer.  The PyvsgenTimer is a simple timer to time processes.
+The module defines the class VSGTimer.  The VSGTimer is a simple timer to time processes.
 """
 
 import time
 
-from pyvsgen.util.logger import PyvsgenLogger
+from vsgen.util.logger import VSGLogger
 
-class PyvsgenTimer(object):
+class VSGTimer(object):
     """
-    The PyvsgenTimer class presents a simply timer using Python's native time module.
+    The VSGTimer class presents a simply timer using Python's native time module.
     """
     def __init__(self, message = None):
         """
@@ -29,7 +29,7 @@ class PyvsgenTimer(object):
 
         Example:
 
-            with PyvsgenTimer("message") as simple_timer:
+            with VSGTimer("message") as simple_timer:
                 ...
 
         """
@@ -49,7 +49,7 @@ class PyvsgenTimer(object):
         :param message:  The display message.
         """
         self._start = time.clock()
-        PyvsgenLogger.info("{0:<20} - Started".format(message))
+        VSGLogger.info("{0:<20} - Started".format(message))
 
     def stop(self, message):
         """
@@ -58,7 +58,7 @@ class PyvsgenTimer(object):
         :param message:  The display message.
         """
         self._stop = time.clock()
-        PyvsgenLogger.info("{0:<20} - Finished [{1}s]".format(message, self.pprint(self._stop - self._start)))
+        VSGLogger.info("{0:<20} - Finished [{1}s]".format(message, self.pprint(self._stop - self._start)))
 
     def pprint(self, seconds):
         """
