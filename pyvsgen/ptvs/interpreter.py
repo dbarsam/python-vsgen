@@ -4,10 +4,13 @@ This module provides the necessary definitions to generate a Python Interpreter 
 """
 
 import os
+import re
 import csv
+import site
 import fnmatch
 import uuid
 import subprocess
+import configparser
 try:
     import winreg
 except ImportError:
@@ -43,8 +46,35 @@ class PTVSInterpreter(PyRegisterable):
         super(PTVSInterpreter, self).__init__()
         self._import(kwargs)
 
-    @staticmethod
-    def from_virtual_environment(directory, **kwargs):
+    @classmethod
+    def from_section(cls, config, section, **kwargs):
+        """
+        Creates a :class:`~pyvsgen.ptvs.interpreter.PTVSInterpreter` from a :class:`~configparser.ConfigParser` section.
+
+        :param obj config:   A :class:`~configparser.ConfigParser` instance.
+        :param str section:  A :class:`~configparser.ConfigParser`'s section key.
+        :param kwargs:       List of additional keyworded arguments to be passed into the :class:`~pyvsgen.ptvs.interpreter.PTVSInterpreter`.
+        :return:             A valid :class:`~pyvsgen.ptvs.interpreter.PTVSInterpreter` instance if succesful; None otherwise.
+        """
+        if section not in config:
+            raise ValueError('Section [{}] not found in [{}]'.format(section, ', '.join(config.sections())))
+
+        interpreters = []
+        interpreter_paths = config.getdirs(section, 'interpreter_paths', fallback=[])
+        if interpreter_paths:
+            interpreters.extend([PTVSInterpreter.from_python_installation( p, **kwargs) for p in interpreter_paths])
+
+        environment_paths = config.getdirs(section, 'environment_paths', fallback=[])
+        if environment_paths:
+            interpreters = [PTVSInterpreter.from_virtual_environment( p, **kwargs ) for p in environment_paths]
+
+        for i in interpreters:
+            i.Description = config.get(section, 'description', fallback=i.Description)
+    
+        return interpreters
+
+    @classmethod
+    def from_virtual_environment(cls, directory, **kwargs):
         """
         Creates a :class:`~pyvsgen.ptvs.interpreter.PTVSInterpreter` from an Python Virtual Environment in the directory.
 
@@ -59,12 +89,26 @@ class PTVSInterpreter(PyRegisterable):
 
         root = os.path.abspath(directory)
         origprefix = os.path.abspath(os.path.join(root, 'Lib', 'orig-prefix.txt'))
-        if not os.path.exists(origprefix):
+        pyvenvcfg = os.path.abspath(os.path.join(root, 'pyvenv.cfg'))
+        if not os.path.exists(origprefix) and not os.path.exists(pyvenvcfg):
             return None
-        
-        with open(origprefix, 'rt') as f:
-            basedir = next((line.rstrip() for line in f), None)
-            baseinterpretter = PTVSInterpreter.from_python_installation(basedir,  **kwargs)
+
+        if os.path.exists(origprefix):
+            with open(origprefix, 'rt') as f:
+                basedir = next((line.rstrip() for line in f), None)
+
+        if os.path.exists(pyvenvcfg):
+            config_line = re.compile(site.CONFIG_LINE)
+            with open(pyvenvcfg, encoding='utf-8') as f:
+                for line in f:
+                    m = config_line.match(line.rstrip())
+                    if m:
+                        d = m.groupdict()
+                        key, value = d['key'].lower(), d['value']
+                        if key == 'home':
+                            basedir = value
+                                    
+        baseinterpretter = cls.from_python_installation(basedir,  **kwargs)
         if not baseinterpretter:
             return None
 
@@ -92,11 +136,11 @@ class PTVSInterpreter(PyRegisterable):
         except Exception:
             pass
 
-        interpreter = PTVSInterpreter(**args)
+        interpreter = cls(**args)
         return interpreter
 
-    @staticmethod
-    def from_python_installation(directory, **kwargs):
+    @classmethod
+    def from_python_installation(cls, directory, **kwargs):
         """
         Creates a :class:`~pyvsgen.ptvs.interpreter.PTVSInterpreter` from an Python installation in the directory.
 
@@ -132,12 +176,12 @@ class PTVSInterpreter(PyRegisterable):
         except Exception:
             pass
 
-        interpreter = PTVSInterpreter(**args)
+        interpreter = cls(**args)
         interpreter.resolve()
         return interpreter
 
-    @staticmethod
-    def from_registry_key(keyname):
+    @classmethod
+    def from_registry_key(cls, keyname):
         """
         Creates a :class:`~pyvsgen.ptvs.interpreter.PTVSInterpreter` from a single registry key.
 
@@ -156,7 +200,7 @@ class PTVSInterpreter(PyRegisterable):
         if 'InterpreterPath' in args:
             args['Path'] = os.path.dirname(args['InterpreterPath'])
             args['Id'] = os.path.basename(keyname)[1:-1]
-            return PTVSInterpreter(**args) 
+            return cls(**args) 
         return None
 
     def _import(self, datadict):
@@ -201,7 +245,7 @@ class PTVSInterpreter(PyRegisterable):
             reginfo = winreg.QueryInfoKey(regkey)
             for i in range(reginfo[0]):
                 interpreter_regkey_name = '{0}\\{1}'.format(regkey_name, winreg.EnumKey(regkey, i))
-                interpreter = PTVSInterpreter.from_registry_key(interpreter_regkey_name)
+                interpreter = self.from_registry_key(interpreter_regkey_name)
                 if interpreter and interpreter.InterpreterAbsPath.lower() == self.InterpreterAbsPath.lower():
                     self.GUID = uuid.UUID(interpreter.GUID)
                     self.BaseInterpreter = self.GUID

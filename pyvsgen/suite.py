@@ -4,7 +4,9 @@ This module provides all functionality for extending Python's suite class of fun
 
 The module defines the class PyvsgenSuite.  The PyvsgenSuite class groups the different functionalities into a single class.
 """
+import sys
 import os
+import inspect
 import importlib
 
 from pyvsgen.solution import PyvsgenSolution
@@ -82,12 +84,17 @@ class PyvsgenSuite(object):
             raise ValueError('Section [{}] mandatory option "{}" not found'.format(section, "type"))
 
         try:
-            module = importlib.import_module("pyvsgen.{}.suite".format(type))
+            module = importlib.import_module("pyvsgen.{}".format(type))
         except ImportError:
             raise ValueError('Cannot resolve option "{}" to a recognised type in section [{}].'.format("type", section))
 
-        p = module.getproject(config, section, **kwargs)
+        project_classes = [obj for name, obj in inspect.getmembers(module) if getattr(obj, '__project_type__', None) == type]
+        if len(project_classes) == 0:
+            raise ValueError('Cannot resolve option "{}" ("{}") to a recognised project type in section [{}].'.format("type", type, section))
+        if len(project_classes) > 1:
+            raise ValueError('Too many projects resolved to ambiguous option "{}" ("{}") in section [{}].'.format("type", type, section))
 
+        p = project_classes[0].from_section(config, section, **kwargs)
         return p
 
     def write(self, parallel=True):

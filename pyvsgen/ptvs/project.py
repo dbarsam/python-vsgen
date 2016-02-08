@@ -10,6 +10,7 @@ import uuid
 
 from pyvsgen.writer import PyWritable
 from pyvsgen.register import PyRegisterable
+from pyvsgen.ptvs.interpreter import PTVSInterpreter
 
 class PTVSProject(PyWritable, PyRegisterable):
     """
@@ -38,6 +39,8 @@ class PTVSProject(PyWritable, PyRegisterable):
     :ivar VirtualEnvironments:    The list of pyInterpreters that are virtual environments that will be available; if not provide the value is [].
     :ivar VSVersion:              The Visual Studio version; if not provide the value is `None`.
     """
+    __project_type__ = 'ptvs'
+
     __writable_name__ = "Visual Studio PTVS Project"
 
     __registerable_name__ = "Visual Studio PTVS Python Interpreter"
@@ -81,6 +84,50 @@ class PTVSProject(PyWritable, PyRegisterable):
         self.PythonInterpreters    = datadict.get("PythonInterpreters",[])
         self.VirtualEnvironments   = datadict.get("VirtualEnvironments",[])
         self.VSVersion             = datadict.get("VSVersion", None)
+
+    @classmethod
+    def from_section(cls, config, section, **kwargs):
+        """
+        Creates a :class:`~pyvsgen.ptvs.interpreter.PTVSProject` from a :class:`~configparser.ConfigParser` section.
+
+        :param obj config:   A :class:`~configparser.ConfigParser` instance.
+        :param str section:  A :class:`~configparser.ConfigParser`'s section key.
+        :param kwargs:       List of additional keyworded arguments to be passed into the :class:`~pyvsgen.ptvs.project.PTVSProject`.
+        :return:             A valid :class:`~pyvsgen.ptvs.project.PTVSProject` instance if succesful; None otherwise.
+        """
+        p = PTVSProject(**kwargs)
+        
+        p.Name = config.get(section, 'name', fallback=p.Name)
+        p.FileName = config.getfile(section, 'filename', fallback=p.FileName)
+        p.SearchPath = config.getdirs(section, 'search_path', fallback=p.SearchPath)
+        p.OutputPath = config.getdir(section, 'output_path', fallback=p.OutputPath)
+        p.WorkingDirectory = config.getdir(section, 'working_directory', fallback=p.WorkingDirectory)
+        p.RootNamespace = config.get(section, 'root_namespace', fallback=p.RootNamespace)
+        p.ProjectHome = config.getdir(section, 'project_home', fallback=p.ProjectHome)
+        p.StartupFile = config.getfile(section, 'startup_file', fallback=p.StartupFile)
+        p.CompileFiles = config.getlist(section, 'compile_files', fallback=p.CompileFiles)
+        p.ContentFiles = config.getlist(section, 'content_files', fallback=p.ContentFiles)
+        p.CompileInFilter = config.getlist(section, 'compile_in_filter', fallback=p.CompileInFilter)
+        p.CompileExFilter = config.getlist(section, 'compile_ex_filter', fallback=p.CompileExFilter)
+        p.ContentInFilter = config.getlist(section, 'content_in_filter', fallback=p.ContentInFilter)
+        p.ContentExFilter = config.getlist(section, 'content_ex_filter', fallback=p.ContentExFilter)
+        p.DirectoryInFilter = config.getdirs(section, 'directory_in_filter', fallback=p.DirectoryInFilter)
+        p.DirectoryExFilter = config.getdirs(section, 'directory_ex_filter', fallback=p.DirectoryExFilter)
+        p.IsWindowsApplication =  config.getboolean(section, 'is_windows_application', fallback=p.IsWindowsApplication)
+        p.PythonInterpreterArgs = config.getlist(section, 'python_interpreter_args', fallback=p.PythonInterpreterArgs)
+
+        interpreter = config.get(section, 'python_interpreter', fallback=None)
+        interpreters = {n:[i for i in PTVSInterpreter.from_section(config, n, VSVersion=p.VSVersion)] for n in config.getlist(section, 'python_interpreters')}        
+        p.PythonInterpreters = [i for v in interpreters.values() for i in v]
+        p.PythonInterpreter = next((i for i in interpreters.get(interpreter, [])), None)
+
+        virtual_environments = config.getlist(section, 'python_virtual_environments', fallback=[])
+        p.VirtualEnvironments = [ve for n in virtual_environments for ve in PTVSInterpreter.from_section(config, n, VSVersion=p.VSVersion) ]
+
+        root_path = config.get(section, 'root_path', fallback="")
+        p.insert_files(root_path)
+
+        return p
 
     def insert_files(self, rootpath, directoryInFilter=None, directoryExFilter=None, compileInFilter=None, compileExFilter=None, contentInFilter=None, contentExFilter=None):
         """

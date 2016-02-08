@@ -23,7 +23,6 @@
   <ItemGroup>
     <Compile Include="pyvsgen\ptvs\interpreter.py" />
     <Compile Include="pyvsgen\ptvs\project.py" />
-    <Compile Include="pyvsgen\ptvs\suite.py" />
     <Compile Include="pyvsgen\ptvs\__init__.py" />
     <Compile Include="pyvsgen\register.py" />
     <Compile Include="pyvsgen\solution.py" />
