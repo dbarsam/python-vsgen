@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{466be881-dae0-418b-9cf5-788e20e18216}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>tests\data\pyvsgendemo\__main__.py</StartupFile>
+    <StartupFile>tests\data\vsgendemo\__main__.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -21,37 +21,37 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="pyvsgen\ptvs\interpreter.py" />
-    <Compile Include="pyvsgen\ptvs\project.py" />
-    <Compile Include="pyvsgen\ptvs\__init__.py" />
-    <Compile Include="pyvsgen\register.py" />
-    <Compile Include="pyvsgen\solution.py" />
-    <Compile Include="pyvsgen\suite.py" />
-    <Compile Include="pyvsgen\util\config.py" />
-    <Compile Include="pyvsgen\util\logger.py" />
-    <Compile Include="pyvsgen\util\timer.py" />
-    <Compile Include="pyvsgen\util\__init__.py" />
-    <Compile Include="pyvsgen\writer.py" />
-    <Compile Include="pyvsgen\__init__.py" />
-    <Compile Include="pyvsgen\__main__.py" />
-    <Compile Include="tests\data\pyvsgendemo\base.py" />
-    <Compile Include="tests\data\pyvsgendemo\projects.py" />
-    <Compile Include="tests\data\pyvsgendemo\settings.py" />
-    <Compile Include="tests\data\pyvsgendemo\solutions.py" />
-    <Compile Include="tests\data\pyvsgendemo\__init__.py" />
-    <Compile Include="tests\data\pyvsgendemo\__main__.py" />
+    <Compile Include="vsgen\ptvs\interpreter.py" />
+    <Compile Include="vsgen\ptvs\project.py" />
+    <Compile Include="vsgen\ptvs\__init__.py" />
+    <Compile Include="vsgen\register.py" />
+    <Compile Include="vsgen\solution.py" />
+    <Compile Include="vsgen\suite.py" />
+    <Compile Include="vsgen\util\config.py" />
+    <Compile Include="vsgen\util\logger.py" />
+    <Compile Include="vsgen\util\timer.py" />
+    <Compile Include="vsgen\util\__init__.py" />
+    <Compile Include="vsgen\writer.py" />
+    <Compile Include="vsgen\__init__.py" />
+    <Compile Include="vsgen\__main__.py" />
+    <Compile Include="tests\data\vsgendemo\base.py" />
+    <Compile Include="tests\data\vsgendemo\projects.py" />
+    <Compile Include="tests\data\vsgendemo\settings.py" />
+    <Compile Include="tests\data\vsgendemo\solutions.py" />
+    <Compile Include="tests\data\vsgendemo\__init__.py" />
+    <Compile Include="tests\data\vsgendemo\__main__.py" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="pyvsgen" />
-    <Folder Include="pyvsgen\ptvs\" />
-    <Folder Include="pyvsgen\util" />
+    <Folder Include="vsgen" />
+    <Folder Include="vsgen\ptvs\" />
+    <Folder Include="vsgen\util" />
     <Folder Include="tests\" />
     <Folder Include="tests\data\" />
-    <Folder Include="tests\data\pyvsgencfg\" />
-    <Folder Include="tests\data\pyvsgendemo" />
+    <Folder Include="tests\data\vsgencfg\" />
+    <Folder Include="tests\data\vsgendemo" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="tests\data\pyvsgencfg\setup.cfg" />
+    <Content Include="tests\data\vsgencfg\setup.cfg" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
