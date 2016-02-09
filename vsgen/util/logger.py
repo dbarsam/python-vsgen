@@ -109,7 +109,7 @@ class VSGLogger( object ):
         Retrieves the Python native logger
 
         :param name:    The name of the logger instance in the VSG namespace (VSG.<name>); a None value will use the VSG root.
-        @return        The instacne of the Python logger object.
+        :return:        The instacne of the Python logger object.
         """
         return logging.getLogger("{0}.{1}".format(cls.BASENAME, name) if name else cls.BASENAME)
 
@@ -122,7 +122,7 @@ class VSGLogger( object ):
         :param name:    The name of the logger instance in the VSG namespace (VSG.<name>)
         :param message: A message format string.
         :param args:    The arguments that are are merged into msg using the string formatting operator.
-        :..note:        The native logger's **kwargs are not used in this function.
+        :..note:        The native logger's `kwargs` are not used in this function.
         """
         cls.getLogger(name).debug(message, *args)
 
@@ -134,7 +134,7 @@ class VSGLogger( object ):
         :param name:    The name of the logger instance in the VSG namespace (VSG.<name>)
         :param message: A message format string.
         :param args:    The arguments that are are merged into msg using the string formatting operator.
-        :..note:        The native logger's **kwargs are not used in this function.
+        :..note:        The native logger's `kwargs` are not used in this function.
         """
         cls.getLogger(name).info(message, *args)
 
@@ -146,7 +146,7 @@ class VSGLogger( object ):
         :param name:    The name of the logger instance in the VSG namespace (VSG.<name>)
         :param message: A message format string.
         :param args:    The arguments that are are merged into msg using the string formatting operator.
-        :..note:        The native logger's **kwargs are not used in this function.
+        :..note:        The native logger's `kwargs` are not used in this function.
         """
         cls.getLogger(name).warning(message, *args)
 
@@ -158,7 +158,7 @@ class VSGLogger( object ):
         :param name:    The name of the logger instance in the VSG namespace (VSG.<name>)
         :param message: A message format string.
         :param args:    The arguments that are are merged into msg using the string formatting operator.
-        :..note:        The native logger's **kwargs are not used in this function.
+        :..note:        The native logger's `kwargs` are not used in this function.
         """
         cls.getLogger(name).error(message, *args)
 
@@ -170,7 +170,7 @@ class VSGLogger( object ):
         :param name:    The name of the logger instance in the VSG namespace (VSG.<name>)
         :param message: A message format string.
         :param args:    The arguments that are are merged into msg using the string formatting operator.
-        :..note:        The native logger's **kwargs are not used in this function.
+        :..note:        The native logger's `kwargs` are not used in this function.
         """
         cls.getLogger(name).critical(message, *args)
 

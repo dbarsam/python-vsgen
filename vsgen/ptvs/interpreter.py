@@ -41,7 +41,7 @@ class PTVSInterpreter(VSGRegisterable):
         """
         Constructor.
 
-        :param **kwargs:         List of arbitrary keyworded arguments to be processed as instance variable data
+        :param kwargs:         List of arbitrary keyworded arguments to be processed as instance variable data
         """
         super(PTVSInterpreter, self).__init__()
         self._import(kwargs)
@@ -52,7 +52,7 @@ class PTVSInterpreter(VSGRegisterable):
         Creates a :class:`~vsgen.ptvs.interpreter.PTVSInterpreter` from a :class:`~configparser.ConfigParser` section.
 
         :param obj config:   A :class:`~configparser.ConfigParser` instance.
-        :param str section:  A :class:`~configparser.ConfigParser`'s section key.
+        :param str section:  A :class:`~configparser.ConfigParser` section key.
         :param kwargs:       List of additional keyworded arguments to be passed into the :class:`~vsgen.ptvs.interpreter.PTVSInterpreter`.
         :return:             A valid :class:`~vsgen.ptvs.interpreter.PTVSInterpreter` instance if succesful; None otherwise.
         """
@@ -79,7 +79,7 @@ class PTVSInterpreter(VSGRegisterable):
         Creates a :class:`~vsgen.ptvs.interpreter.PTVSInterpreter` from an Python Virtual Environment in the directory.
 
         :param directory: The absolute path to the python virtual environment directory.
-        :param **kwargs:  List of additional keyworded arguments to be passed into the :class:`~vsgen.ptvs.interpreter.PTVSInterpreter`.
+        :param kwargs:    List of additional keyworded arguments to be passed into the :class:`~vsgen.ptvs.interpreter.PTVSInterpreter`.
         :return:          A valid :class:`~vsgen.ptvs.interpreter.PTVSInterpreter` instance if succesful; None otherwise.
         """
         root = os.path.abspath(directory)
@@ -145,7 +145,7 @@ class PTVSInterpreter(VSGRegisterable):
         Creates a :class:`~vsgen.ptvs.interpreter.PTVSInterpreter` from an Python installation in the directory.
 
         :param directory: The absolute path to the python installation directory.
-        :param **kwargs:  List of additional keyworded arguments to be passed into the :class:`~vsgen.ptvs.interpreter.PTVSInterpreter`.
+        :param kwargs:  List of additional keyworded arguments to be passed into the :class:`~vsgen.ptvs.interpreter.PTVSInterpreter`.
         :return:          A valid :class:`~vsgen.ptvs.interpreter.PTVSInterpreter` instance if succesful; None otherwise.
         """
         root = os.path.abspath(directory)

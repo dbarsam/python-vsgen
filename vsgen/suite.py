@@ -46,7 +46,7 @@ class VSGSuite(object):
 
         :param obj config: The instance of the configparser class
         :param str section: The section name to read.
-        :param **kwargs:  List of additional keyworded arguments to be passed into the VSGSolution.
+        :param kwargs:  List of additional keyworded arguments to be passed into the VSGSolution.
         :return: A valid VSGSolution instance if succesful; None otherwise.
         """
         if section not in config:
@@ -73,7 +73,7 @@ class VSGSuite(object):
 
         :param obj config: The instance of the configparser class
         :param str section: The section name to read.
-        :param **kwargs:  List of additional keyworded arguments to be passed into the VSGProject.
+        :param kwargs:  List of additional keyworded arguments to be passed into the VSGProject.
         :return: A valid VSGProject instance if succesful; None otherwise.
         """
         if section not in config:

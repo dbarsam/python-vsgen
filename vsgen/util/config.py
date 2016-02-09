@@ -19,8 +19,8 @@ class VSGConfigParser( configparser.ConfigParser ):
         """
         Constructor
 
-        :param *args:     List of arguments passed to the :class:`~configparser.ConfigParser`
-        :param **kwargs:  List of arbitrary keyworded arguments passed to :class:`~configparser.ConfigParser`
+        :param args:    List of arguments passed to the :class:`~configparser.ConfigParser`
+        :param kwargs:  List of arbitrary keyworded arguments passed to :class:`~configparser.ConfigParser`
         """
         kwargs.setdefault('interpolation', configparser.ExtendedInterpolation())
         return super(VSGConfigParser, self).__init__(*args, **kwargs)

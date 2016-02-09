@@ -14,7 +14,7 @@ from vsgen.ptvs.interpreter import PTVSInterpreter
 
 class PTVSProject(VSGWritable, VSGRegisterable):
     """
-    PTVSProject encapsulates the data and logic needed to create a *.pyproject file.
+    PTVSProject encapsulates the data and logic needed to create a `.pyproj` file.
 
     :ivar GUID:                   The GUID of the project; if not provided one is generated automatically.
     :ivar FileName:               The absolute filename of the project file; if not provided the value is ""
@@ -28,7 +28,7 @@ class PTVSProject(VSGWritable, VSGRegisterable):
     :ivar CompileFiles:           The list of absolute files that will comprise the projects compile group; if not provide the value is [].
     :ivar ContentFiles:           The list of absolute files that will comprise the projects content group; if not provide the value is [].
     :ivar Directories:            The list of absolute directories that will comprise the projects directory group; if not provide the value is [].
-    :ivar IsWindowsApplication:   The boolean flag to launch the application as a *.pyw file or not; if not provide the value is False.
+    :ivar IsWindowsApplication:   The boolean flag to launch the application as a `.pyw` file or not; if not provide the value is False.
     :ivar DirectoryInFilter:      A list of strings matching exactly with directories to be explicitly included during the item generation step; if not provided the value is [].
     :ivar DirectoryExFilter:      A list of strings matching exactly with directories to be explicitly excluded during the item generation step; if not provided the value is [].
     :ivar CompileInFilter:        A list of strings matching exactly with file extensions (`.ext`) of compile files to be included during the item generation step; if not provide the value is [].
@@ -49,7 +49,7 @@ class PTVSProject(VSGWritable, VSGRegisterable):
         """
         Constructor.
 
-        :param **kwargs:         List of arbitrary keyworded arguments to be processed as instance variable data
+        :param kwargs:         List of arbitrary keyworded arguments to be processed as instance variable data
         """
         super(PTVSProject, self).__init__()
         self._import(kwargs)
@@ -91,7 +91,7 @@ class PTVSProject(VSGWritable, VSGRegisterable):
         Creates a :class:`~vsgen.ptvs.interpreter.PTVSProject` from a :class:`~configparser.ConfigParser` section.
 
         :param obj config:   A :class:`~configparser.ConfigParser` instance.
-        :param str section:  A :class:`~configparser.ConfigParser`'s section key.
+        :param str section:  A :class:`~configparser.ConfigParser` section key.
         :param kwargs:       List of additional keyworded arguments to be passed into the :class:`~vsgen.ptvs.project.PTVSProject`.
         :return:             A valid :class:`~vsgen.ptvs.project.PTVSProject` instance if succesful; None otherwise.
         """

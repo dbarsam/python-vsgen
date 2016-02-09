@@ -10,7 +10,7 @@ from vsgen.writer import VSGWritable
 
 class VSGSolution(VSGWritable):
     """
-    VSGSolution encapsulates the logic needed to create a *.sln file.
+    VSGSolution encapsulates the logic needed to create a `.sln` file.
 
     :ivar GUID:     The GUI of the solution; if not provided one is generated automatically.
     :ivar FileName: The absolute filename of the solution file; if not provided the value is ""
@@ -23,7 +23,7 @@ class VSGSolution(VSGWritable):
         """
         Constructor.
 
-        :param **kwargs:         List of arbitrary keyworded arguments to be processed as instance variable data
+        :param kwargs:         List of arbitrary keyworded arguments to be processed as instance variable data
         """
         super(VSGSolution, self).__init__()
 
@@ -43,7 +43,7 @@ class VSGSolution(VSGWritable):
 
     def write(self):
         """
-        Writes the *.sln file to disk.
+        Writes the `.sln` file to disk.
         """
         (filepath, filename) = os.path.split(os.path.normpath(self.FileName))
         if not os.path.exists(filepath):
