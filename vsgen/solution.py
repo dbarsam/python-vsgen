@@ -12,10 +12,10 @@ class VSGSolution(VSGWritable):
     """
     VSGSolution encapsulates the logic needed to create a `.sln` file.
 
-    :ivar GUID:     The GUI of the solution; if not provided one is generated automatically.
-    :ivar FileName: The absolute filename of the solution file; if not provided the value is ""
-    :ivar Name:     The display name of the solution; if not provide the value is "".        
-    :ivar Projects: The list of VSGProject derived classes; if not provide the value is [].
+    :ivar uuid GUID:     The GUI of the solution; if not provided one is generated automatically.
+    :ivar str  FileName:  The absolute filename of the solution file; if not provided the value is ""
+    :ivar str  Name:      The display name of the solution; if not provide the value is "".        
+    :ivar list Projects: The list of VSGProject derived classes; if not provide the value is [].
     """
     __writable_name__ = "VSG Solution"
 
@@ -33,7 +33,7 @@ class VSGSolution(VSGWritable):
         """
         Internal method to import instance variables data from a dictionary
 
-        :param datadict: The dictionary containing variables values.
+        :param dict datadict: The dictionary containing variables values.
         """
         self.GUID      = datadict.get("GUID", uuid.uuid1())
         self.FileName  = datadict.get("FileName","")

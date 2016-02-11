@@ -16,28 +16,28 @@ class PTVSProject(VSGWritable, VSGRegisterable):
     """
     PTVSProject encapsulates the data and logic needed to create a `.pyproj` file.
 
-    :ivar GUID:                   The GUID of the project; if not provided one is generated automatically.
-    :ivar FileName:               The absolute filename of the project file; if not provided the value is ""
-    :ivar Name:                   The display name of the project; if not provide the value is "".
-    :ivar SearchPath:             The list of absolute directories that will be added to the Python search path; if not provide the value is [].
-    :ivar WorkingDirectory:       The absolute directory that will be the working directory of the project; if not provide the value is ""
-    :ivar OutputPath:             The absolute directory that will be the output directory of the project; if not provide the value is "".
-    :ivar RootNamespace:          The name of the root namespace of the project; if not provide the value is "". `Ignored`.
-    :ivar ProjectHome:            The absolute directory of the project's source root folder; if not provide the value is ""
-    :ivar StartupFile:            The absolute path to the Startup file; if not provide the value is ""
-    :ivar CompileFiles:           The list of absolute files that will comprise the projects compile group; if not provide the value is [].
-    :ivar ContentFiles:           The list of absolute files that will comprise the projects content group; if not provide the value is [].
-    :ivar Directories:            The list of absolute directories that will comprise the projects directory group; if not provide the value is [].
-    :ivar IsWindowsApplication:   The boolean flag to launch the application as a `.pyw` file or not; if not provide the value is False.
-    :ivar DirectoryInFilter:      A list of strings matching exactly with directories to be explicitly included during the item generation step; if not provided the value is [].
-    :ivar DirectoryExFilter:      A list of strings matching exactly with directories to be explicitly excluded during the item generation step; if not provided the value is [].
-    :ivar CompileInFilter:        A list of strings matching exactly with file extensions (`.ext`) of compile files to be included during the item generation step; if not provide the value is [].
-    :ivar ContentInFilter:        A list of strings matching exactly with file extensions (`.ext`) of content files to be included during the item generation step; if not provide the value is [].
-    :ivar PythonInterpreter:      The active interpreter. Either None or one of the values specified in PythonInterpreters or VirtualEnvironments; if not provide the value is None.
-    :ivar PythonInterpreterArgs:  The active interpreter's arguments.  If not provide the value is [].
-    :ivar PythonInterpreters:     The list of pyInterpreters that are base interpreters that will be available; if not provide the value is [].
-    :ivar VirtualEnvironments:    The list of pyInterpreters that are virtual environments that will be available; if not provide the value is [].
-    :ivar VSVersion:              The Visual Studio version; if not provide the value is `None`.
+    :ivar uuid  GUID:                   The GUID of the project; if not provided one is generated automatically.
+    :ivar str   FileName:               The absolute filename of the project file; if not provided the value is ""
+    :ivar str   Name:                   The display name of the project; if not provide the value is "".
+    :ivar list  SearchPath:             The list of absolute directories that will be added to the Python search path; if not provide the value is [].
+    :ivar str   WorkingDirectory:       The absolute directory that will be the working directory of the project; if not provide the value is ""
+    :ivar str   OutputPath:             The absolute directory that will be the output directory of the project; if not provide the value is "".
+    :ivar str   RootNamespace:          The name of the root namespace of the project; if not provide the value is "". `Ignored`.
+    :ivar str   ProjectHome:            The absolute directory of the project's source root folder; if not provide the value is ""
+    :ivar str   StartupFile:            The absolute path to the Startup file; if not provide the value is ""
+    :ivar list  CompileFiles:           The list of absolute files that will comprise the projects compile group; if not provide the value is [].
+    :ivar list  ContentFiles:           The list of absolute files that will comprise the projects content group; if not provide the value is [].
+    :ivar list  Directories:            The list of absolute directories that will comprise the projects directory group; if not provide the value is [].
+    :ivar bool  IsWindowsApplication:   The boolean flag to launch the application as a `.pyw` file or not; if not provide the value is False.
+    :ivar list  DirectoryInFilter:      A list of strings matching exactly with directories to be explicitly included during the item generation step; if not provided the value is [].
+    :ivar list  DirectoryExFilter:      A list of strings matching exactly with directories to be explicitly excluded during the item generation step; if not provided the value is [].
+    :ivar list  CompileInFilter:        A list of strings matching exactly with file extensions (`.ext`) of compile files to be included during the item generation step; if not provide the value is [].
+    :ivar list  ContentInFilter:        A list of strings matching exactly with file extensions (`.ext`) of content files to be included during the item generation step; if not provide the value is [].
+    :ivar list  PythonInterpreter:      The active interpreter. Either None or one of the values specified in PythonInterpreters or VirtualEnvironments; if not provide the value is None.
+    :ivar list  PythonInterpreterArgs:  The active interpreter's arguments.  If not provide the value is [].
+    :ivar list  PythonInterpreters:     The list of pyInterpreters that are base interpreters that will be available; if not provide the value is [].
+    :ivar list  VirtualEnvironments:    The list of pyInterpreters that are virtual environments that will be available; if not provide the value is [].
+    :ivar float VSVersion:              The Visual Studio version; if not provide the value is `None`.
     """
     __project_type__ = 'ptvs'
 
@@ -58,7 +58,7 @@ class PTVSProject(VSGWritable, VSGRegisterable):
         """
         Internal method to import instance variables data from a dictionary
 
-        :param datadict: The dictionary containing variables values.
+        :param dict datadict: The dictionary containing variables values.
         """
         self.GUID                  = datadict.get("GUID", uuid.uuid1())
         self.FileName              = datadict.get("FileName","")
@@ -90,10 +90,10 @@ class PTVSProject(VSGWritable, VSGRegisterable):
         """
         Creates a :class:`~vsgen.ptvs.interpreter.PTVSProject` from a :class:`~configparser.ConfigParser` section.
 
-        :param obj config:   A :class:`~configparser.ConfigParser` instance.
-        :param str section:  A :class:`~configparser.ConfigParser` section key.
-        :param kwargs:       List of additional keyworded arguments to be passed into the :class:`~vsgen.ptvs.project.PTVSProject`.
-        :return:             A valid :class:`~vsgen.ptvs.project.PTVSProject` instance if succesful; None otherwise.
+        :param ConfigParser config:   A :class:`~configparser.ConfigParser` instance.
+        :param str          section:  A :class:`~configparser.ConfigParser` section key.
+        :param              kwargs:   List of additional keyworded arguments to be passed into the :class:`~vsgen.ptvs.project.PTVSProject`.
+        :return:                      A valid :class:`~vsgen.ptvs.project.PTVSProject` instance if succesful; None otherwise.
         """
         p = PTVSProject(**kwargs)
         

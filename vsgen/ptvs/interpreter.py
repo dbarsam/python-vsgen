@@ -21,16 +21,16 @@ class PTVSInterpreter(VSGRegisterable):
     """
     PTVSInterpreter encapsulates the logic and data used to describe a Python interpreter or virtual environments
 
-    :ivar GUID:                    The GUID of the Python Interpreter; if not provided one is generated automatically.
-    :ivar BaseInterpreter:         The GUID of the base Python Interpreter (different if PTVSInterpreter is Virtual Environment); if not provided the value is :attr:`GUID`
-    :ivar Architecture:            The architecture (either x86 or Amd64). if not provide the value is "".
-    :ivar Version:                 The major.minor version string; if not provide the value is "".
-    :ivar Description:             The human readable description string; if not provide the value is ""
-    :ivar Path:                    The absolute path of the `python.exe`; if not provide the value is ""
-    :ivar InterpreterPath:         The relative path to self.Path of the `python.exe`; if not provide the value is ""
-    :ivar WindowsInterpreterPath:  The relative path to self.Path of the `pythonw.exe`; if not provide the value is ""
-    :ivar LibraryPath:             The relative path to self.Path of the `Lib` folder that is part of the python.exe distribution; if not provide the value is "".
-    :ivar PathEnvironmentVariable: The name of the environment variable to be uses as `PYTHONPATH`; if not provide the value is "PYTHONPATH".
+    :ivar uuid GUID:                    The GUID of the Python Interpreter; if not provided one is generated automatically.
+    :ivar uuid BaseInterpreter:         The GUID of the base Python Interpreter (different if PTVSInterpreter is Virtual Environment); if not provided the value is :attr:`GUID`
+    :ivar str  Architecture:            The architecture (either x86 or Amd64). if not provide the value is "".
+    :ivar str  Version:                 The major.minor version string; if not provide the value is "".
+    :ivar str  Description:             The human readable description string; if not provide the value is ""
+    :ivar str  Path:                    The absolute path of the `python.exe`; if not provide the value is ""
+    :ivar str  InterpreterPath:         The relative path to self.Path of the `python.exe`; if not provide the value is ""
+    :ivar str  WindowsInterpreterPath:  The relative path to self.Path of the `pythonw.exe`; if not provide the value is ""
+    :ivar str  LibraryPath:             The relative path to self.Path of the `Lib` folder that is part of the python.exe distribution; if not provide the value is "".
+    :ivar str  PathEnvironmentVariable: The name of the environment variable to be uses as `PYTHONPATH`; if not provide the value is "PYTHONPATH".
     """
     __registerable_name__ = "Python Interpreter"
 
@@ -78,7 +78,7 @@ class PTVSInterpreter(VSGRegisterable):
         """
         Creates a :class:`~vsgen.ptvs.interpreter.PTVSInterpreter` from an Python Virtual Environment in the directory.
 
-        :param directory: The absolute path to the python virtual environment directory.
+        :param str directory: The absolute path to the python virtual environment directory.
         :param kwargs:    List of additional keyworded arguments to be passed into the :class:`~vsgen.ptvs.interpreter.PTVSInterpreter`.
         :return:          A valid :class:`~vsgen.ptvs.interpreter.PTVSInterpreter` instance if succesful; None otherwise.
         """
@@ -144,7 +144,7 @@ class PTVSInterpreter(VSGRegisterable):
         """
         Creates a :class:`~vsgen.ptvs.interpreter.PTVSInterpreter` from an Python installation in the directory.
 
-        :param directory: The absolute path to the python installation directory.
+        :param str directory: The absolute path to the python installation directory.
         :param kwargs:  List of additional keyworded arguments to be passed into the :class:`~vsgen.ptvs.interpreter.PTVSInterpreter`.
         :return:          A valid :class:`~vsgen.ptvs.interpreter.PTVSInterpreter` instance if succesful; None otherwise.
         """
@@ -185,7 +185,7 @@ class PTVSInterpreter(VSGRegisterable):
         """
         Creates a :class:`~vsgen.ptvs.interpreter.PTVSInterpreter` from a single registry key.
 
-        :param keyname:  The keyname under `HKEY_CURRENT_USER` referring to the environment.       
+        :param str keyname:  The keyname under `HKEY_CURRENT_USER` referring to the environment.       
         :return:         A valid :class:`~vsgen.ptvs.interpreter.PTVSInterpreter` instance if succesful; None otherwise.
         """
         args = {}
@@ -207,7 +207,7 @@ class PTVSInterpreter(VSGRegisterable):
         """
         Internal method to import instance variables data from a dictionary. 
 
-        :param datadict: The dictionary containing variables values.
+        :param dict datadict: The dictionary containing variables values.
         """
         self.GUID                       = datadict.get('Id', uuid.uuid1())
         self.BaseInterpreter            = datadict.get('BaseInterpreter', self.GUID)
