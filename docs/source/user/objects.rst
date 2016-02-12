@@ -21,11 +21,11 @@ Commands
 For efficiency and conveneinve vsgen provides `command` objects that adapt each interface object into an efficient execution model.
 
 The `Write` Command
-~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
 The :class:`~vsgen.writer.VSGWritCommand` is the command to efficient execute any :class:`~vsgen.writer.VSGWritable` action.
 
 The `Register` Command
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 The :class:`~vsgen.register.VSGRegisterCommand` is the command to efficient execute any :class:`~vsgen.writer.VSGRegisterable` action.
 
 Solutions
