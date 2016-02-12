@@ -22,6 +22,7 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="docs\source\conf.py" />
     <Compile Include="vsgen\ptvs\interpreter.py" />
     <Compile Include="vsgen\ptvs\project.py" />
     <Compile Include="vsgen\ptvs\__init__.py" />
@@ -43,6 +44,9 @@
     <Compile Include="tests\data\vsgendemo\__main__.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="docs\" />
+    <Folder Include="docs\source\" />
+    <Folder Include="docs\source\user\" />
     <Folder Include="vsgen" />
     <Folder Include="vsgen\ptvs\" />
     <Folder Include="vsgen\util" />
@@ -52,6 +56,13 @@
     <Folder Include="tests\data\vsgendemo" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="docs\make.bat" />
+    <Content Include="docs\Makefile" />
+    <Content Include="docs\source\index.rst" />
+    <Content Include="docs\source\user\faq.rst" />
+    <Content Include="docs\source\user\files.rst" />
+    <Content Include="docs\source\user\objects.rst" />
+    <Content Include="docs\source\user\overview.rst" />
     <Content Include="tests\data\vsgencfg\setup.cfg" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />

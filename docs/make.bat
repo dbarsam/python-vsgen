@@ -5,6 +5,9 @@ REM Command file for Sphinx documentation
 if "%SPHINXBUILD%" == "" (
 	set SPHINXBUILD=sphinx-build
 )
+if "%SPHINXAPIDOC%" == "" (
+	set SPHINXAPIDOC=sphinx-apidoc
+)
 set BUILDDIR=_build
 set ALLSPHINXOPTS=-d %BUILDDIR%/doctrees %SPHINXOPTS% source
 set I18NSPHINXOPTS=%SPHINXOPTS% source
@@ -72,6 +75,14 @@ if errorlevel 9009 (
 :sphinx_ok
 
 
+if "%1" == "rst" (
+    %SPHINXAPIDOC% --no-toc --separate --private -o .\source\apidoc ..\vsgen
+	if errorlevel 1 exit /b 1
+	echo.
+	echo.Build finished. The *.rst are in .\source\apidoc.
+	goto end
+)
+
 if "%1" == "html" (
 	%SPHINXBUILD% -b html %ALLSPHINXOPTS% %BUILDDIR%/html
 	if errorlevel 1 exit /b 1
@@ -127,9 +138,9 @@ if "%1" == "qthelp" (
 	echo.
 	echo.Build finished; now you can run "qcollectiongenerator" with the ^
 .qhcp project file in %BUILDDIR%/qthelp, like this:
-	echo.^> qcollectiongenerator %BUILDDIR%\qthelp\pyvsgen.qhcp
+	echo.^> qcollectiongenerator %BUILDDIR%\qthelp\vsgen.qhcp
 	echo.To view the help file:
-	echo.^> assistant -collectionFile %BUILDDIR%\qthelp\pyvsgen.ghc
+	echo.^> assistant -collectionFile %BUILDDIR%\qthelp\vsgen.ghc
 	goto end
 )
 

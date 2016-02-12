@@ -4,8 +4,12 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
+SPHINXAPIDOC  = sphinx-apidoc
 PAPER         =
 BUILDDIR      = _build
+SOURCEDIR     = source
+PROJECTDIR    = ../vsgen
+
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
@@ -50,9 +54,16 @@ help:
 .PHONY: clean
 clean:
 	rm -rf $(BUILDDIR)/*
+	rm -rf $(SOURCEDIR)/apidoc
+
+.PHONY: rst
+rst:
+	$(SPHINXAPIDOC) --no-toc --separate --private -o $(SOURCEDIR)/apidoc $(PROJECTDIR)
+	@echo
+	@echo "Build finished. The API doc pages are in $(SOURCEDIR)/apidoc."
 
 .PHONY: html
-html:
+html: rst
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
@@ -94,9 +105,9 @@ qthelp:
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/pyvsgen.qhcp"
+	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/vsgen.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/pyvsgen.qhc"
+	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/vsgen.qhc"
 
 .PHONY: applehelp
 applehelp:
@@ -113,8 +124,8 @@ devhelp:
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $$HOME/.local/share/devhelp/pyvsgen"
-	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/pyvsgen"
+	@echo "# mkdir -p $$HOME/.local/share/devhelp/vsgen"
+	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/vsgen"
 	@echo "# devhelp"
 
 .PHONY: epub
