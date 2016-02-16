@@ -1,0 +1,7 @@
+# ===================================================================
+# VSGen Requirements File
+#
+# see http://pip.readthedocs.org/en/stable/user_guide/#requirements-files
+# ===================================================================
+configparser  # Ensure that Python 3's native configparser or the Python 3 backport for Python 2
+
