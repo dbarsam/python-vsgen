@@ -75,6 +75,14 @@ if errorlevel 9009 (
 :sphinx_ok
 
 
+if "%1" == "view" (
+	echo. Launching system html viewer...
+	start %BUILDDIR%/html/index.html
+	if errorlevel 1 exit /b 1
+	echo.
+	goto end
+)
+
 if "%1" == "rst" (
     %SPHINXAPIDOC% --no-toc --separate --private -o .\source\apidoc ..\vsgen
 	if errorlevel 1 exit /b 1
