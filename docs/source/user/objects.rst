@@ -1,11 +1,11 @@
-Python Objects
-==============
+Classes
+=======
 vsgen provides a collection of Python classes that represent solutions, projects, and other concepts used by Visual Studio to organise resources.
 
 .. seealso:: Microsoft's `Solutions and Projects in Visual Studio <https://msdn.microsoft.com/en-us/library/b142f8e7.aspx>`_
 
-Interface Objects
------------------
+Interfaces
+----------
 Each object executes one or more `actions` and vsgen uses a small collection of interface to define the actions.
 
 The `Writable` Interface
@@ -14,7 +14,7 @@ The :class:`~vsgen.writer.VSGWritable` implements a base class for all objects t
 
 The `Registerable` Interface
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The :class:`~vsgen.writer.VSGRegisterable` is the base class for all objects that `registers` as its action.
+The :class:`~vsgen.register.VSGRegisterable` is the base class for all objects that `registers` as its action.
 
 Commands
 --------
@@ -46,7 +46,7 @@ Python Tools for Visual Studio Projects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The Python Tools for Visual Studo projects extends the base :class:`~vsgen.project.VSGProject` with the :class:`~vsgen.ptvs.project.PTVSProject` class.
 
-Other Objects
+Other Classes
 -------------
 
 Python Tools for Visual Studio Interpreters
@@ -65,6 +65,6 @@ In both cases however, the project is guarateed it's environment will be recogni
 
 Example
 -------
-The vsgen test suite contains an working example of using the objects:
+The vsgen test suite contains an working example of using the objects in a demo package:
 
 .. literalinclude:: ..\..\..\tests\data\vsgendemo\__main__.py
