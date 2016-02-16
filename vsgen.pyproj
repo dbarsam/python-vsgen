@@ -23,6 +23,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="docs\source\conf.py" />
+    <Compile Include="tests\integration\test_package_integration.py" />
+    <Compile Include="tests\integration\test_suite_integration.py" />
+    <Compile Include="tests\integration\__init__.py" />
+    <Compile Include="tests\__init__.py" />
+    <Compile Include="tests\__main__.py" />
     <Compile Include="vsgen\project.py" />
     <Compile Include="vsgen\ptvs\interpreter.py" />
     <Compile Include="vsgen\ptvs\project.py" />
@@ -48,6 +53,7 @@
     <Folder Include="docs\" />
     <Folder Include="docs\source\" />
     <Folder Include="docs\source\user\" />
+    <Folder Include="tests\integration\" />
     <Folder Include="vsgen" />
     <Folder Include="vsgen\ptvs\" />
     <Folder Include="vsgen\util" />
