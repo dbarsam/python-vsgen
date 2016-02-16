@@ -116,7 +116,7 @@ class VSGWriter(threading.Thread):
 
     def run(self):
         """
-        The Thread's execution function.       
+        The Thread's execution function.
         """
         for pyitem in self._pylist:
             pyitem.write()

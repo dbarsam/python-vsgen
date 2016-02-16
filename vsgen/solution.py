@@ -15,7 +15,7 @@ class VSGSolution(VSGWritable):
 
     :ivar uuid GUID:     The GUI of the solution; if not provided one is generated automatically.
     :ivar str  FileName:  The absolute filename of the solution file; if not provided the value is ""
-    :ivar str  Name:      The display name of the solution; if not provide the value is "".        
+    :ivar str  Name:      The display name of the solution; if not provide the value is "".
     :ivar list Projects: The list of VSGProject derived classes; if not provide the value is [].
     """
     __writable_name__ = "VSG Solution"

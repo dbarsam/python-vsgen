@@ -109,7 +109,7 @@ class PTVSInterpreter(VSGRegisterable):
                         if key == 'home':
                             basedir = value
 
-        baseinterpretter = cls.from_python_installation(basedir,  **kwargs)
+        baseinterpretter = cls.from_python_installation(basedir, **kwargs)
         if not baseinterpretter:
             return None
 
@@ -186,7 +186,7 @@ class PTVSInterpreter(VSGRegisterable):
         """
         Creates a :class:`~vsgen.ptvs.interpreter.PTVSInterpreter` from a single registry key.
 
-        :param str keyname:  The keyname under `HKEY_CURRENT_USER` referring to the environment.       
+        :param str keyname:  The keyname under `HKEY_CURRENT_USER` referring to the environment.
         :return:         A valid :class:`~vsgen.ptvs.interpreter.PTVSInterpreter` instance if succesful; None otherwise.
         """
         args = {}
@@ -206,7 +206,7 @@ class PTVSInterpreter(VSGRegisterable):
 
     def _import(self, datadict):
         """
-        Internal method to import instance variables data from a dictionary. 
+        Internal method to import instance variables data from a dictionary.
 
         :param dict datadict: The dictionary containing variables values.
         """

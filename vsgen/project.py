@@ -114,18 +114,18 @@ class VSGProject(VSGWritable, VSGRegisterable):
         :param str rootpath:            The absolute path to the root directory.
         :param list directoryInFilter:  A list of strings matching exactly with directories to be included.  A `None` value will default to :attr:`DirectoryInFilter`.
         :param list directoryExFilter:  A list of strings matching exactly with directories to be excluded.  A `None` value will default to :attr:`DirectoryExFilter`.
-        :param list compileInFilter:    A list of strings matching exactly with file extensions (`.ext`) of compile files to be included.  A `None` value will default to :attr:`CompileInFilter`. 
-        :param list compileExFilter:    A list of strings matching exactly with file extensions (`.ext`) of compile files to be included.  A `None` value will default to :attr:`CompileExFilter`. 
-        :param list contentInFilter:    A list of strings matching exactly with file extensions (`.ext`) of content files to be includes.  A `None` value will default to :attr:`ContentInFilter`.        
+        :param list compileInFilter:    A list of strings matching exactly with file extensions (`.ext`) of compile files to be included.  A `None` value will default to :attr:`CompileInFilter`.
+        :param list compileExFilter:    A list of strings matching exactly with file extensions (`.ext`) of compile files to be included.  A `None` value will default to :attr:`CompileExFilter`.
+        :param list contentInFilter:    A list of strings matching exactly with file extensions (`.ext`) of content files to be includes.  A `None` value will default to :attr:`ContentInFilter`.
         :param list contentExFilter:    A list of strings matching exactly with file extensions (`.ext`) of content files to be includes.  A `None` value will default to :attr:`ContentExFilter`.
         """
         # Overrides
-        directoryInFilter = self.DirectoryInFilter if directoryInFilter == None else directoryInFilter
-        directoryExFilter = self.DirectoryExFilter if directoryExFilter == None else directoryExFilter
-        compileInFilter = self.CompileInFilter if compileInFilter == None else compileInFilter
-        compileExFilter = self.CompileExFilter if compileExFilter == None else compileExFilter
-        contentInFilter = self.ContentInFilter if contentInFilter == None else contentInFilter
-        contentExFilter = self.ContentExFilter if contentExFilter == None else contentExFilter
+        directoryInFilter = self.DirectoryInFilter if directoryInFilter is None else directoryInFilter
+        directoryExFilter = self.DirectoryExFilter if directoryExFilter is None else directoryExFilter
+        compileInFilter = self.CompileInFilter if compileInFilter is None else compileInFilter
+        compileExFilter = self.CompileExFilter if compileExFilter is None else compileExFilter
+        contentInFilter = self.ContentInFilter if contentInFilter is None else contentInFilter
+        contentExFilter = self.ContentExFilter if contentExFilter is None else contentExFilter
 
         # Directory Path Clean-up
         if directoryInFilter:
