@@ -36,7 +36,7 @@ def main(argv=[]):
 
 if __name__ == '__main__':
     # To use VSG as an application we need to correct the sys.path to treeat VSG as a package.
-    module_path = os.path.dirname( os.path.realpath(__file__) )
+    module_path = os.path.dirname(os.path.realpath(__file__))
     package_path = os.path.normpath(os.path.join(module_path, '..'))
     if package_path not in sys.path:
         sys.path.append(package_path)

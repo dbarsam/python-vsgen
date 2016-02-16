@@ -14,13 +14,15 @@ def setUpModule():
     """
     The module specific setUp method
     """
-    logging.disable(logging.CRITICAL)   
+    logging.disable(logging.CRITICAL)
+
 
 def tearDownModule():
     """
     The module specific tearDown method
     """
     logging.disable(logging.NOTSET)
+
 
 class TestIntegrationPackage(unittest.TestCase):
     """
@@ -36,7 +38,7 @@ class TestIntegrationPackage(unittest.TestCase):
 
         self._output = os.path.normpath(os.path.join(self._data, '_output'))
         self.assertFalse(os.path.exists(self._output), 'Test output directory already exits!'.format(self._output))
-        
+
         self._package = os.path.normpath(os.path.join(self._data, 'vsgendemo'))
         self.assertTrue(os.path.isdir(self._package), 'Test package "{}" does not exist'.format(self._package))
 
@@ -44,7 +46,6 @@ class TestIntegrationPackage(unittest.TestCase):
         rootdir = os.path.dirname(self._package)
         if rootdir not in sys.path:
             sys.path.append(rootdir)
-        
 
     def tearDown(self):
         """
@@ -58,7 +59,6 @@ class TestIntegrationPackage(unittest.TestCase):
         # Remove the output directory
         if os.path.exists(self._output):
             shutil.rmtree(self._output)
-
 
     def test_package_success(self):
         """

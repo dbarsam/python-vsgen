@@ -5,6 +5,7 @@ This module provides a simple register utility for VSGenerate objects.
 import sys
 import time
 
+
 class VSGRegisterable(object):
     """
     An interface class defining methods necessary for VSGRegisterable
@@ -15,21 +16,21 @@ class VSGRegisterable(object):
         """
         Interface method to 'register' the object.
         """
-        raise NotImplementedError( "Should have implemented this" )
+        raise NotImplementedError("Should have implemented this")
 
     def text(self, value):
         """
         Converts a value to text in a way compatible with Python2 and Python 3.
-        
+
         :param obj value:  The value to convert.
         :return:  The value as text.
         """
         return unicode(value) if sys.version_info < (3,) else str(value)
-    
+
     def upper(self, value):
         """
         Converts a value to upper case text in a way compatible with Python2 and Python 3.
-        
+
         :param obj value:  The value to convert.
         :return:  The value as upper case text.
         """
@@ -38,16 +39,18 @@ class VSGRegisterable(object):
     def lower(self, value):
         """
         Converts a value to lower case in a way compatible with Python2 and Python 3.
-        
+
         :param obj value:  The value to convert.
         :return:  The value as lower case text.
         """
         return self.text(value).lower()
 
+
 class VSGRegisterCommand(object):
     """
     The VSGRegisterCommand class presents a simple command object to execute the register methods of a collection of VSGRegisterable objects.
     """
+
     def __init__(self, logname, registerables):
         """
         Initializes the instance with an collection of registerables.
@@ -76,7 +79,7 @@ class VSGRegisterCommand(object):
         Exit the runtime context related to this object.
         """
         # Only return True to surpress the exception (if any)
-        return False 
+        return False
 
     def execute(self):
         """

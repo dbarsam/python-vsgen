@@ -5,6 +5,7 @@ Generates the VSG Demo's Python Tools for Visual Studio IDE Solutions and Projec
 import os
 import sys
 
+
 def main(argv=[]):
     """
     The entry point of the script.
@@ -37,8 +38,8 @@ def main(argv=[]):
 
 if __name__ == "__main__":
     # To use VSGDemo as a package we need to append the sys.path before executing main
-    filePath = os.path.dirname( os.path.realpath(__file__) )
-    for path in [os.path.normpath(p) for p in [os.path.join( filePath, '..'), os.path.join( filePath, '..', '..', '..')] if p not in sys.path]:
+    filePath = os.path.dirname(os.path.realpath(__file__))
+    for path in [os.path.normpath(p) for p in [os.path.join(filePath, '..'), os.path.join(filePath, '..', '..', '..')] if p not in sys.path]:
         sys.path.append(path)
 
     sys.exit(main(sys.argv))

@@ -6,6 +6,7 @@ This module provides the main command line interface to using VSG.
 import os
 import sys
 
+
 def main(argv=[]):
     """
     The entry point of the script.
@@ -34,7 +35,7 @@ def main(argv=[]):
 
 if __name__ == "__main__":
     # To use VSG as an application we need to correct the sys.path to treeat VSG as a package.
-    module_path = os.path.dirname( os.path.realpath(__file__) )
+    module_path = os.path.dirname(os.path.realpath(__file__))
     package_path = os.path.normpath(os.path.join(module_path, os.pardir))
     try:
         sys.path[sys.path.index(module_path)] = package_path
@@ -42,4 +43,3 @@ if __name__ == "__main__":
         sys.path.append(package_path)
 
     sys.exit(main(sys.argv))
-

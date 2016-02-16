@@ -8,10 +8,12 @@ import os
 from vsgen import PTVSProject, VSGSolution
 from vsgendemo.settings import VSGDemoSettings
 
+
 class VSGDemoBaseSolution(VSGSolution):
     """
     VSGDemoBaseSolution provides a base VSGSolution for all VSGSolutions in vsgendemo.vsgen.
     """
+
     def __init__(self, name, **kwargs):
         """
         Constructor.
@@ -38,6 +40,7 @@ class VSGDemoBaseProject(PTVSProject):
     """
     VSGDemoBaseProject provides a base VSGProject for all VSGProjects in vsgendemo.vsgen.
     """
+
     def __init__(self, name, rootpath, **kwargs):
         """
         Constructor.
@@ -50,7 +53,7 @@ class VSGDemoBaseProject(PTVSProject):
         self.WorkingDirectory = rootpath
         self.OutputPath = rootpath
         self.RootNamespace = 'VSGDemo'
-        self.CompileInFilter.extend([ '.py', '.pyw' ])
+        self.CompileInFilter.extend(['.py', '.pyw'])
         self.ContentInFilter.extend(['.bat', '.txt', '.cmd', '.ico', '.png', '.md'])
 
     def initialize(self):
@@ -65,4 +68,3 @@ class VSGDemoBaseProject(PTVSProject):
         """
         self.initialize()
         return super(VSGDemoBaseProject, self).write()
-    

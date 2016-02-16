@@ -9,17 +9,20 @@ import logging
 
 from vsgen import __main__
 
+
 def setUpModule():
     """
     The module specific setUp method
     """
-    logging.disable(logging.CRITICAL)   
+    logging.disable(logging.CRITICAL)
+
 
 def tearDownModule():
     """
     The module specific tearDown method
     """
     logging.disable(logging.NOTSET)
+
 
 class TestIntegrationConfigurationFile(unittest.TestCase):
     """
@@ -32,13 +35,13 @@ class TestIntegrationConfigurationFile(unittest.TestCase):
         """
         self._data = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', 'data'))
         self.assertTrue(os.path.isdir(self._data), 'Test data directory "{}" does not exist'.format(self._data))
-        
+
         self._output = os.path.normpath(os.path.join(self._data, '_output'))
         self.assertFalse(os.path.exists(self._output), 'Test output directory already exits!'.format(self._output))
 
         self._file = os.path.normpath(os.path.join(self._data, 'vsgencfg', 'setup.cfg'))
         self.assertTrue(os.path.isfile(self._file), 'Test configuration file "{}" does not exist'.format(self._file))
-        
+
     def tearDown(self):
         """
         The class specific tearDown method
@@ -51,7 +54,7 @@ class TestIntegrationConfigurationFile(unittest.TestCase):
         """
         Tests the expected workflow.
         """
-        result = __main__.main([__main__.__file__, self._file])        
+        result = __main__.main([__main__.__file__, self._file])
         self.assertEqual(result, 0)
 
 if __name__ == '__main__':

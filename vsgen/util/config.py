@@ -9,12 +9,14 @@ import os
 import glob
 import configparser
 
-class VSGConfigParser( configparser.ConfigParser ):
+
+class VSGConfigParser(configparser.ConfigParser):
     """
     The VSG ConfigParser extends Python's ConfigParser class with VSG specific functionality.
 
     :note:  VSGConfigParser uses :class:`~configparser.ExtendedInterpolation` as the default interpolation.
     """
+
     def __init__(self, *args, **kwargs):
         """
         Constructor
@@ -24,7 +26,7 @@ class VSGConfigParser( configparser.ConfigParser ):
         """
         kwargs.setdefault('interpolation', configparser.ExtendedInterpolation())
         return super(VSGConfigParser, self).__init__(*args, **kwargs)
-    
+
     def _convert_to_list(self, value):
         """
         Return a list value translating from other types if necessary.

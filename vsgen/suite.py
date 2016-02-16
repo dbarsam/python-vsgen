@@ -14,14 +14,15 @@ from vsgen.writer import VSGWriteCommand
 from vsgen.register import VSGRegisterCommand
 from vsgen.util.config import VSGConfigParser
 
+
 class VSGSuite(object):
-    
+
     def __init__(self, filename):
         """
         Constructor.
 
         :param str filename:  The fully qualified path to the VSG configuration file.
-        """ 
+        """
         # Read the configuration file
         config = VSGConfigParser()
         if filename not in config.read(filename):
@@ -39,7 +40,7 @@ class VSGSuite(object):
         self._solutions = [self._getsolution(config, s) for s in config.sections() if 'vsgen.solution' in s]
 
         return super(VSGSuite, self).__init__()
-    
+
     def _getsolution(self, config, section, **kwargs):
         """
         Creates a VSG solution from a configparser instance.
@@ -64,7 +65,7 @@ class VSGSuite(object):
         for project_section in project_sections:
             project = self._getproject(config, project_section, VSVersion=s.VSVersion)
             s.Projects.append(project)
-        
+
         return s
 
     def _getproject(self, config, section, **kwargs):

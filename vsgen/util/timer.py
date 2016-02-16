@@ -9,11 +9,13 @@ import time
 
 from vsgen.util.logger import VSGLogger
 
+
 class VSGTimer(object):
     """
     The VSGTimer class presents a simply timer using Python's native time module.
     """
-    def __init__(self, message = None):
+
+    def __init__(self, message=None):
         """
         Initializes the instance with an default values.
 
@@ -21,7 +23,7 @@ class VSGTimer(object):
         """
         self._message = message
         self._start = 0
-        self._stop  = 0
+        self._stop = 0
 
     def __enter__(self):
         """
@@ -66,4 +68,4 @@ class VSGTimer(object):
 
         :param seconds:  The time in seconds.
         """
-        return ("%d:%02d:%02d.%03d", reduce(lambda ll,b : divmod(ll[0],b) + ll[1:], [(seconds*1000,),1000,60,60]))
+        return ("%d:%02d:%02d.%03d", reduce(lambda ll, b: divmod(ll[0], b) + ll[1:], [(seconds * 1000,), 1000, 60, 60]))

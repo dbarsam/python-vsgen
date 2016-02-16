@@ -11,6 +11,7 @@ import uuid
 from vsgen.writer import VSGWritable
 from vsgen.register import VSGRegisterable
 
+
 class VSGProject(VSGWritable, VSGRegisterable):
     """
     VSGProject encapsulates the data and logic needed to act as a base project.
@@ -53,24 +54,24 @@ class VSGProject(VSGWritable, VSGRegisterable):
 
         :param dict datadict: The dictionary containing variables values.
         """
-        self.GUID                  = datadict.get("GUID", uuid.uuid1())
-        self.FileName              = datadict.get("FileName","")
-        self.Name                  = datadict.get("Name","")
-        self.WorkingDirectory      = datadict.get("WorkingDirectory","")
-        self.OutputPath            = datadict.get("OutputPath","")
-        self.RootNamespace         = datadict.get("RootNamespace","")
-        self.ProjectHome           = datadict.get("ProjectHome","" )
-        self.StartupFile           = datadict.get("StartupFile","" )
-        self.CompileFiles          = datadict.get("CompileFiles",[] )
-        self.ContentFiles          = datadict.get("ContentFiles",[])
-        self.Directories           = datadict.get("Directories",[])
-        self.DirectoryInFilter     = datadict.get("DirectoryInFilter",[])
-        self.DirectoryExFilter     = datadict.get("DirectoryExFilter",[])
-        self.CompileInFilter       = datadict.get("CompileInFilter",[])
-        self.CompileExFilter       = datadict.get("CompileExFilter",[])
-        self.ContentInFilter       = datadict.get("ContentInFilter",[])
-        self.ContentExFilter       = datadict.get("ContentExFilter",[])
-        self.VSVersion             = datadict.get("VSVersion", None)
+        self.GUID = datadict.get("GUID", uuid.uuid1())
+        self.FileName = datadict.get("FileName", "")
+        self.Name = datadict.get("Name", "")
+        self.WorkingDirectory = datadict.get("WorkingDirectory", "")
+        self.OutputPath = datadict.get("OutputPath", "")
+        self.RootNamespace = datadict.get("RootNamespace", "")
+        self.ProjectHome = datadict.get("ProjectHome", "")
+        self.StartupFile = datadict.get("StartupFile", "")
+        self.CompileFiles = datadict.get("CompileFiles", [])
+        self.ContentFiles = datadict.get("ContentFiles", [])
+        self.Directories = datadict.get("Directories", [])
+        self.DirectoryInFilter = datadict.get("DirectoryInFilter", [])
+        self.DirectoryExFilter = datadict.get("DirectoryExFilter", [])
+        self.CompileInFilter = datadict.get("CompileInFilter", [])
+        self.CompileExFilter = datadict.get("CompileExFilter", [])
+        self.ContentInFilter = datadict.get("ContentInFilter", [])
+        self.ContentExFilter = datadict.get("ContentExFilter", [])
+        self.VSVersion = datadict.get("VSVersion", None)
 
     @classmethod
     def from_section(cls, config, section, **kwargs):
@@ -83,7 +84,7 @@ class VSGProject(VSGWritable, VSGRegisterable):
         :return:                      A valid :class:`~vsgen.project.VSGProject` instance if succesful; None otherwise.
         """
         p = cls(**kwargs)
-        
+
         p.Name = config.get(section, 'name', fallback=p.Name)
         p.FileName = config.getfile(section, 'filename', fallback=p.FileName)
         p.SearchPath = config.getdirs(section, 'search_path', fallback=p.SearchPath)
@@ -109,7 +110,7 @@ class VSGProject(VSGWritable, VSGRegisterable):
     def insert_files(self, rootpath, directoryInFilter=None, directoryExFilter=None, compileInFilter=None, compileExFilter=None, contentInFilter=None, contentExFilter=None):
         """
         Inserts files by recursive traversing the rootpath and inserting files according the addition filter parameters.
-        
+
         :param str rootpath:            The absolute path to the root directory.
         :param list directoryInFilter:  A list of strings matching exactly with directories to be included.  A `None` value will default to :attr:`DirectoryInFilter`.
         :param list directoryExFilter:  A list of strings matching exactly with directories to be excluded.  A `None` value will default to :attr:`DirectoryExFilter`.
@@ -121,10 +122,10 @@ class VSGProject(VSGWritable, VSGRegisterable):
         # Overrides
         directoryInFilter = self.DirectoryInFilter if directoryInFilter == None else directoryInFilter
         directoryExFilter = self.DirectoryExFilter if directoryExFilter == None else directoryExFilter
-        compileInFilter   = self.CompileInFilter if compileInFilter == None else compileInFilter
-        compileExFilter   = self.CompileExFilter if compileExFilter == None else compileExFilter
-        contentInFilter   = self.ContentInFilter if contentInFilter == None else contentInFilter
-        contentExFilter   = self.ContentExFilter if contentExFilter == None else contentExFilter
+        compileInFilter = self.CompileInFilter if compileInFilter == None else compileInFilter
+        compileExFilter = self.CompileExFilter if compileExFilter == None else compileExFilter
+        contentInFilter = self.ContentInFilter if contentInFilter == None else contentInFilter
+        contentExFilter = self.ContentExFilter if contentExFilter == None else contentExFilter
 
         # Directory Path Clean-up
         if directoryInFilter:
@@ -136,14 +137,14 @@ class VSGProject(VSGWritable, VSGRegisterable):
         for root, dirnames, filenames in os.walk(rootpath):
 
             searchdir = os.path.normpath(os.path.normcase(root))
-            
+
             # Manually exclude
             if directoryExFilter and any(rootdir in searchdir for rootdir in directoryExFilter):
                 dirnames[:] = []
-            # If we have the Target or a Child of a target directory, add the files 
+            # If we have the Target or a Child of a target directory, add the files
             elif not directoryInFilter or any(rootdir in searchdir for rootdir in directoryInFilter):
                 for f in filenames:
-                    ext = os.path.splitext(f)[1];
+                    ext = os.path.splitext(f)[1]
                     if compileExFilter and ext in compileExFilter:
                         continue
                     if not compileInFilter or ext in compileInFilter:

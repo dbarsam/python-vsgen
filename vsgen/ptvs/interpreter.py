@@ -17,6 +17,7 @@ except ImportError:
     import _winreg as winreg
 from vsgen.register import VSGRegisterable
 
+
 class PTVSInterpreter(VSGRegisterable):
     """
     PTVSInterpreter encapsulates the logic and data used to describe a Python interpreter or virtual environments
@@ -62,15 +63,15 @@ class PTVSInterpreter(VSGRegisterable):
         interpreters = []
         interpreter_paths = config.getdirs(section, 'interpreter_paths', fallback=[])
         if interpreter_paths:
-            interpreters.extend([PTVSInterpreter.from_python_installation( p, **kwargs) for p in interpreter_paths])
+            interpreters.extend([PTVSInterpreter.from_python_installation(p, **kwargs) for p in interpreter_paths])
 
         environment_paths = config.getdirs(section, 'environment_paths', fallback=[])
         if environment_paths:
-            interpreters = [PTVSInterpreter.from_virtual_environment( p, **kwargs ) for p in environment_paths]
+            interpreters = [PTVSInterpreter.from_virtual_environment(p, **kwargs) for p in environment_paths]
 
         for i in interpreters:
             i.Description = config.get(section, 'description', fallback=i.Description)
-    
+
         return interpreters
 
     @classmethod
@@ -107,7 +108,7 @@ class PTVSInterpreter(VSGRegisterable):
                         key, value = d['key'].lower(), d['value']
                         if key == 'home':
                             basedir = value
-                                    
+
         baseinterpretter = cls.from_python_installation(basedir,  **kwargs)
         if not baseinterpretter:
             return None
@@ -152,7 +153,7 @@ class PTVSInterpreter(VSGRegisterable):
         python = os.path.abspath(os.path.join(root, 'python.exe'))
         if not os.path.exists(python):
             return None
-        
+
         args = kwargs.copy()
         args['Path'] = root
         args['InterpreterPath'] = 'python.exe'
@@ -192,7 +193,7 @@ class PTVSInterpreter(VSGRegisterable):
         try:
             regkey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, keyname)
             for k in ['Architecture', 'Description', 'InterpreterPath', 'LibraryPath', 'PathEnvironmentVariable', 'Version', 'WindowsInterpreterPath']:
-                args[k] = winreg.QueryValueEx(regkey, k)[0]        
+                args[k] = winreg.QueryValueEx(regkey, k)[0]
             winreg.CloseKey(regkey)
         except WindowsError as ex:
             pass
@@ -200,7 +201,7 @@ class PTVSInterpreter(VSGRegisterable):
         if 'InterpreterPath' in args:
             args['Path'] = os.path.dirname(args['InterpreterPath'])
             args['Id'] = os.path.basename(keyname)[1:-1]
-            return cls(**args) 
+            return cls(**args)
         return None
 
     def _import(self, datadict):
@@ -209,20 +210,20 @@ class PTVSInterpreter(VSGRegisterable):
 
         :param dict datadict: The dictionary containing variables values.
         """
-        self.GUID                       = datadict.get('Id', uuid.uuid1())
-        self.BaseInterpreter            = datadict.get('BaseInterpreter', self.GUID)
-        self.Architecture               = datadict.get('Architecture', "")
-        self.Version                    = datadict.get('Version', "")
-        self.Path                       = datadict.get('Path', "")
-        self.Description                = datadict.get('Description', "")
-        self.InterpreterPath            = datadict.get('InterpreterPath', "")
-        self.InterpreterAbsPath         = datadict.get('InterpreterAbsPath', self.InterpreterPath if os.path.isabs(self.InterpreterPath) else os.path.abspath(os.path.join(self.Path, self.InterpreterPath)))
-        self.WindowsInterpreterPath     = datadict.get('WindowsInterpreterPath', "")
-        self.WindowsInterpreterAbsPath  = datadict.get('WindowsInterpreterAbsPath', self.WindowsInterpreterPath if os.path.isabs(self.WindowsInterpreterPath) else os.path.abspath(os.path.join(self.Path, self.WindowsInterpreterPath)))
-        self.LibraryPath                = datadict.get('LibraryPath', "")
-        self.LibraryAbsPath             = datadict.get('LibraryAbsPath', self.LibraryPath if os.path.isabs(self.LibraryPath) else os.path.abspath(os.path.join(self.Path, self.LibraryPath)))
-        self.PathEnvironmentVariable    = datadict.get('PathEnvironmentVariable', "PYTHONPATH")
-        self.VSVersion                  = datadict.get('VSVersion', None)
+        self.GUID = datadict.get('Id', uuid.uuid1())
+        self.BaseInterpreter = datadict.get('BaseInterpreter', self.GUID)
+        self.Architecture = datadict.get('Architecture', "")
+        self.Version = datadict.get('Version', "")
+        self.Path = datadict.get('Path', "")
+        self.Description = datadict.get('Description', "")
+        self.InterpreterPath = datadict.get('InterpreterPath', "")
+        self.InterpreterAbsPath = datadict.get('InterpreterAbsPath', self.InterpreterPath if os.path.isabs(self.InterpreterPath) else os.path.abspath(os.path.join(self.Path, self.InterpreterPath)))
+        self.WindowsInterpreterPath = datadict.get('WindowsInterpreterPath', "")
+        self.WindowsInterpreterAbsPath = datadict.get('WindowsInterpreterAbsPath', self.WindowsInterpreterPath if os.path.isabs(self.WindowsInterpreterPath) else os.path.abspath(os.path.join(self.Path, self.WindowsInterpreterPath)))
+        self.LibraryPath = datadict.get('LibraryPath', "")
+        self.LibraryAbsPath = datadict.get('LibraryAbsPath', self.LibraryPath if os.path.isabs(self.LibraryPath) else os.path.abspath(os.path.join(self.Path, self.LibraryPath)))
+        self.PathEnvironmentVariable = datadict.get('PathEnvironmentVariable', "PYTHONPATH")
+        self.VSVersion = datadict.get('VSVersion', None)
 
     def resolve(self):
         """

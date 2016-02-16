@@ -11,7 +11,8 @@ import os
 import sys
 import logging
 
-class VSGLogger( object ):
+
+class VSGLogger(object):
     """
     The VSG Logger manages messages associate with various priority level.
 
@@ -24,6 +25,7 @@ class VSGLogger( object ):
         """
         The LevelFilter class implements a Filter Object specific to the VSGLogger
         """
+
         def __init__(self, levels=None):
             """
             Constructor
@@ -84,7 +86,7 @@ class VSGLogger( object ):
         self._logger.addHandler(handler)
         self._handlers.append(handler)
 
-    def _unregisterHandler(self, handler, shutdown = True):
+    def _unregisterHandler(self, handler, shutdown=True):
         """
         Unregisters the logging handler.
 
@@ -112,7 +114,6 @@ class VSGLogger( object ):
         :return:        The instacne of the Python logger object.
         """
         return logging.getLogger("{0}.{1}".format(cls.BASENAME, name) if name else cls.BASENAME)
-
 
     @classmethod
     def debug(cls, name, message, *args):
@@ -193,7 +194,7 @@ class VSGLogger( object ):
         while self._handlers:
             self._unregisterHandler(self._handlers[0])
 
-if __name__=="__main__":
+if __name__ == "__main__":
 
     logfile = os.path.join(os.path.dirname(__file__), 'log.txt')
     logger = VSGLogger(logfile, logging.DEBUG)
@@ -201,11 +202,11 @@ if __name__=="__main__":
     try:
         raise NotImplementedError("This has not been implemented")
     except:
-        VSGLogger.exception(__name__ , "Something bad happened.")
+        VSGLogger.exception(__name__, "Something bad happened.")
     VSGLogger.info(__name__, "This is a multiline logger message:\n %s \n %s \n %s", '****************', 'Message!', '****************')
     VSGLogger.info(__name__, "Info = %d", int(logging.INFO))
     VSGLogger.error("MyName", "Error = %d", int(logging.ERROR))
-    VSGLogger.critical("YourName", "Critical = %d" , int(logging.CRITICAL))
+    VSGLogger.critical("YourName", "Critical = %d", int(logging.CRITICAL))
     VSGLogger.warning(__name__, "Warning = %d", int(logging.WARNING))
 
     import webbrowser

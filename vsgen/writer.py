@@ -6,31 +6,32 @@ import sys
 import time
 import threading
 
+
 class VSGWritable(object):
     """
     An interface class defining methods necessary for VSGWriter
     """
     __writable_name__ = "Unknown Writable"
 
-    def write( self ):
+    def write(self):
         """
         Interface method to 'write' the object.
         """
-        raise NotImplementedError( "Should have implemented this" )
+        raise NotImplementedError("Should have implemented this")
 
     def text(self, value):
         """
         Converts a value to text in a way compatible with Python2 and Python 3.
-        
+
         :param obj value:  The value to convert.
         :return:  The value as text.
         """
         return unicode(value) if sys.version_info < (3,) else str(value)
-    
+
     def upper(self, value):
         """
         Converts a value to upper case text in a way compatible with Python2 and Python 3.
-        
+
         :param obj value:  The value to convert.
         :return:  The value as upper case text.
         """
@@ -39,16 +40,18 @@ class VSGWritable(object):
     def lower(self, value):
         """
         Converts a value to lower case in a way compatible with Python2 and Python 3.
-        
+
         :param obj value:  The value to convert.
         :return:  The value as lower case text.
         """
         return self.text(value).lower()
 
+
 class VSGWriteCommand(object):
     """
     The VSGWriteCommand class presents a simple command object to execute the writing methods of a collection of VSGWritable objects.
     """
+
     def __init__(self, logname, writables, parallel=True):
         """
         Initializes the instance with an default values.
@@ -79,7 +82,7 @@ class VSGWriteCommand(object):
         Exit the runtime context related to this object.
         """
         # Only return True to surpress the exception (if any)
-        return False 
+        return False
 
     def execute(self):
         """
@@ -98,6 +101,7 @@ class VSGWriter(threading.Thread):
     """
     VSGWriter encapsulates the logic needed to write any VSG object to disk.
     """
+
     def __init__(self, pylist):
         """
         VSGProject encapsulates the logic needed to create a *.pyproject file.
@@ -113,10 +117,10 @@ class VSGWriter(threading.Thread):
     def run(self):
         """
         The Thread's execution function.       
-        """        
+        """
         for pyitem in self._pylist:
             pyitem.write()
-    
+
     @staticmethod
     def write(pylist, parallel=True):
         """
