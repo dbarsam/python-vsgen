@@ -23,6 +23,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="docs\source\conf.py" />
+    <Compile Include="vsgen\project.py" />
     <Compile Include="vsgen\ptvs\interpreter.py" />
     <Compile Include="vsgen\ptvs\project.py" />
     <Compile Include="vsgen\ptvs\__init__.py" />
