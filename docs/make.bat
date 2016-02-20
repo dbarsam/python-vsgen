@@ -8,9 +8,12 @@ if "%SPHINXBUILD%" == "" (
 if "%SPHINXAPIDOC%" == "" (
 	set SPHINXAPIDOC=sphinx-apidoc
 )
-set BUILDDIR=_build
-set ALLSPHINXOPTS=-d %BUILDDIR%/doctrees %SPHINXOPTS% source
-set I18NSPHINXOPTS=%SPHINXOPTS% source
+pushd %~dp0
+set DOCSDIR=%CD%
+popd
+set BUILDDIR=%DOCSDIR%\_build
+set ALLSPHINXOPTS=-d %BUILDDIR%\doctrees %SPHINXOPTS% %DOCSDIR%\source
+set I18NSPHINXOPTS=%SPHINXOPTS% %DOCSDIR%\source
 if NOT "%PAPER%" == "" (
 	set ALLSPHINXOPTS=-D latex_paper_size=%PAPER% %ALLSPHINXOPTS%
 	set I18NSPHINXOPTS=-D latex_paper_size=%PAPER% %I18NSPHINXOPTS%
@@ -84,7 +87,7 @@ if "%1" == "view" (
 )
 
 if "%1" == "rst" (
-    %SPHINXAPIDOC% --no-toc --separate --private -o .\source\apidoc ..\vsgen
+    %SPHINXAPIDOC% --no-toc --separate --private -o %DOCSDIR%\source\apidoc %DOCSDIR%\..\vsgen
 	if errorlevel 1 exit /b 1
 	echo.
 	echo.Build finished. The *.rst are in .\source\apidoc.
@@ -95,7 +98,7 @@ if "%1" == "html" (
 	%SPHINXBUILD% -b html %ALLSPHINXOPTS% %BUILDDIR%/html
 	if errorlevel 1 exit /b 1
 	echo.
-	echo.Build finished. The HTML pages are in %BUILDDIR%/html.
+	echo.Build finished. The HTML pages are in %BUILDDIR%\html.
 	goto end
 )
 
@@ -103,7 +106,7 @@ if "%1" == "dirhtml" (
 	%SPHINXBUILD% -b dirhtml %ALLSPHINXOPTS% %BUILDDIR%/dirhtml
 	if errorlevel 1 exit /b 1
 	echo.
-	echo.Build finished. The HTML pages are in %BUILDDIR%/dirhtml.
+	echo.Build finished. The HTML pages are in %BUILDDIR%\dirhtml.
 	goto end
 )
 
@@ -111,7 +114,7 @@ if "%1" == "singlehtml" (
 	%SPHINXBUILD% -b singlehtml %ALLSPHINXOPTS% %BUILDDIR%/singlehtml
 	if errorlevel 1 exit /b 1
 	echo.
-	echo.Build finished. The HTML pages are in %BUILDDIR%/singlehtml.
+	echo.Build finished. The HTML pages are in %BUILDDIR%\singlehtml.
 	goto end
 )
 
@@ -136,7 +139,7 @@ if "%1" == "htmlhelp" (
 	if errorlevel 1 exit /b 1
 	echo.
 	echo.Build finished; now you can run HTML Help Workshop with the ^
-.hhp project file in %BUILDDIR%/htmlhelp.
+.hhp project file in %BUILDDIR%\htmlhelp.
 	goto end
 )
 
@@ -145,7 +148,7 @@ if "%1" == "qthelp" (
 	if errorlevel 1 exit /b 1
 	echo.
 	echo.Build finished; now you can run "qcollectiongenerator" with the ^
-.qhcp project file in %BUILDDIR%/qthelp, like this:
+.qhcp project file in %BUILDDIR%\qthelp, like this:
 	echo.^> qcollectiongenerator %BUILDDIR%\qthelp\vsgen.qhcp
 	echo.To view the help file:
 	echo.^> assistant -collectionFile %BUILDDIR%\qthelp\vsgen.ghc
@@ -164,7 +167,7 @@ if "%1" == "epub" (
 	%SPHINXBUILD% -b epub %ALLSPHINXOPTS% %BUILDDIR%/epub
 	if errorlevel 1 exit /b 1
 	echo.
-	echo.Build finished. The epub file is in %BUILDDIR%/epub.
+	echo.Build finished. The epub file is in %BUILDDIR%\epub.
 	goto end
 )
 
@@ -172,7 +175,7 @@ if "%1" == "latex" (
 	%SPHINXBUILD% -b latex %ALLSPHINXOPTS% %BUILDDIR%/latex
 	if errorlevel 1 exit /b 1
 	echo.
-	echo.Build finished; the LaTeX files are in %BUILDDIR%/latex.
+	echo.Build finished; the LaTeX files are in %BUILDDIR%\latex.
 	goto end
 )
 
@@ -182,7 +185,7 @@ if "%1" == "latexpdf" (
 	make all-pdf
 	cd %~dp0
 	echo.
-	echo.Build finished; the PDF files are in %BUILDDIR%/latex.
+	echo.Build finished; the PDF files are in %BUILDDIR%\latex.
 	goto end
 )
 
@@ -192,7 +195,7 @@ if "%1" == "latexpdfja" (
 	make all-pdf-ja
 	cd %~dp0
 	echo.
-	echo.Build finished; the PDF files are in %BUILDDIR%/latex.
+	echo.Build finished; the PDF files are in %BUILDDIR%\latex.
 	goto end
 )
 
@@ -200,7 +203,7 @@ if "%1" == "text" (
 	%SPHINXBUILD% -b text %ALLSPHINXOPTS% %BUILDDIR%/text
 	if errorlevel 1 exit /b 1
 	echo.
-	echo.Build finished. The text files are in %BUILDDIR%/text.
+	echo.Build finished. The text files are in %BUILDDIR%\text.
 	goto end
 )
 
@@ -208,7 +211,7 @@ if "%1" == "man" (
 	%SPHINXBUILD% -b man %ALLSPHINXOPTS% %BUILDDIR%/man
 	if errorlevel 1 exit /b 1
 	echo.
-	echo.Build finished. The manual pages are in %BUILDDIR%/man.
+	echo.Build finished. The manual pages are in %BUILDDIR%\man.
 	goto end
 )
 
@@ -216,7 +219,7 @@ if "%1" == "texinfo" (
 	%SPHINXBUILD% -b texinfo %ALLSPHINXOPTS% %BUILDDIR%/texinfo
 	if errorlevel 1 exit /b 1
 	echo.
-	echo.Build finished. The Texinfo files are in %BUILDDIR%/texinfo.
+	echo.Build finished. The Texinfo files are in %BUILDDIR%\texinfo.
 	goto end
 )
 
@@ -224,7 +227,7 @@ if "%1" == "gettext" (
 	%SPHINXBUILD% -b gettext %I18NSPHINXOPTS% %BUILDDIR%/locale
 	if errorlevel 1 exit /b 1
 	echo.
-	echo.Build finished. The message catalogs are in %BUILDDIR%/locale.
+	echo.Build finished. The message catalogs are in %BUILDDIR%\locale.
 	goto end
 )
 
@@ -232,7 +235,7 @@ if "%1" == "changes" (
 	%SPHINXBUILD% -b changes %ALLSPHINXOPTS% %BUILDDIR%/changes
 	if errorlevel 1 exit /b 1
 	echo.
-	echo.The overview file is in %BUILDDIR%/changes.
+	echo.The overview file is in %BUILDDIR%\changes.
 	goto end
 )
 
@@ -241,7 +244,7 @@ if "%1" == "linkcheck" (
 	if errorlevel 1 exit /b 1
 	echo.
 	echo.Link check complete; look for any errors in the above output ^
-or in %BUILDDIR%/linkcheck/output.txt.
+or in %BUILDDIR%\linkcheck\output.txt.
 	goto end
 )
 
@@ -250,7 +253,7 @@ if "%1" == "doctest" (
 	if errorlevel 1 exit /b 1
 	echo.
 	echo.Testing of doctests in the sources finished, look at the ^
-results in %BUILDDIR%/doctest/output.txt.
+results in %BUILDDIR%\doctest\output.txt.
 	goto end
 )
 
@@ -259,7 +262,7 @@ if "%1" == "coverage" (
 	if errorlevel 1 exit /b 1
 	echo.
 	echo.Testing of coverage in the sources finished, look at the ^
-results in %BUILDDIR%/coverage/python.txt.
+results in %BUILDDIR%\coverage\python.txt.
 	goto end
 )
 
@@ -267,7 +270,7 @@ if "%1" == "xml" (
 	%SPHINXBUILD% -b xml %ALLSPHINXOPTS% %BUILDDIR%/xml
 	if errorlevel 1 exit /b 1
 	echo.
-	echo.Build finished. The XML files are in %BUILDDIR%/xml.
+	echo.Build finished. The XML files are in %BUILDDIR%\xml.
 	goto end
 )
 
@@ -275,7 +278,7 @@ if "%1" == "pseudoxml" (
 	%SPHINXBUILD% -b pseudoxml %ALLSPHINXOPTS% %BUILDDIR%/pseudoxml
 	if errorlevel 1 exit /b 1
 	echo.
-	echo.Build finished. The pseudo-XML files are in %BUILDDIR%/pseudoxml.
+	echo.Build finished. The pseudo-XML files are in %BUILDDIR%\pseudoxml.
 	goto end
 )
 
