@@ -11,6 +11,19 @@ __pycache__/
 *.pyc
 *.pyo
 
+# Python Virtual Environments
+[._]env*/
+
+# Python Documentation Generation
+docs/_build/
+
+# Setuptools distribution folder.
+dist/
+
+# Python egg metadata, regenerated from source files by setuptools.
+.eggs/
+*.egg-info/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
