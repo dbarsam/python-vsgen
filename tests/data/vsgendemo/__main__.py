@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Generates the VSG Demo's Python Tools for Visual Studio IDE Solutions and Projects.  
+Generates the VSG Demo's Python Tools for Visual Studio IDE Solutions and Projects.
 """
 import os
 import sys
