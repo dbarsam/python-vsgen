@@ -23,6 +23,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="docs\source\conf.py" />
+    <Compile Include="setup.py" />
     <Compile Include="tests\integration\test_package_integration.py" />
     <Compile Include="tests\integration\test_suite_integration.py" />
     <Compile Include="tests\integration\__init__.py" />
@@ -70,6 +71,7 @@
     <Content Include="docs\source\user\files.rst" />
     <Content Include="docs\source\user\objects.rst" />
     <Content Include="docs\source\user\overview.rst" />
+    <Content Include="setup.cfg" />
     <Content Include="tests\data\vsgencfg\setup.cfg" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
