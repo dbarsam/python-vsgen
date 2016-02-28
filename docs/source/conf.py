@@ -20,7 +20,17 @@ import os
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+docroot = os.path.dirname(__file__)
+pkgroot = os.path.abspath(os.path.join(docroot, '..', '..'))
+sys.path.insert(0, pkgroot)
+
+# -- Preprocessing --------------------------------------------------------
+
+# Our make file calls sphinx-apidoc, but read-the-docs uses our config instead
+# (so it skips that step). Calling apidoc here instead if we're being built
+# there.
+if os.environ.get('READTHEDOCS', None) == 'True':
+    os.system("sphinx-apidoc --no-toc --separate --private -o {} {}".format(os.path.join(docroot, 'apidoc'), os.path.join(pkgroot, 'vsgen')))
 
 # -- General configuration ------------------------------------------------
 
