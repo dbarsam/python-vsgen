@@ -22,7 +22,8 @@ TEST_REQUIREMENTS = [
 
 SETUP_REQUIREMENTS = [
     'setuptools-pep8',
-    'setuptools-lint'
+    'setuptools-lint',
+    'setuptools_scm'
 ]
 
 CLASSIFIERS = [
@@ -50,9 +51,12 @@ CHANGES = open(path.join(ROOT_PATH, 'CHANGES.rst'), encoding='utf-8').read()
 
 LONG_DESCRIPTION = README +'\n\n'+ CHANGES
 
+SCM_VERSION = {
+    'local_scheme': 'dirty-tag'
+}
+
 setup(
     name='vsgen',
-    version='1.0.0',
     description='A Microsoft Visual Studio solution and project generator pyackage.',
     long_description=LONG_DESCRIPTION,
     url='https://github.com/dbarsam/python-vsgen',
@@ -66,5 +70,6 @@ setup(
     test_suite='tests',
     tests_require=TEST_REQUIREMENTS,
     entry_points=ENTRY_POINTS,
-    install_requires=INSTALL_REQUIREMENTS
+    install_requires=INSTALL_REQUIREMENTS,
+    use_scm_version=SCM_VERSION
 )
