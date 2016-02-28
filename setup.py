@@ -44,7 +44,11 @@ ENTRY_POINTS = {
 
 PACKAGES = find_packages(exclude=['contrib', 'docs', 'tests', '.eggs'])
 
-LONG_DESCRIPTION = open(path.join(ROOT_PATH, 'README.rst'), encoding='utf-8').read()
+README = open(path.join(ROOT_PATH, 'README.rst'), encoding='utf-8').read()
+
+CHANGES = open(path.join(ROOT_PATH, 'CHANGES.rst'), encoding='utf-8').read()
+
+LONG_DESCRIPTION = README +'\n\n'+ CHANGES
 
 setup(
     name='vsgen',
