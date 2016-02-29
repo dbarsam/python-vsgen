@@ -49,7 +49,7 @@ README = open(path.join(ROOT_PATH, 'README.rst'), encoding='utf-8').read()
 
 CHANGES = open(path.join(ROOT_PATH, 'CHANGES.rst'), encoding='utf-8').read()
 
-LONG_DESCRIPTION = README +'\n\n'+ CHANGES
+LONG_DESCRIPTION = README + '\n\n' + CHANGES
 
 SCM_VERSION = {
     'local_scheme': 'dirty-tag'
