@@ -1,8 +1,31 @@
+=====
 vsgen
 =====
-A Microsoft Visual Studio solution and project generation library.
-
 |build-status| |docs| |pypi-version| |pypi-license| |python-2| |python-3|
+
+A Python package that automatically generates solutions and projects from python script.
+
+Installation
+============
+Use pip: ::
+
+  pip install vsgen
+
+Usage
+=====
+There are two ways to use `vsgen`:
+
+#. Manipulate the `vsgen` classes directly with Python script and then generate the files using `vsgen`'s commands.
+
+#. Use the command line and supply a configuration file that contains the solution and project defintions and let `vsgen` automaticaly generate the files.
+
+Documentation
+=============
+Documentation is available at `readthedocs.org <http://vsgen.readthedocs.org/en/latest/>`_.
+
+Support
+=======
+Use the `issue tracker <https://github.com/dbarsam/python-vsgen/issues>`_ to file any suggestions, bugs or other issues.
 
 .. |build-status| image:: https://ci.appveyor.com/api/projects/status/7lb4a723xcgh0hr6/branch/master?svg=true
     :alt: build status
