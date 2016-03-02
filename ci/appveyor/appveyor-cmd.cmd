@@ -6,7 +6,8 @@
 :: variables to use the MSVC 2008 C++ compilers from GRMSDKX_EN_DVD.iso of:
 :: MS Windows SDK for Windows 7 and .NET Framework 3.5 (SDK v7.0)
 ::
-:: 32 bit builds do not require specific environment configurations.
+:: 32 bit builds, and 64-bit builds for 3.5 and beyond, do not require specific
+:: environment configurations.
 ::
 :: Note: this script needs to be run with the /E:ON and /V:ON flags for the
 :: cmd interpreter, at least for (SDK v7.0)
@@ -62,7 +63,7 @@ IF %PYTHON_ARCH% == x64 (
         SET DISTUTILS_USE_SDK=1
         SET MSSdk=1
         "%WIN_SDK_ROOT%\%WINDOWS_SDK_VERSION%\Setup\WindowsSdkVer.exe" -q -version:%WINDOWS_SDK_VERSION%
-        "%WIN_SDK_ROOT%\%WINDOWS_SDK_VERSION%\Bin\SetEnv.cmd" /x64 /release
+        call "%WIN_SDK_ROOT%\%WINDOWS_SDK_VERSION%\Bin\SetEnv.cmd" /x64 /release
     ) ELSE (
         ECHO Using default MSVC build environment for 64 bit architecture
     )
