@@ -26,11 +26,31 @@ sys.path.insert(0, pkgroot)
 
 # -- Preprocessing --------------------------------------------------------
 
+#Special flag if we're building on a read-the-docs server
+rtd = os.environ.get('READTHEDOCS', None) == 'True'
+
 # Our make file calls sphinx-apidoc, but read-the-docs uses our config instead
 # (so it skips that step). Calling apidoc here instead if we're being built
 # there.
-if os.environ.get('READTHEDOCS', None) == 'True':
+if rtd:  
     os.system("sphinx-apidoc --no-toc --separate --private -o {} {}".format(os.path.join(docroot, 'apidoc'), os.path.join(pkgroot, 'vsgen')))
+
+# -- Mock -----------------------------------------------------------------
+
+# Read The Docs requires modules relying on Windows-only DLLs etc. be "mocked".
+# https://read-the-docs.readthedocs.org/en/latest/faq.html#i-get-import-errors-on-libraries-that-depend-on-c-modules
+try:
+    from unittest.mock import Mock
+except ImportError:
+    from mock import Mock
+
+class _Mock(Mock):
+    @classmethod
+    def __getattr__(cls, name):
+        return _Mock()
+
+MOCK_MODULES = ['_winreg']
+sys.modules.update((mod_name, _Mock()) for mod_name in MOCK_MODULES)
 
 # -- General configuration ------------------------------------------------
 
@@ -130,7 +150,7 @@ todo_include_todos = True
 html_theme = 'alabaster'
 # only import and set the theme if we're building docs locally
 # otherwise, readthedocs.org uses their theme by default, so no need to specify it
-if not os.environ.get('READTHEDOCS', None):  
+if not rtd:  
     import sphinx_rtd_theme
     html_theme = 'sphinx_rtd_theme'
     html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
