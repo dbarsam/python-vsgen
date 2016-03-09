@@ -32,7 +32,7 @@ Use the `issue tracker <https://github.com/dbarsam/python-vsgen/issues>`_ to fil
     :scale: 100%
     :target: https://ci.appveyor.com/project/dbarsam/python-vsgen
 
-.. |docs| image:: https://readthedocs.org/projects/vsgen/badge/
+.. |docs| image:: https://readthedocs.org/projects/vsgen/badge/?version=latest
     :alt: Documentation Status
     :scale: 100%
     :target: http://vsgen.readthedocs.org/en/latest/
