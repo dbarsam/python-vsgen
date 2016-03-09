@@ -6,14 +6,17 @@ This module provides the main command line interface to using VSG.
 import os
 import sys
 
-
-def main(argv=[]):
+def main(argv=None):
     """
     The entry point of the script.
     """
     import argparse
     from vsgen import VSGSuite
     from vsgen import VSGLogger
+
+    # Special case to use the sys.argv when main called without a list.
+    if argv is None:
+        argv = sys.argv
 
     # logger
     pylogger = VSGLogger()
