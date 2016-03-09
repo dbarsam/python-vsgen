@@ -6,6 +6,7 @@ This module provides the main command line interface to using VSG.
 import os
 import sys
 
+
 def main(argv=None):
     """
     The entry point of the script.

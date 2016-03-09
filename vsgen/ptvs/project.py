@@ -12,6 +12,7 @@ import errno
 from vsgen.project import VSGProject
 from vsgen.ptvs.interpreter import PTVSInterpreter
 
+
 class PTVSProject(VSGProject):
     """
     PTVSProject extends :class:`~vsgen.project.VSGProject` with data and logic needed to create a `.pyproj` file.
