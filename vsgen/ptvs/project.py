@@ -10,7 +10,7 @@ import uuid
 import errno
 
 from vsgen.project import VSGProject
-
+from vsgen.ptvs.interpreter import PTVSInterpreter
 
 class PTVSProject(VSGProject):
     """
