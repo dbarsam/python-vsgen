@@ -263,7 +263,7 @@ class PTVSInterpreter(VSGRegisterable):
         if not self.VSVersion:
             raise ValueError('Cannot register interpreter with invalid Visual Studio Version')
 
-        regkey_name = self.regkey_name.format(VSVersion=self.VSVersion)
+        regkey_name = self._regkey_name.format(VSVersion=self.VSVersion)
         try:
             vs_regkey_name = os.path.dirname(regkey_name)
             winreg.OpenKey(winreg.HKEY_CURRENT_USER, vs_regkey_name)
