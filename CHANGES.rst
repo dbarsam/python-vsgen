@@ -1,7 +1,21 @@
 Changelog
 =========
 
-Unreleased
-----------
+1.0.0-dev_ (Unreleased)
+-----------------------
+- TBD
 
-- Initial Python package structure.
+0.2.1_ (2016-03-09) 
+-------------------
+Bug Fixes:
+
+- Updated main's argument handling; Fixes #1.
+- Added missing import; Fixes #2.
+- Fixed misnamed PTVSInterpreter class variable; Fixes #3.
+
+0.2.0, 2016-03-08
+------------------
+- Initial Release.
+
+.. _0.2.1: https://github.com/dbarsam/python-vsgen/compare/0.2.0...0.2.1
+.. _1.0.0-dev: https://github.com/dbarsam/python-vsgen/0.2.1...HEAD
