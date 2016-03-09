@@ -37,21 +37,21 @@ Use the `issue tracker <https://github.com/dbarsam/python-vsgen/issues>`_ to fil
     :scale: 100%
     :target: http://vsgen.readthedocs.org/en/latest/
 
-.. |pypi-version| image:: http://img.shields.io/pypi/v/vsgen.svg?v=1
+.. |pypi-version| image:: http://img.shields.io/pypi/v/vsgen.svg
     :alt: PyPI Version
     :scale: 100%
     :target: https://pypi.python.org/pypi/vsgen
 
-.. |pypi-license| image:: http://img.shields.io/pypi/l/vsgen.svg?v=1
+.. |pypi-license| image:: http://img.shields.io/pypi/l/vsgen.svg
     :alt: PyPI License
     :scale: 100%
     :target: https://pypi.python.org/pypi/vsgen
 
-.. |python-2| image:: http://img.shields.io/badge/python-2-blue.svg?v=1
+.. |python-2| image:: http://img.shields.io/badge/python-2-blue.svg
     :alt: Python 2 Compatible
     :scale: 100%
 
-.. |python-3| image:: http://img.shields.io/badge/python-3-blue.svg?v=1
+.. |python-3| image:: http://img.shields.io/badge/python-3-blue.svg
     :alt: Python 3 Compatible
     :scale: 100%
 
