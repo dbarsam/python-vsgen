@@ -5,6 +5,7 @@ This module provides the neccessary defintions to generate a Solution File.
 
 import os
 import uuid
+import errno
 
 from vsgen.writer import VSGWritable
 
@@ -46,9 +47,13 @@ class VSGSolution(VSGWritable):
         """
         Writes the `.sln` file to disk.
         """
-        (filepath, filename) = os.path.split(os.path.normpath(self.FileName))
-        if not os.path.exists(filepath):
+        npath = os.path.normpath(self.FileName)
+        (filepath, filename) = os.path.split(npath)
+        try:
             os.makedirs(filepath)
+        except OSError as exception:
+            if exception.errno != errno.EEXIST:
+                raise
 
         projectFileName = os.path.normpath(self.FileName)
         with open(projectFileName, 'wt') as f:
