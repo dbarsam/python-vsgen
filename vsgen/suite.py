@@ -17,24 +17,16 @@ from vsgen.util.config import VSGConfigParser
 
 class VSGSuite(object):
 
-    def __init__(self, filename):
+    def __init__(self, config):
         """
         Constructor.
 
-        :param str filename:  The fully qualified path to the VSG configuration file.
+        :param obj config: The instance of the VSGConfigParser class
         """
-        # Read the configuration file
-        config = VSGConfigParser()
-        if filename not in config.read(filename):
-            raise ValueError('Could not read VSG configuration file %s.' % filename)
-
         # Resolve the root path
         root = config.get('vsgen', 'root', fallback=None)
         if not root:
             raise ValueError('Expected option "root" in section [vsgen].')
-
-        root = os.path.normpath(os.path.join(os.path.dirname(filename), root))
-        config.set('vsgen', 'root', root)
 
         # Build the VSG Solutions
         self._solutions = [self._getsolution(config, s) for s in config.sections() if 'vsgen.solution' in s]
@@ -97,6 +89,46 @@ class VSGSuite(object):
 
         p = project_classes[0].from_section(config, section, **kwargs)
         return p
+
+    @classmethod
+    def from_file(cls, filename):
+        """
+        Creates an VSGSuite instance from a filename.
+
+        :param str filename:  The fully qualified path to the VSG configuration file.
+        """
+        # Read the configuration file
+        config = VSGConfigParser()
+        if filename not in config.read(filename):
+            raise ValueError('Could not read VSG configuration file %s.' % filename)
+
+        # set the root
+        root = config.get('vsgen', 'root')
+        root = os.path.normpath(os.path.join(os.path.dirname(filename), root))
+        config.set('vsgen', 'root', root)
+
+        return VSGSuite(config)
+
+    @classmethod
+    def from_directory(cls, directory, type):
+        """
+        Creates an VSGSuite instance from a filename.
+
+        :param str filename:  The fully qualified path to the VSG configuration file.
+        :param str filename:  The configuration type to generate.
+        """
+        filename = os.path.join(os.path.dirname(sys.modules['vsgen'].__file__), 'data', '{}.cfg'.format(type))
+
+        # Read the configuration file
+        config = VSGConfigParser()
+        if filename not in config.read(filename):
+            raise ValueError('Could not read VSG configuration file %s.' % filename)
+
+        # set the root
+        config.set('vsgen', 'root', os.path.normpath(directory))
+        config.set('vsgen', 'name', os.path.basename(directory))
+
+        return VSGSuite(config)
 
     def write(self, parallel=True):
         """

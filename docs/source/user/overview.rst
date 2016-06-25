@@ -34,11 +34,18 @@ Using Python Code
 ~~~~~~~~~~~~~~~~~
 The functionality of vsgen is organised into classes and can be manipulated by Python code.  More information is available on the :doc:`objects` page.
 
+Command Line
+~~~~~~~~~~~~
+
 Using Configuration Files
-~~~~~~~~~~~~~~~~~~~~~~~~~
-Vsgen also supports reading in solution and project defintions defined in :mod:`configparser` configuration files.  More information is available on the :doc:`files` page.
+*************************
+Vsgen supports reading in solution and project defintions defined in :mod:`configparser` configuration files.  More information is available on the :doc:`files` page.
 
 .. note:: vsgen processes the configuration file with :class:`~configparser.ExtendedInterpolation` available in Python 3's :mod:`configparser`.  There is a  `configparser <https://pypi.python.org/pypi/configparser>`_ Python 2.7 backport of available on the Python Package Index.
+
+Automatic Generation
+********************
+Vsgen supports automatic generation given a directory and a type.  The type corresponds to a template file in vsgen's ``data`` directory.
 
 Command line options
 ~~~~~~~~~~~~~~~~~~~~
@@ -46,25 +53,29 @@ vsgen has a simple command line interface and allows specifiying one or more :do
 
 You can run it as a module::
 
-	python -m vsgen [-h] file [file ...]
+	$ python -m vsgen [-h] {generate,auto} ...
     
 or when install with setuptools run the auto generated entry point in Scripts::
 
-	vsgen [-h] file [file ...]
+	$ vsgen [-h] {generate,auto} ...
 
 A quick help is available on the command line::
 
-    $ python vsgen -h
-    usage: vsgen [-h] file [file ...]
-
-    Executes the vsgen package as an application.
-
-    positional arguments:
-      file        The configuration file that contains the [vsgen.*] sections
-                  contains the vsgen input
-
-    optional arguments:
-      -h, --help  show this help message and exit
+	$ python vsgen --help                                                          
+	usage: vsgen [-h] {generate,auto} ...                                          
+                                                                               
+	Executes the VSG package as an application.                                    
+                                                                               
+	positional arguments:                                                          
+	  {generate,auto}  Available commands.                                         
+		generate       Generates solutions and projects based on one or more       
+					   configuration files.                                        
+		auto           Automatically generates a solution and project from a       
+					   single directory.                                           
+                                                                               
+	optional arguments:                                                            
+	  -h, --help       show this help message and exit                             
+                                                                               
 
 Getting help
 ------------

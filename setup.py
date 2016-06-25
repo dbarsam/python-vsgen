@@ -51,6 +51,14 @@ CHANGES = open(path.join(ROOT_PATH, 'CHANGES.rst'), encoding='utf-8').read()
 
 LONG_DESCRIPTION = README + '\n\n' + CHANGES
 
+PACKAGE_DIR = {
+    'vsgen': './vsgen'
+}
+
+PACKAGE_DATA = {
+    'vsgen': ['data/*.*']
+}
+
 SCM_VERSION = {
     'local_scheme': 'dirty-tag'
 }
@@ -67,6 +75,8 @@ setup(
     classifiers=CLASSIFIERS,
     keywords='visual studio project generation',
     packages=PACKAGES,
+    package_dir=PACKAGE_DIR,
+    package_data=PACKAGE_DATA,
     test_suite='tests',
     tests_require=TEST_REQUIREMENTS,
     entry_points=ENTRY_POINTS,
