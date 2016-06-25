@@ -57,6 +57,7 @@ class TestIntegrationConfigurationFile(unittest.TestCase):
         result = __main__.main([__main__.__file__, 'generate', self._file])
         self.assertEqual(result, 0)
 
+
 class TestIntegrationDirectory(unittest.TestCase):
     """
     Tests the Solution and Project Generation from a directory.
