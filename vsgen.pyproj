@@ -53,6 +53,7 @@
   <ItemGroup>
     <Folder Include="docs\" />
     <Folder Include="docs\source\" />
+    <Folder Include="docs\source\dev\" />
     <Folder Include="docs\source\user\" />
     <Folder Include="tests\integration\" />
     <Folder Include="vsgen" />
@@ -68,6 +69,7 @@
     <Content Include="CHANGES.rst" />
     <Content Include="docs\make.bat" />
     <Content Include="docs\Makefile" />
+    <Content Include="docs\source\dev\release.rst" />
     <Content Include="docs\source\index.rst" />
     <Content Include="docs\source\user\faq.rst" />
     <Content Include="docs\source\user\files.rst" />

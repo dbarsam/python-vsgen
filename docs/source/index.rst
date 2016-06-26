@@ -25,6 +25,13 @@ This documentation was built from the |version| (|release|) snapshot of the code
    user/files
    user/faq
 
+.. _dev-docs:
+.. toctree::
+   :maxdepth: 1
+   :caption: Developer Documentation
+
+   dev/release
+
 .. _api-docs:
 .. toctree::
    :maxdepth: 2
