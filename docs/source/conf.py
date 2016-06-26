@@ -41,18 +41,19 @@ if rtd:
 
 # Read The Docs requires modules relying on Windows-only DLLs etc. be "mocked".
 # https://read-the-docs.readthedocs.org/en/latest/faq.html#i-get-import-errors-on-libraries-that-depend-on-c-modules
-try:
-    from unittest.mock import Mock
-except ImportError:
-    from mock import Mock
+if rtd:
+    try:
+        from unittest.mock import Mock
+    except ImportError:
+        from mock import Mock
 
-class _Mock(Mock):
-    @classmethod
-    def __getattr__(cls, name):
-        return _Mock()
+    class _Mock(Mock):
+        @classmethod
+        def __getattr__(cls, name):
+            return _Mock()
 
-MOCK_MODULES = ['_winreg']
-sys.modules.update((mod_name, _Mock()) for mod_name in MOCK_MODULES)
+    MOCK_MODULES = ['_winreg']
+    sys.modules.update((mod_name, _Mock()) for mod_name in MOCK_MODULES)
 
 # -- General configuration ------------------------------------------------
 
