@@ -125,9 +125,9 @@ class VSGSuite(object):
             raise ValueError('Could not read VSG configuration file %s.' % filename)
 
         # set the root
-        config.set('vsgen', 'root', os.path.normpath(directory))
-        config.set('vsgen', 'name', os.path.basename(directory))
-
+        path = os.path.abspath(directory)
+        config.set('vsgen', 'root', path)
+        config.set('vsgen', 'name', os.path.basename(path))
         return VSGSuite(config)
 
     def write(self, parallel=True):
