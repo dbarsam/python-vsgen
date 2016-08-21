@@ -27,10 +27,12 @@ class VSGProject(VSGWritable, VSGRegisterable):
     :ivar list  CompileFiles:           The list of absolute files that will comprise the projects compile group; if not provide the value is [].
     :ivar list  ContentFiles:           The list of absolute files that will comprise the projects content group; if not provide the value is [].
     :ivar list  Directories:            The list of absolute directories that will comprise the projects directory group; if not provide the value is [].
-    :ivar list  DirectoryInFilter:      A list of strings matching exactly with directories to be explicitly included during the item generation step; if not provided the value is [].
-    :ivar list  DirectoryExFilter:      A list of strings matching exactly with directories to be explicitly excluded during the item generation step; if not provided the value is [].
-    :ivar list  CompileInFilter:        A list of strings matching exactly with file extensions (`.ext`) of compile files to be included during the item generation step; if not provide the value is [].
-    :ivar list  ContentInFilter:        A list of strings matching exactly with file extensions (`.ext`) of content files to be included during the item generation step; if not provide the value is [].
+    :ivar list  DirectoryInFilter:      A list of fnmatch expressions to match directories to be included during the item generation step; if not provided the value is [].
+    :ivar list  DirectoryExFilter:      A list of fnmatch expressions to match directories to be excludes during the item generation step; if not provided the value is [].
+    :ivar list  CompileInFilter:        A list of fnmatch expressions to match compile files to be included during the item generation step; if not provide the value is [].
+    :ivar list  CompileExFilter:        A list of fnmatch expressions to match compile files to be excluded during the item generation step; if not provide the value is [].
+    :ivar list  ContentInFilter:        A list of fnmatch expressions to match content files to be included during the item generation step; if not provide the value is [].
+    :ivar list  ContentExFilter:        A list of fnmatch expressions to match content files to be excluded during the item generation step; if not provide the value is [].
     :ivar float VSVersion:              The Visual Studio version; if not provide the value is `None`.
     """
     __project_type__ = None
@@ -99,8 +101,8 @@ class VSGProject(VSGWritable, VSGRegisterable):
         p.CompileExFilter = config.getlist(section, 'compile_ex_filter', fallback=p.CompileExFilter)
         p.ContentInFilter = config.getlist(section, 'content_in_filter', fallback=p.ContentInFilter)
         p.ContentExFilter = config.getlist(section, 'content_ex_filter', fallback=p.ContentExFilter)
-        p.DirectoryInFilter = config.getdirs(section, 'directory_in_filter', fallback=p.DirectoryInFilter)
-        p.DirectoryExFilter = config.getdirs(section, 'directory_ex_filter', fallback=p.DirectoryExFilter)
+        p.DirectoryInFilter = config.getlist(section, 'directory_in_filter', fallback=p.DirectoryInFilter)
+        p.DirectoryExFilter = config.getlist(section, 'directory_ex_filter', fallback=p.DirectoryExFilter)
 
         root_path = config.get(section, 'root_path', fallback="")
         p.insert_files(root_path)
@@ -112,12 +114,12 @@ class VSGProject(VSGWritable, VSGRegisterable):
         Inserts files by recursive traversing the rootpath and inserting files according the addition filter parameters.
 
         :param str rootpath:            The absolute path to the root directory.
-        :param list directoryInFilter:  A list of strings matching exactly with directories to be included.  A `None` value will default to :attr:`DirectoryInFilter`.
-        :param list directoryExFilter:  A list of strings matching exactly with directories to be excluded.  A `None` value will default to :attr:`DirectoryExFilter`.
-        :param list compileInFilter:    A list of strings matching exactly with file extensions (`.ext`) of compile files to be included.  A `None` value will default to :attr:`CompileInFilter`.
-        :param list compileExFilter:    A list of strings matching exactly with file extensions (`.ext`) of compile files to be included.  A `None` value will default to :attr:`CompileExFilter`.
-        :param list contentInFilter:    A list of strings matching exactly with file extensions (`.ext`) of content files to be includes.  A `None` value will default to :attr:`ContentInFilter`.
-        :param list contentExFilter:    A list of strings matching exactly with file extensions (`.ext`) of content files to be includes.  A `None` value will default to :attr:`ContentExFilter`.
+        :param list directoryInFilter:  A list of fnmatch expressions to match directories to be included.  A `None` value will default to :attr:`DirectoryInFilter`.
+        :param list directoryExFilter:  A list of fnmatch expressions to match directories to be excluded.  A `None` value will default to :attr:`DirectoryExFilter`.
+        :param list compileInFilter:    A list of fnmatch expressions to match compile files to be included.  A `None` value will default to :attr:`CompileInFilter`.
+        :param list compileExFilter:    A list of fnmatch expressions to match compile files to be excludes.  A `None` value will default to :attr:`CompileExFilter`.
+        :param list contentInFilter:    A list of fnmatch expressions to match content files to be includes.  A `None` value will default to :attr:`ContentInFilter`.
+        :param list contentExFilter:    A list of fnmatch expressions to match content files to be excludes.  A `None` value will default to :attr:`ContentExFilter`.
         """
         # Overrides
         directoryInFilter = self.DirectoryInFilter if directoryInFilter is None else directoryInFilter
@@ -127,35 +129,31 @@ class VSGProject(VSGWritable, VSGRegisterable):
         contentInFilter = self.ContentInFilter if contentInFilter is None else contentInFilter
         contentExFilter = self.ContentExFilter if contentExFilter is None else contentExFilter
 
-        # Directory Path Clean-up
-        if directoryInFilter:
-            directoryInFilter = [os.path.normcase(os.path.normpath(d)) for d in directoryInFilter]
-        if directoryExFilter:
-            directoryExFilter = [os.path.normcase(os.path.normpath(d)) for d in directoryExFilter]
+        def filter(text, filters, explicit):
+            """
+            Convience filter function
 
-        matches = []
+            :param text text: The target text.
+            :param list filters: The collection of fnmatch expressions
+            :param bool explicit: Flag denoting an the empty filter collection return match failure.
+            """
+            if explicit:
+                return any(fnmatch.fnmatch(text, f) for f in filters)
+            return not filters or any(fnmatch.fnmatch(text, f) for f in filters)
+
         for root, dirnames, filenames in os.walk(rootpath):
 
             searchdir = os.path.normpath(os.path.normcase(root))
 
-            # Manually exclude
-            if directoryExFilter and any(rootdir in searchdir for rootdir in directoryExFilter):
+            # If the root dir matches an excluded directory, stop any further searches
+            if filter(searchdir, directoryExFilter, True):
                 dirnames[:] = []
-            # If we have the Target or a Child of a target directory, add the files
-            elif not directoryInFilter or any(rootdir in searchdir for rootdir in directoryInFilter):
-                for f in filenames:
-                    ext = os.path.splitext(f)[1]
-                    if compileExFilter and ext in compileExFilter:
-                        continue
-                    if not compileInFilter or ext in compileInFilter:
-                        self.CompileFiles.append(os.path.join(root, f))
-                    if contentExFilter and ext in contentExFilter:
-                        continue
-                    if not contentInFilter or ext in contentInFilter:
-                        self.ContentFiles.append(os.path.join(root, f))
-            # If we're not a root folder of a target we are in the wrong branch
-            elif not any(searchdir in rootdir for rootdir in directoryInFilter):
-                dirnames[:] = []
+            elif filter(searchdir, directoryInFilter, False):
+                for filepath in [os.path.join(root, filename) for filename in filenames]:
+                    if filter(filepath, compileInFilter, False) and not filter(filepath, compileExFilter, True):
+                        self.CompileFiles.append(filepath)
+                    elif filter(filepath, contentInFilter, False) and not filter(filepath, contentExFilter, True):
+                        self.ContentFiles.append(filepath)
 
     def write(self):
         """
