@@ -64,8 +64,9 @@ Command Line Reference
 The complete command line interface is below:
 
 .. argparse::
-    :ref: vsgen.__main__.parser
+    :ref: vsgen.__main__.make_parser
     :prog: vsgen
+	:nodefault:
 
 Getting help
 ------------
