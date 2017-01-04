@@ -1,0 +1,10 @@
+# ===================================================================
+# VSGen Documentation Requirements File
+#
+# see http://pip.readthedocs.org/en/stable/user_guide/#requirements-files
+# ===================================================================
+-r ../requirements.txt
+mock ; python_version <= '2.7'
+sphinx
+sphinx_rtd_theme
+sphinx-argparse

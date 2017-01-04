@@ -47,35 +47,25 @@ Automatic Generation
 ********************
 Vsgen supports automatic generation given a directory and a type.  The type corresponds to a template file in vsgen's ``data`` directory.
 
-Command line options
-~~~~~~~~~~~~~~~~~~~~
-vsgen has a simple command line interface and allows specifiying one or more :doc:`configuration files <files>`.
+Execution
+---------
+Vsgen has a simple command line interface.
 
 You can run it as a module::
 
-	$ python -m vsgen [-h] {generate,auto} ...
+	$ python -m vsgen ...
     
-or when install with setuptools run the auto generated entry point in Scripts::
+or, when installed with setuptools, run the auto generated entry point in Scripts::
 
-	$ vsgen [-h] {generate,auto} ...
+	$ vsgen ...
 
-A quick help is available on the command line::
+Command Line Reference
+~~~~~~~~~~~~~~~~~~~~~~
+The complete command line interface is below:
 
-	$ python vsgen --help                                                          
-	usage: vsgen [-h] {generate,auto} ...                                          
-                                                                               
-	Executes the VSG package as an application.                                    
-                                                                               
-	positional arguments:                                                          
-	  {generate,auto}  Available commands.                                         
-		generate       Generates solutions and projects based on one or more       
-					   configuration files.                                        
-		auto           Automatically generates a solution and project from a       
-					   single directory.                                           
-                                                                               
-	optional arguments:                                                            
-	  -h, --help       show this help message and exit                             
-                                                                               
+.. argparse::
+    :ref: vsgen.__main__.parser
+    :prog: vsgen
 
 Getting help
 ------------
