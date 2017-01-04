@@ -5,13 +5,31 @@ This module provides the main command line interface to using VSG.
 
 import os
 import sys
+import argparse
 
+def make_parser(**kwargs):
+    """
+    Generates the application's :class:argparse.ArgumentParser instance.
+    """
+    parser = argparse.ArgumentParser(**kwargs)
+
+    subparsers = parser.add_subparsers(help='Available commands.')
+
+    # 'Generate' command
+    file_parser = subparsers.add_parser('generate', help='Generates solutions and projects based on one or more configuration files.')
+    file_parser.add_argument('configuration_filenames', metavar='file', nargs='+', help='The configuration file that contains the [vsgen.*] sections contains the vsgen input.')
+
+    # 'Auto' command
+    auto_parser = subparsers.add_parser('auto', help='Automatically generates a solution and project from a single directory.')
+    auto_parser.add_argument('target_directory', metavar='directory', nargs='+', help='The directory that vsgen will automatically parse according to default values.')
+    auto_parser.add_argument('-t', '--type', metavar='type', default='ptvs', help='The type of project generated from the directory')
+
+    return parser
 
 def main(argv=None):
     """
     The entry point of the script.
     """
-    import argparse
     from vsgen import VSGSuite
     from vsgen import VSGLogger
 
@@ -23,20 +41,7 @@ def main(argv=None):
     pylogger = VSGLogger()
 
     # Process the command line.
-    parser = argparse.ArgumentParser(description='Executes the VSG package as an application.')
-
-    subparsers = parser.add_subparsers(help='Available commands.')
-
-    # A list command
-    file_parser = subparsers.add_parser('generate', help='Generates solutions and projects based on one or more configuration files.')
-    file_parser.add_argument('configuration_filenames', metavar='file', nargs='+', help='The configuration file that contains the [vsgen.*] sections contains the vsgen input.')
-
-    auto_parser = subparsers.add_parser('auto', help='Automatically generates a solution and project from a single directory.')
-    auto_parser.add_argument('target_directory', metavar='directory', nargs='+', help='The directory that vsgen will automatically parse according to default values.')
-    auto_parser.add_argument('-t', '--type', metavar='type', default='ptvs', help='The type of project generated from the directory')
-
-    # Parse the arguments.
-    args = parser.parse_args(argv[1:])
+    args = make_parser(description='Executes the VSG package as an application.').parse_args(argv[1:])
 
     # Create a VSGSuite and execute it for each filename on the command line.
     for filename in getattr(args, 'configuration_filenames', []):
