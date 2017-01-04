@@ -7,6 +7,7 @@ import os
 import sys
 import argparse
 
+
 def make_parser(**kwargs):
     """
     Generates the application's :class:argparse.ArgumentParser instance.
@@ -25,6 +26,7 @@ def make_parser(**kwargs):
     auto_parser.add_argument('-t', '--type', metavar='type', default='ptvs', help='The type of project generated from the directory')
 
     return parser
+
 
 def main(argv=None):
     """
