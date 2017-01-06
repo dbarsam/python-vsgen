@@ -83,7 +83,6 @@
     <Content Include="tests\data\vsgencfg\setup.cfg" />
     <Content Include="vsgen\data\ptvs.cfg" />
   </ItemGroup>
-  </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
 </Project>
