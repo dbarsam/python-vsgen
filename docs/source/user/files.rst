@@ -19,7 +19,6 @@ Object Sections
 vsgen objects are defined in other sections and, out of convention, the sections follow naming pattern ``[vsgen.*]``.
 
 
-
 Sections
 --------
 
@@ -88,7 +87,7 @@ type
 The vsgen project type.  This value describes which project object vsgen will contruct and how the other values in this section are interpreted.
 
 filename
-````````````
+````````
 The absolute path of the ``.proj`` file.
 
 working_directory
@@ -176,7 +175,7 @@ python_virtual_environments
 The comma separated list of sections that define Python virtual environments used by this project.
 
 Interpreter Section
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
 A Python Tools for Visual Studio project uses one of more Python Interpreters.  Each interpretter could by a stanrad Python installation or a Pytyon virtual environment; however all interpreters are managed outside of Visual Studio and the projects include them as section references.
 
 If the interpreter is a standard python interpreter the naming convention is ``[pyvsgen.interpreter.*]``.
