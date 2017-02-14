@@ -5,15 +5,14 @@ Release Process
 This process describes the steps to execute the automated release workflow for `vsgen`.  This workflow consists of:
 
 #. A new release being generated on GitHub.
-#. The release built and validated by `AppVeyor <https://ci.appveyor.com/project/DBarsam/python-vsgen>`_.
-#. The documentation updated on the `Read the Docs <http://vsgen.readthedocs.org/en/latest/>`_.
-#. The Python package updated on `PyPI <https://pypi.python.org/pypi/vsgen>`_.
+#. The release built and validated by `AppVeyor`_.
+#. The documentation updated on the `Read the Docs`_.
+#. The Python package updated on `PyPI`_.
 
 Prerequisites
 =============
 
-#. Close all `tickets for the next version
-   <https://github.com/dbarsam/python-vsgen/issues?q=is%3Aopen+is%3Aissue>`_.
+#. Close all `tickets for the next version`_.
 
 #. Update the *minimum* version of all requirements in :file:`setup.py`.
 
@@ -43,7 +42,9 @@ Prerequisites
    .. code-block:: bat
 
     $ cd docs/
+	$ pip install -r requirements.txt
     $ make.bat clean 
+    $ make.bat rst
     $ make.bat html
     $ make.bat view
     $ cd ..
@@ -59,8 +60,7 @@ Prerequisites
 Build
 =====
 
-#. Build a source distribution and a `wheel <https://pypi.python.org/pypi/wheel>`_
-   package and test them:
+#. Build a source distribution and a `wheel`_ package and test them:
 
    .. code-block:: bat
 
@@ -97,24 +97,19 @@ Build
 Release
 =======
 
-#. Sync the local branch with the remote master branch and verify that
-   the `Appveyor dashbaord <https://ci.appveyor.com/project/dbarsam/python-vsgen>`_ is passing.
+#. Sync the local branch with the remote master branch and verify that the `Appveyor`_ dashboard is passing.
 
-#. Navigate to vsgen's `Release Page <https://github.com/dbarsam/python-vsgen/releases>`_
-   and draft a new release:
+#. Navigate to vsgen's `release page`_ and draft a new release:
    
    #. Give the release a title (`Feature Release`, `Maintenance Release`, etc.).
    #. Tag with the appropriate version as described in :file:`CHANGES.txt`.
 
 #. Publish the release:
    
-   #. Verify that the `Appveyor dashboard <https://ci.appveyor.com/project/DBarsam/python-vsgen>`_
-      is green and has published the package to `PyPI <https://pypi.python.org/pypi>`_.
-   #. Verify that the `Read the Docs <http://vsgen.readthedocs.io/en/latest/>`_
-      is updated.
+   #. Verify that the `Appveyor`_ dashboard is green and has published the package to `PyPI`_.
+   #. Verify that the `Read the Docs`_ is updated.
 
-#. Check if the package is displayed correctly:
-   https://pypi.python.org/pypi/vsgen
+#. Check if the package is displayed correctly: https://pypi.python.org/pypi/vsgen
 
 Post release
 ============
@@ -131,3 +126,10 @@ Finally instal vsgen one last time:
     >>> import vsgen
     >>> vsgen.__version__
     'a.b.c'
+
+.. _pypi: https://pypi.python.org/pypi
+.. _wheel: https://pypi.python.org/pypi/wheel
+.. _read the docs: http://vsgen.readthedocs.org/en/latest/
+.. _appveyor: https://ci.appveyor.com/project/DBarsam/python-vsgen
+.. _release page: https://github.com/dbarsam/python-vsgen/releases
+.. _tickets for the next version: https://github.com/dbarsam/python-vsgen/issues?q=is%3Aopen+is%3Aissue
