@@ -72,3 +72,15 @@ class VSGConfigParser(configparser.ConfigParser):
         """
         globs = self.getlist(section, option, fallback=[])
         return [f for g in globs for f in glob.glob(g) if os.path.isdir(f)]
+
+    def set(self, section, option, value=None):
+        """
+        Extends :meth:`~configparser.ConfigParser.set` by auto formatting byte strings into unicode strings.
+        """
+        if isinstance(section, bytes):
+            section = section.decode('utf8') 
+        if isinstance(option, bytes):
+            option = option.decode('utf8') 
+        if isinstance(value, bytes):
+            value = value.decode('utf8') 
+        return super(VSGConfigParser, self).set(section, option, value)
