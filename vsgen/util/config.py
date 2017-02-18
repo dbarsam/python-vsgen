@@ -78,9 +78,12 @@ class VSGConfigParser(configparser.ConfigParser):
         Extends :meth:`~configparser.ConfigParser.set` by auto formatting byte strings into unicode strings.
         """
         if isinstance(section, bytes):
-            section = section.decode('utf8') 
+            section = section.decode('utf8')
+
         if isinstance(option, bytes):
-            option = option.decode('utf8') 
+            option = option.decode('utf8')
+
         if isinstance(value, bytes):
-            value = value.decode('utf8') 
+            value = value.decode('utf8')
+
         return super(VSGConfigParser, self).set(section, option, value)
