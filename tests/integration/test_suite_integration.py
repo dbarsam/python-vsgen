@@ -91,7 +91,7 @@ class TestIntegrationDirectory(unittest.TestCase):
         """
         Tests the expected workflow.
         """
-        result = __main__.main([__main__.__file__, 'auto', self._root, '-t', 'ptvs'])
+        result = __main__.main([__main__.__file__, 'auto', 'ptvs', '--root', self._root])
         self.assertEqual(result, 0)
 
 if __name__ == '__main__':

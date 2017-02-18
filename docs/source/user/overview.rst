@@ -23,6 +23,16 @@ To upgrade the package::
    
 Starting with Python 2.7.9, pip is included by default with the Python binary installers.
 
+Quick Start
+-----------
+To automatically create a solution and project from the command line, use the ``auto`` command::
+
+	vsgen auto <type> <path> <type options>
+
+For example, to create a PTVS solution and project pointing at path ``S:\project`` named ``demo``::
+
+	vsgen auto ptvs --root S:\project --name demo
+
 Usage
 -----
 There are two ways to use vsgen:
@@ -64,7 +74,7 @@ Command Line Reference
 The complete command line interface is below:
 
 .. argparse::
-    :ref: vsgen.__main__.make_parser
+    :ref: vsgen.__main__.make_documentation_parser
     :prog: vsgen
 	:nodefault:
 

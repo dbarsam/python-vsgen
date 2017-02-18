@@ -8,24 +8,12 @@ import sys
 import argparse
 
 
-def make_parser(**kwargs):
+def make_documentation_parser(**kwargs):
     """
-    Generates the application's :class:argparse.ArgumentParser instance.
+    Generates the application's :class:`~argparse.ArgumentParser` instance for the documentation generator `sphinx-argparse <https://sphinx-argparse.readthedocs.io>`_
     """
-    parser = argparse.ArgumentParser(**kwargs)
-
-    subparsers = parser.add_subparsers(help='Available commands.')
-
-    # 'Generate' command
-    file_parser = subparsers.add_parser('generate', help='Generates solutions and projects based on one or more configuration files.')
-    file_parser.add_argument('configuration_filenames', metavar='file', nargs='+', help='The configuration file that contains the [vsgen.*] sections contains the vsgen input.')
-
-    # 'Auto' command
-    auto_parser = subparsers.add_parser('auto', help='Automatically generates a solution and project from a single directory.')
-    auto_parser.add_argument('target_directory', metavar='directory', nargs='+', help='The directory that vsgen will automatically parse according to default values.')
-    auto_parser.add_argument('-t', '--type', metavar='type', default='ptvs', help='The type of project generated from the directory')
-
-    return parser
+    from vsgen import VSGSuite
+    return VSGSuite.make_parser(**kwargs)
 
 
 def main(argv=None):
@@ -39,21 +27,13 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv
 
-    # logger
+    # Initialize the application logger
     pylogger = VSGLogger()
 
-    # Process the command line.
-    args = make_parser(description='Executes the VSG package as an application.').parse_args(argv[1:])
-
-    # Create a VSGSuite and execute it for each filename on the command line.
-    for filename in getattr(args, 'configuration_filenames', []):
-        suite = VSGSuite.from_file(filename)
-        suite.write(False)
-
-    for directory in getattr(args, 'target_directory', []):
-        suite = VSGSuite.from_directory(directory, args.type)
-        suite.write(False)
-
+    # Construct a command line parser and parse the command line
+    args = VSGSuite.make_parser(description='Executes the VSG package as an application.').parse_args(argv[1:])
+    for s in VSGSuite.from_args(**vars(args)):
+        s.write(False)
     return 0
 
 if __name__ == "__main__":
