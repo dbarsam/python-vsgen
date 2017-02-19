@@ -22,7 +22,7 @@ For efficiency and conveneinve vsgen provides `command` objects that adapt each 
 
 The `Write` Command
 ~~~~~~~~~~~~~~~~~~~
-The :class:`~vsgen.writer.VSGWritCommand` is the command to efficient execute any :class:`~vsgen.writer.VSGWritable` action.
+The :class:`~vsgen.writer.VSGWriteCommand` is the command to efficient execute any :class:`~vsgen.writer.VSGWritable` action.
 
 The `Register` Command
 ~~~~~~~~~~~~~~~~~~~~~~
