@@ -10,7 +10,7 @@ Changelog
 Features:
 
 - Refactored the command line argument structure to expose more options to the command line; Fixes #10.
-- Adopted :mod:`fnmatch` pattern style for file and directory filter patterns, e.g ``.txt`` is now ``*.txt``.
+- Adopted fnmatch_ pattern style for file and directory filter patterns, e.g ``.txt`` is now ``*.txt``.
 
 Bug Fixes:
 
@@ -45,3 +45,4 @@ Bug Fixes:
 .. _0.2.2: https://github.com/dbarsam/python-vsgen/compare/0.2.1...0.2.2
 .. _0.2.1: https://github.com/dbarsam/python-vsgen/compare/0.2.0...0.2.1
 .. _1.0.0-dev: https://github.com/dbarsam/python-vsgen/compare/0.2.4...HEAD
+.. _fnmatch: https://docs.python.org/2/library/fnmatch.html
