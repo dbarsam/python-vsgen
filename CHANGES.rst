@@ -5,6 +5,17 @@ Changelog
 -----------------------
 - TBD
 
+0.2.4_ (2017-02-18) 
+-------------------
+Features:
+
+- Refactored the command line argument structure to expose more options to the command line; Fixes #10.
+- Adopted :mod:`fnmatch` pattern style for file and directory filter patterns, e.g ``.txt`` is now ``*.txt``.
+
+Bug Fixes:
+
+- Fixed auto command's resolution of the current directory; Fixes #9.
+
 0.2.3_ (2016-06-24) 
 -------------------
 Features:
@@ -29,7 +40,8 @@ Bug Fixes:
 ------------------
 - Initial Release.
 
+.. _0.2.4: https://github.com/dbarsam/python-vsgen/compare/0.2.3...0.2.4
 .. _0.2.3: https://github.com/dbarsam/python-vsgen/compare/0.2.2...0.2.3
 .. _0.2.2: https://github.com/dbarsam/python-vsgen/compare/0.2.1...0.2.2
 .. _0.2.1: https://github.com/dbarsam/python-vsgen/compare/0.2.0...0.2.1
-.. _1.0.0-dev: https://github.com/dbarsam/python-vsgen/0.2.1...HEAD
+.. _1.0.0-dev: https://github.com/dbarsam/python-vsgen/compare/0.2.4...HEAD
