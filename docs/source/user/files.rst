@@ -132,27 +132,27 @@ The comma separated list of initial files to be includes as content files.
  
 compile_in_filter
 `````````````````
-The comma separated list of file extensions (i.e. .py) used to include files automatically as compile files.
+The comma separated list of :mod:`fnmatch` expressions (i.e. ``*.py``) used to include files automatically as compile files.
 
 compile_ex_filter
 `````````````````
-The comma separated list of file extensions (i.e. .py) used to exclude files automatically from compile files.
+The comma separated list of :mod:`fnmatch` expressions (i.e. ``*.py``) used to exclude files automatically from compile files.
 
 content_in_filter
 `````````````````
-The comma separated list of file extensions (i.e. .py) used to include files automatically as content files.
+The comma separated list of :mod:`fnmatch` expressions (i.e. ``*.py``) used to include files automatically as content files.
 
 content_ex_filter
 `````````````````
-The comma separated list of file extensions (i.e. .py) used to exclude files automatically from content files.
+The comma separated list of :mod:`fnmatch` expressions (i.e. ``*.py``) used to exclude files automatically from content files.
 
 directory_in_filter
 ```````````````````
-The comma separated list of path glob patterns used to include directories when autoamtically adding files.
+The comma separated list of path :mod:`fnmatch` expressions (i.e. ``out*``) used to include directories when autoamtically adding files.
 
 directory_ex_filter
 ```````````````````
-The comma separated list of path glob patterns used to exclude directories when autoamtically adding files.
+The comma separated list of path :mod:`fnmatch` expressions (i.e. ``out*``) used to exclude directories when autoamtically adding files.
 
 is_windows_application
 ``````````````````````
