@@ -36,26 +36,30 @@ Prerequisites
     $ python setup.py pep8
     running pep8
 
-#. Build the docs (HTML is enough). Make sure there are no errors and undefined
+#. Build the docs.  While the final target is HTML there are additional steps to execute.  Make sure there are no errors and undefined
    references.
 
    .. code-block:: bat
 
     $ cd docs/
-	$ pip install -r requirements.txt
+    $ pip install -r requirements.txt
     $ make.bat clean 
     $ make.bat rst
     $ make.bat html
     $ make.bat view
     $ cd ..
 
-#. Update the change log (:file:`CHANGES.txt`).
+#. Update the change log :file:`CHANGES.txt` by reviewing the changes since last release on the `github compare`_ site or from the command line:
+
+   .. code-block:: bat
+
+	$ for /f "delims=" %a in ('git describe --tags --abbrev^=0') do @git log %a..HEAD --oneline --decorate
 
 #. Commit all changes:
 
    .. code-block:: bat
 
-	$ git commit -m 'Updated change log for upcoming release.'
+    $ git commit -m 'Updated change log for upcoming release.'
 
 Build
 =====
@@ -70,9 +74,16 @@ Build
 
 #. Install the source distribution:
 
+   Ensure clean state if ran repeatedly:
+
    .. code-block:: bat
 
-    $ rm -rf %TEMP%\vsgen-sdist  # ensure clean state if ran repeatedly
+    $ rm -rf %TEMP%\vsgen-sdist
+
+   Create a virtual environment and install the distribution:
+
+   .. code-block:: bat
+
     $ virtualenv %TEMP%\vsgen-sdist
     $ %TEMP%\vsgen-sdist\activate
     (vsgen-sdist) $ pip install .\dist\vsgen-a.b.c.zip
@@ -81,11 +92,18 @@ Build
     >>> vsgen.__version__
     'a.b.c'
 
-#. Installing the wheel distribution:
+#. Instal the wheel distribution:
+
+   Ensure clean state if ran repeatedly:
 
    .. code-block:: bat
 
-    $ rm -rf %TEMP%\vsgen-wheel  # ensure clean state if ran repeatedly
+    $ rm -rf %TEMP%\vsgen-wheel
+
+   Create a virtual environment and install the distribution:
+
+   .. code-block:: bat
+
     $ virtualenv %TEMP%\vsgen-wheel
     $ %TEMP%\vsgen-wheel\activate
     (vsgen-wheel) $ pip install .\dist\vsgen-a.b.c-py2.py3-none-any.whl
@@ -116,9 +134,16 @@ Post release
 
 Finally instal vsgen one last time:
 
+   Ensure clean state if ran repeatedly:
+
    .. code-block:: bat
 
-    $ rm -rf %TEMP%\vsgen-pip  # ensure clean state if ran repeatedly
+    $ rm -rf %TEMP%\vsgen-pip
+
+   Create a virtual environment and install the distribution:
+   
+   .. code-block:: bat
+   
     $ virtualenv %TEMP%\vsgen-pip
     $ %TEMP%\vsgen-pip\activate
     (vsgen-pip) $ pip install -U vsgen
@@ -133,3 +158,4 @@ Finally instal vsgen one last time:
 .. _appveyor: https://ci.appveyor.com/project/DBarsam/python-vsgen
 .. _release page: https://github.com/dbarsam/python-vsgen/releases
 .. _tickets for the next version: https://github.com/dbarsam/python-vsgen/issues?q=is%3Aopen+is%3Aissue
+.. _github compare: https://github.com/dbarsam/python-vsgen/compare
