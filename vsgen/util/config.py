@@ -87,3 +87,14 @@ class VSGConfigParser(configparser.ConfigParser):
             value = value.decode('utf8')
 
         return super(VSGConfigParser, self).set(section, option, value)
+
+    def update(self, **kwargs):
+        """
+        Extends :meth:`~configparser.ConfigParser.set` by auto formatting byte strings into unicode strings.
+        """
+        # Override the template values with the override values.
+        for s in config.sections():
+            for o in config.options(s):
+                override = kwargs.pop(o, None)
+                if override:
+                    config.set(s, o, override)

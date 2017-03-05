@@ -14,6 +14,7 @@ from vsgen.solution import VSGSolution
 from vsgen.writer import VSGWriteCommand
 from vsgen.register import VSGRegisterCommand
 from vsgen.util.config import VSGConfigParser
+from vsgen.util.entrypoints import entrypoints, entrypoint
 
 
 class VSGSuite(object):
@@ -24,7 +25,7 @@ class VSGSuite(object):
         """
         Constructor.
 
-        :param obj config: The instance of the VSGConfigParser class
+        :param object config: The instance of the VSGConfigParser class
         """
         # Resolve the root path
         root = config.get('vsgen', 'root', fallback=None)
@@ -42,7 +43,7 @@ class VSGSuite(object):
         """
         Creates a VSG solution from a configparser instance.
 
-        :param obj config: The instance of the configparser class
+        :param object config: The instance of the configparser class
         :param str section: The section name to read.
         :param kwargs:  List of additional keyworded arguments to be passed into the VSGSolution.
         :return: A valid VSGSolution instance if succesful; None otherwise.
@@ -69,7 +70,7 @@ class VSGSuite(object):
         """
         Creates a VSG project from a configparser instance.
 
-        :param obj config: The instance of the configparser class
+        :param object config: The instance of the configparser class
         :param str section: The section name to read.
         :param kwargs:  List of additional keyworded arguments to be passed into the VSGProject.
         :return: A valid VSGProject instance if succesful; None otherwise.
@@ -81,19 +82,8 @@ class VSGSuite(object):
         if not type:
             raise ValueError('Section [{}] mandatory option "{}" not found'.format(section, "type"))
 
-        try:
-            module = importlib.import_module("vsgen.{}".format(type))
-        except ImportError:
-            raise ValueError('Cannot resolve option "{}" to a recognised type in section [{}].'.format("type", section))
-
-        project_classes = [obj for name, obj in inspect.getmembers(module) if getattr(obj, '__project_type__', None) == type]
-        if len(project_classes) == 0:
-            raise ValueError('Cannot resolve option "{}" ("{}") to a recognised project type in section [{}].'.format("type", type, section))
-        if len(project_classes) > 1:
-            raise ValueError('Too many projects resolved to ambiguous option "{}" ("{}") in section [{}].'.format("type", type, section))
-
-        p = project_classes[0].from_section(config, section, **kwargs)
-        return p
+        project_class = entrypoint('vsgen.projects', type)
+        return project_class.from_section(config, section, **kwargs)
 
     @classmethod
     def from_file(cls, filename):
@@ -137,13 +127,9 @@ class VSGSuite(object):
 
         # Build a subparser for each type of project
         suite_parsers = auto_parser.add_subparsers(help='Available Project Types.', dest='suite_type')
-        for t in cls.suite_types():
-            try:
-                suite_class = cls.suite_class(t)
-            except ValueError:
-                continue
-            suite_parser = suite_class.make_parser(add_help=False)
-            suite_parsers.add_parser(t, help='Automatically generates a solution and {} project from a single directory.'.format(t), parents=[suite_parser])
+        for ek, ev in entrypoints('vsgen.suites').items():
+            suite_parser = ev.make_parser(add_help=False)
+            suite_parsers.add_parser(ek, help='Automatically generates a solution and "{}" project from a single directory.'.format(ek), parents=[suite_parser])
         return parser
 
     @classmethod
@@ -155,8 +141,8 @@ class VSGSuite(object):
         """
         # Create a VSGSuite for each filename on the command line.
         if kwargs.get('suite_commands', None) == 'generate':
-            filenames = getattr(kwargs, 'configuration_filenames', [])
-            return [cls.from_file(filename) for f in filenames]
+            filenames = kwargs.pop('configuration_filenames', [])
+            return [cls.from_file(f) for f in filenames]
 
         # Create a VSGSuit from the target directory and override commands
         if kwargs.get('suite_commands', None) == 'auto':
@@ -165,36 +151,6 @@ class VSGSuite(object):
 
         # Create nothing.
         return []
-
-    @classmethod
-    def suite_types(cls):
-        """
-        Retreieve the list of possible suite types available.
-
-        :return: A list of suite type names.
-        """
-        data = os.path.join(os.path.dirname(sys.modules['vsgen'].__file__), 'data')
-        return [os.path.splitext(os.path.basename(f))[0] for f in os.listdir(data)]
-
-    @classmethod
-    def suite_class(cls, type):
-        """
-        Creates an VSGSuite instance from a filename.
-
-        :param str filename:  The fully qualified path to the VSG configuration file.
-        :param str type:  The configuration type to generate.
-        """
-        try:
-            module = importlib.import_module("vsgen.{}".format(type))
-        except ImportError:
-            raise ValueError('Cannot resolve type "{}" to a recognised vsgen suite type.'.format("type"))
-        suite_classes = [obj for name, obj in inspect.getmembers(module) if getattr(obj, '__type__', None) == type]
-        if len(suite_classes) == 0:
-            raise ValueError('Cannot resolve a recognised suite type for type [{}].'.format(type))
-        if len(suite_classes) > 1:
-            raise ValueError('Too many suite classes resolved to ambiguous type [{}].'.format(type))
-
-        return suite_classes[0]
 
     @classmethod
     def from_directory(cls, directory, type, **kwargs):
@@ -206,14 +162,14 @@ class VSGSuite(object):
         :param kwargs:  List of additional keyworded arguments to be passed into the VSGSuite.
         """
         # Resolve the suite class from the type
-        suite_class = cls.suite_class(type)
+        suite_class = entrypoint('vsgen.suites', type)
 
         # Merge the default and any additional, maybe override, params.
         params = {
             'root': os.path.abspath(directory),
             'name': os.path.basename(os.path.abspath(directory))
         }
-        params.update(kwargs)
+        params.update({k:v for k,v in kwargs.items() if v is not None})
         return suite_class(**params)
 
     def write(self, parallel=True):

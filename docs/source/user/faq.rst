@@ -7,3 +7,7 @@ Fair enough.  I've already mentioned `Premake <https://premake.github.io/>`_ but
 
 #. `makeprojects <https://pypi.python.org/pypi/makeprojects>`_ 
 #. `ideskeleton <https://pypi.python.org/pypi/ideskeleton>`_
+
+**Q: How do I generate PTVS Projects and Solution?**
+
+Python Tools for Visual Studio functionality is provided by the `vsgen-ptvs <https://pypi.python.org/pypi/vsgen-ptvs>`_ python package.

@@ -10,25 +10,23 @@ except pkg_resources.DistributionNotFound:
     __version__ = "0.0.0.0"
 
 from vsgen.solution import VSGSolution
+from vsgen.project import VSGProject
 from vsgen.register import VSGRegisterable, VSGRegisterCommand
 from vsgen.writer import VSGWriter, VSGWritable, VSGWriteCommand
 from vsgen.suite import VSGSuite
-from vsgen.ptvs.interpreter import PTVSInterpreter
-from vsgen.ptvs.project import PTVSProject
 from vsgen.util.logger import VSGLogger
 from vsgen.util.timer import VSGTimer
 from vsgen.util.config import VSGConfigParser
 
 __all__ = [
     'VSGSolution',
+    'VSGProject',
     'VSGRegisterable',
     'VSGRegisterCommand',
     'VSGWriter',
     'VSGWritable',
     'VSGWriteCommand',
     'VSGSuite',
-    'PTVSInterpreter',
-    'PTVSProject',
     'VSGLogger',
     'VSGTimer',
     'VSGConfigParser'

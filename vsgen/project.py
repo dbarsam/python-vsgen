@@ -33,7 +33,7 @@ class VSGProject(VSGWritable, VSGRegisterable):
     :ivar list  CompileExFilter:        A list of fnmatch expressions to match compile files to be excluded during the item generation step; if not provide the value is [].
     :ivar list  ContentInFilter:        A list of fnmatch expressions to match content files to be included during the item generation step; if not provide the value is [].
     :ivar list  ContentExFilter:        A list of fnmatch expressions to match content files to be excluded during the item generation step; if not provide the value is [].
-    :ivar float VSVersion:              The Visual Studio version; if not provide the value is `None`.
+    :ivar float VSVersion:              The Visual Studio version; if not provide the value is ``None``.
     """
     __project_type__ = None
 

@@ -1,9 +1,6 @@
 Introduction
-===============
-
-VSGen generates Microsoft Visual Studio Solutions and Projects from Python script or configuration files.
-
-.. note:: Currently only `Python Tools for Visual Studio <https://github.com/Microsoft/PTVS>`_ projects are supported.
+============
+VSGen is a framework to generate Microsoft Visual Studio Solutions and Projects from Python script or configuration files.
 
 Install
 -------
@@ -25,11 +22,14 @@ Starting with Python 2.7.9, pip is included by default with the Python binary in
 
 Quick Start
 -----------
+VSGen is the entry point however the data needed to generate specific projects (CPP, C#, Python,e tc.) are availabel in VSGen plugins.
+
+To automatically create a solution and project from the command line, use the ``auto`` command::
 To automatically create a solution and project from the command line, use the ``auto`` command::
 
 	vsgen auto <type> <path> <type options>
 
-For example, to create a PTVS solution and project pointing at path ``S:\project`` named ``demo``::
+For example, to create a PTVS solution and project pointing (at path ``S:\project`` named ``demo``::
 
 	vsgen auto ptvs --root S:\project --name demo
 
@@ -55,7 +55,7 @@ Vsgen supports reading in solution and project defintions defined in :mod:`confi
 
 Automatic Generation
 ********************
-Vsgen supports automatic generation given a directory and a type.  The type corresponds to a template file in vsgen's ``data`` directory.
+Vsgen supports automatic generation given a directory and a type.  The type corresponds to any Vsgen plugins that has been installed.
 
 Execution
 ---------

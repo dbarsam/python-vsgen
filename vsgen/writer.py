@@ -23,7 +23,7 @@ class VSGWritable(object):
         """
         Converts a value to text in a way compatible with Python2 and Python 3.
 
-        :param obj value:  The value to convert.
+        :param object value:  The value to convert.
         :return:  The value as text.
         """
         return unicode(value) if sys.version_info < (3,) else str(value)
@@ -32,7 +32,7 @@ class VSGWritable(object):
         """
         Converts a value to upper case text in a way compatible with Python2 and Python 3.
 
-        :param obj value:  The value to convert.
+        :param object value:  The value to convert.
         :return:  The value as upper case text.
         """
         return self.text(value).upper()
@@ -41,7 +41,7 @@ class VSGWritable(object):
         """
         Converts a value to lower case in a way compatible with Python2 and Python 3.
 
-        :param obj value:  The value to convert.
+        :param object value:  The value to convert.
         :return:  The value as lower case text.
         """
         return self.text(value).lower()
