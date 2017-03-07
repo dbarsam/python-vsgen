@@ -8,6 +8,7 @@ import glob
 import configparser
 import pkg_resources
 
+
 def entrypoints(section):
     """
     Returns the Entry Point for a given Entry Point section.
@@ -15,7 +16,8 @@ def entrypoints(section):
     :param str section: The section name in the entry point collection
     :returns:  A dictionary of (Name, Class) pairs stored in the entry point collection.
     """
-    return {ep.name:ep.load() for ep in pkg_resources.iter_entry_points(section)}
+    return {ep.name: ep.load() for ep in pkg_resources.iter_entry_points(section)}
+
 
 def entrypoint(section, option):
     """

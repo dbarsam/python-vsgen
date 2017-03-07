@@ -8,6 +8,7 @@ from vsgen import VSGSolution
 from vsgendemo.settings import VSGDemoSettings
 from vsgendemo.projects import VSGCoreProject, VSGDemoProject
 
+
 class VSGDemoSolution(VSGSolution):
     """
     VSGDemoSolution implements a single VSGSolution for all VSGCoreProjects in the VSG demo.

@@ -24,27 +24,28 @@ def setUpModule():
         sys.path.append(datadir)
     import vsgendemo
 
-    # Simulate a real external package install by patching setuptools' entry point table with a vsgdemo mock python package. 
+    # Simulate a real external package install by patching setuptools' entry point table with a vsgdemo mock python package.
     demodistribution = pkg_resources.Distribution(os.path.dirname(__main__.__file__), project_name='vsgendemo', version="0.0")
     try:
         demodistribution._ep_map
     except AttributeError:
         demodistribution._ep_map = {}
     demodistribution._ep_map.update({
-        'vsgen.suites': { 'demo': pkg_resources.EntryPoint('demo', 'vsgendemo.suite', attrs=('VSGDemoSuite',), dist=demodistribution ) },
-        'vsgen.projects': { 'demo' :pkg_resources.EntryPoint('demo', 'vsgendemo.projects', attrs=('VSGAutoDemoProject',), dist=demodistribution) }
+        'vsgen.suites': {'demo': pkg_resources.EntryPoint('demo', 'vsgendemo.suite', attrs=('VSGDemoSuite',), dist=demodistribution)},
+        'vsgen.projects': {'demo': pkg_resources.EntryPoint('demo', 'vsgendemo.projects', attrs=('VSGAutoDemoProject',), dist=demodistribution)}
     })
     pkg_resources.working_set.add(demodistribution, 'demo')
-      
-    # Validate the mock entry point  
-    suite_classes = {ep.name:ep.load() for ep in pkg_resources.iter_entry_points('vsgen.suites')}
+
+    # Validate the mock entry point
+    suite_classes = {ep.name: ep.load() for ep in pkg_resources.iter_entry_points('vsgen.suites')}
     assert 'demo' in suite_classes, 'Entry Point "demo" not in "vsgen.suites" Entry Point collection'
     assert suite_classes['demo'] == vsgendemo.suite.VSGDemoSuite, 'Entry Point "demo" does not resolve to "vsgendemo.suite.VSGSuite"'
 
     # Validate the mock entry point
-    project_classes = {ep.name:ep.load() for ep in pkg_resources.iter_entry_points('vsgen.projects')}
+    project_classes = {ep.name: ep.load() for ep in pkg_resources.iter_entry_points('vsgen.projects')}
     assert 'demo' in project_classes, 'Entry Point "demo" not in "vsgen.projects" Entry Point collection'
-    assert project_classes['demo'] == vsgendemo.projects.VSGAutoDemoProject , 'Entry Point "demo" does not resolve to "vsgendemo.projects.VSGEntryPointProject"'
+    assert project_classes['demo'] == vsgendemo.projects.VSGAutoDemoProject, 'Entry Point "demo" does not resolve to "vsgendemo.projects.VSGEntryPointProject"'
+
 
 def tearDownModule():
     """
@@ -83,7 +84,7 @@ class TestIntegrationConfigurationFile(unittest.TestCase):
     def test_configuration_file_success(self):
         """
         Tests the expected workflow.
-        """        
+        """
         result = __main__.main([__main__.__file__, 'generate', self._file])
         self.assertEqual(result, 0)
 

@@ -14,6 +14,7 @@ from vsgen.suite import VSGSuite
 from vsgen.util.config import VSGConfigParser
 from vsgen.util.argparse import DirectoryType
 
+
 class VSGDemoSuite(VSGSuite):
     """
     VSGDemoSuite extends :class:`~vsgen.suite.VSGSuite` with data and logic required by the vsgendemo Python pacakge.

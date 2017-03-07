@@ -21,6 +21,7 @@ class VSGSuite(object):
     """
     The VSGSuite class groups a collection of solutions and projects into a single class.
     """
+
     def __init__(self, config):
         """
         Constructor.
@@ -169,7 +170,7 @@ class VSGSuite(object):
             'root': os.path.abspath(directory),
             'name': os.path.basename(os.path.abspath(directory))
         }
-        params.update({k:v for k,v in kwargs.items() if v is not None})
+        params.update({k: v for k, v in kwargs.items() if v is not None})
         return suite_class(**params)
 
     def write(self, parallel=True):

@@ -10,8 +10,10 @@ from vsgen import VSGProject
 from vsgen.register import VSGRegisterable, VSGRegisterCommand
 from vsgendemo.settings import VSGDemoSettings
 
+
 class VSGDemoMockInterpreter(VSGRegisterable):
     pass
+
 
 class VSGDemoMockRegisterable(VSGRegisterable):
     """
@@ -39,6 +41,7 @@ class VSGDemoMockRegisterable(VSGRegisterable):
         :note: We're explictly writing the environment to the registry to facilitate sharing. See `How to share pyproj across team with custom environments <https://pytools.codeplex.com/workitem/2765>`_ for motivation.
         """
         pass
+
 
 class VSGDemoBaseProject(VSGProject):
     """
@@ -192,6 +195,7 @@ class VSGCoreProject(VSGDemoBaseProject):
         super(VSGCoreProject, self).__init__('VSG', self.RootPath, **kwargs)
         self.insert_files(self.RootPath)
 
+
 class VSGDemoProject(VSGDemoBaseProject):
     """
     VSGDemoProject provides a :class:`~vsgen.project.VSGProject` for the VSGDemo python package.
@@ -202,9 +206,11 @@ class VSGDemoProject(VSGDemoBaseProject):
         super(VSGDemoProject, self).__init__('VSGDemo', self.RootPath, **kwargs)
         self.insert_files(self.RootPath)
 
+
 class VSGAutoDemoProject(VSGDemoBaseProject):
     """
     VSGAutoDemoProject provides a :class:`~vsgen.project.VSGProject` class for vsgendemo's entry point plugin data.
     """
+
     def __init__(self, **kwargs):
         super(VSGAutoDemoProject, self).__init__('VSG', '', **kwargs)

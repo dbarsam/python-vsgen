@@ -14,6 +14,7 @@ class DirectoryType(object):
 
     Instances of DirectoryType are typically passed as ``type`` arguments to the :meth:`~argparse.ArgumentParser.add_argument` method.
     """
+
     def __call__(self, string):
         string = os.path.normcase(os.path.normpath(os.path.abspath(string)))
         if os.path.isdir(string):
