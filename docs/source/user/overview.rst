@@ -24,12 +24,15 @@ Quick Start
 -----------
 VSGen is the entry point however the data needed to generate specific projects (CPP, C#, Python,e tc.) are availabel in VSGen plugins.
 
-To automatically create a solution and project from the command line, use the ``auto`` command::
+To see which plugins are installed:: 
+
+    vsgen auto --help
+
 To automatically create a solution and project from the command line, use the ``auto`` command::
 
 	vsgen auto <type> <path> <type options>
 
-For example, to create a PTVS solution and project pointing (at path ``S:\project`` named ``demo``::
+For example, to create a PTVS solution and project (using the `vsgen-ptvs <https://pypi.python.org/pypi/vsgen-ptvs>`_ Python package) pointing at ``S:\project`` and named ``demo``::
 
 	vsgen auto ptvs --root S:\project --name demo
 
