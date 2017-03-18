@@ -31,7 +31,7 @@ def main(argv=None):
     pylogger = VSGLogger()
 
     # Construct a command line parser and parse the command line
-    args = VSGSuite.make_parser(description='Executes the VSG package as an application.').parse_args(argv[1:])
+    args = VSGSuite.make_parser(description='Executes the vsgen package as an application.').parse_args(argv[1:])
     for s in VSGSuite.from_args(**vars(args)):
         s.write(False)
     return 0
