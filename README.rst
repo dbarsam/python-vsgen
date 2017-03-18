@@ -1,7 +1,7 @@
 =====
 vsgen
 =====
-|build-status| |docs| |pypi-version| |pypi-license| |python-2| |python-3|
+|build-status| |docs| |dependencies| |pypi-version| |pypi-license| |python-2| |python-3|
 
 A Python package that automatically generates solutions and projects from python script.
 
@@ -32,10 +32,14 @@ Use the `issue tracker <https://github.com/dbarsam/python-vsgen/issues>`_ to fil
     :scale: 100%
     :target: https://ci.appveyor.com/project/dbarsam/python-vsgen
 
-.. |docs| image:: https://readthedocs.org/projects/vsgen/badge/?version=latest
+.. |docs| image:: https://readthedocs.org/projects/vsgen/badge/?version=stable
     :alt: Documentation Status
     :scale: 100%
     :target: http://vsgen.readthedocs.org/en/latest/
+
+.. |dependencies| image:: https://img.shields.io/requires/github/dbarsam/python-vsgen.svg
+    :target: https://requires.io/github/dbarsam/python-vsgen/requirements/
+    :alt: Dependencies
 
 .. |pypi-version| image:: http://img.shields.io/pypi/v/vsgen.svg
     :alt: PyPI Version
