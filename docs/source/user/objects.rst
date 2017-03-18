@@ -44,7 +44,7 @@ Since it is a base class, it contains only basic attributes such as :attr:`~vsge
 
 Suites
 ------
-Suites are user defined groupings of solutions and projects.  These groups are repsent the pre-set configuration and are invoked by the ``auto`` command.
+Suites are user defined groupings of solutions and projects.  These groups are repsent the pre-set configuration and are invoked by the ``auto`` command.  VSGen provides a base :class:`~vsgen.suite.VSGSuite` for other classes to inherit and extend.
 
 Example
 -------
