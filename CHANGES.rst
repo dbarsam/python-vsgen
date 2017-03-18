@@ -5,6 +5,17 @@ Changelog
 -----------------------
 - TBD
 
+0.3.0_ (2017-03-18) 
+-------------------
+Features:
+
+- Modularize VSGen with setuptool's entry points; Fixes #11.
+
+Compatibility Notes:
+
+- A plugin architecture has been adopted starting with 0.3.0_.  The vsgen package is now a **core** module and any metadata and code used to generates specific projects should be placed in a **plugin** module.
+- The former Python Tools for Visual Studio functionality that was embedded in vsgen has been extracted to `vsgen-ptvs <https://pypi.python.org/pypi/vsgen-ptvs>`_
+
 0.2.4_ (2017-02-18) 
 -------------------
 Features:
@@ -40,9 +51,10 @@ Bug Fixes:
 ------------------
 - Initial Release.
 
+.. _0.3.0: https://github.com/dbarsam/python-vsgen/compare/0.2.4...0.3.0
 .. _0.2.4: https://github.com/dbarsam/python-vsgen/compare/0.2.3...0.2.4
 .. _0.2.3: https://github.com/dbarsam/python-vsgen/compare/0.2.2...0.2.3
 .. _0.2.2: https://github.com/dbarsam/python-vsgen/compare/0.2.1...0.2.2
 .. _0.2.1: https://github.com/dbarsam/python-vsgen/compare/0.2.0...0.2.1
-.. _1.0.0-dev: https://github.com/dbarsam/python-vsgen/compare/0.2.4...HEAD
+.. _1.0.0-dev: https://github.com/dbarsam/python-vsgen/compare/0.3.0...HEAD
 .. _fnmatch: https://docs.python.org/2/library/fnmatch.html
