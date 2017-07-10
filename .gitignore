@@ -13,6 +13,7 @@ __pycache__/
 
 # Python Virtual Environments
 [._]env*/
+[._]ve*/
 
 # Python Documentation Generation
 docs/_build/
