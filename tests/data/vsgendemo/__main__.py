@@ -36,6 +36,7 @@ def main(argv=[]):
 
     return 0
 
+
 if __name__ == "__main__":
     # To use VSGDemo as a package we need to append the sys.path before executing main
     filePath = os.path.dirname(os.path.realpath(__file__))
