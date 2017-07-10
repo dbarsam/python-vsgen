@@ -36,6 +36,7 @@ def main(argv=None):
         s.write(False)
     return 0
 
+
 if __name__ == "__main__":
     # To use this package as an application we need to correct the sys.path
     module_path = os.path.dirname(os.path.realpath(__file__))
