@@ -194,6 +194,7 @@ class VSGLogger(object):
         while self._handlers:
             self._unregisterHandler(self._handlers[0])
 
+
 if __name__ == "__main__":
 
     logfile = os.path.join(os.path.dirname(__file__), 'log.txt')
@@ -201,7 +202,7 @@ if __name__ == "__main__":
     VSGLogger.debug("DebugLogger", "Debug = %d", int(logging.DEBUG))
     try:
         raise NotImplementedError("This has not been implemented")
-    except:
+    except NotImplementedError:
         VSGLogger.exception(__name__, "Something bad happened.")
     VSGLogger.info(__name__, "This is a multiline logger message:\n %s \n %s \n %s", '****************', 'Message!', '****************')
     VSGLogger.info(__name__, "Info = %d", int(logging.INFO))
