@@ -18,7 +18,7 @@ The :class:`~vsgen.register.VSGRegisterable` is the base class for all objects t
 
 Commands
 --------
-For efficiency and conveneinve vsgen provides *command* objects that adapt each interface object into an vsgen's execution model.
+For efficiency and convenience vsgen provides *command* objects that adapt each interface object into an vsgen's execution model.
 
 The *Write* Command
 ~~~~~~~~~~~~~~~~~~~
@@ -28,13 +28,21 @@ The *Register* Command
 ~~~~~~~~~~~~~~~~~~~~~~
 The :class:`~vsgen.register.VSGRegisterCommand` is the command object that executes any :class:`~vsgen.writer.VSGRegisterable` implementing object.
 
+Utility Mixins
+--------------
+For efficiency and convenience vsgen provides *utility mixin* that define object extensions extend that are optional in an vsgen's execution model.
+
+JinjaRenderer
+~~~~~~~~~~~~~
+The :class:`~vsgen.writer.VSGJinjaRenderer` is a mixin defining methods to render files with `Jinja2 <http://jinja.pocoo.org/>`_.
+
 Solutions
 ---------
 Visual Studio currently uses one solution type so vsgen currently provides a single solution, the :class:`~vsgen.solution.VSGSolution` class.
 
 The :class:`~vsgen.solution.VSGSolution` is designed to represent a single ``.sln`` solution file; it contains basic attributes (:attr:`~vsgen.solution.VSGSolution.Name` and :attr:`~vsgen.solution.VSGSolution.FileName`) and a collection of :attr:`~vsgen.solution.VSGSolution.Projects` that contains a number of :class:`~vsgen.solution.VSGProject` dervied classes.
 
-The solution class implements the :class:`~vsgen.writer.VSGWritable` interface.
+The solution class implements the :class:`~vsgen.writer.VSGWritable` interface and uses a :class:`~vsgen.writer.VSGJinjaRenderer` to write the ``.sln`` file from an internal template ``vsgen\data\sln.jinja``
 
 Projects
 --------
@@ -50,4 +58,4 @@ Example
 -------
 The vsgen test suite contains an working example of using the objects in a demo package:
 
-.. literalinclude:: ..\..\..\tests\data\vsgendemo\__main__.py
+.. literalinclude:: ../../../tests\data\vsgendemo\__main__.py

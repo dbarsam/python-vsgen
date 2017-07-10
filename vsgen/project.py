@@ -4,15 +4,12 @@ This module provides the neccessary defintions to support a base project file de
 """
 
 import os
-import csv
 import fnmatch
+import itertools
 import uuid
 
-from vsgen.writer import VSGWritable
-from vsgen.register import VSGRegisterable
 
-
-class VSGProject(VSGWritable, VSGRegisterable):
+class VSGProject(object):
     """
     VSGProject encapsulates the data and logic needed to act as a base project.
 
@@ -36,10 +33,6 @@ class VSGProject(VSGWritable, VSGRegisterable):
     :ivar float VSVersion:              The Visual Studio version; if not provide the value is ``None``.
     """
     __project_type__ = None
-
-    __writable_name__ = "Visual Studio Base Project"
-
-    __registerable_name__ = "Visual Studio Base Registerable"
 
     def __init__(self, **kwargs):
         """
@@ -109,6 +102,66 @@ class VSGProject(VSGWritable, VSGRegisterable):
 
         return p
 
+    @property
+    def ProjectHomeRelative(self):
+        """
+        Returns the :attr:`ProjectHome` relative to :attr:`FileName` directory.
+        """
+        return os.path.relpath(self.ProjectHome, os.path.dirname(self.FileName))
+
+    @property
+    def StartupFileRelative(self):
+        """
+        Returns the :attr:`StartupFile` relative to :attr:`ProjectHome` directory.
+        """
+        return os.path.relpath(self.StartupFile, self.ProjectHome) if self.StartupFile else self.StartupFile
+
+    @property
+    def WorkingDirectoryRelative(self):
+        """
+        Returns the :attr:`WorkingDirectory` relative to :attr:`ProjectHome` directory.
+        """
+        return os.path.relpath(self.WorkingDirectory, self.ProjectHome)
+
+    @property
+    def OutputPathRelative(self):
+        """
+        Returns the :attr:`OutputPath` relative to :attr:`ProjectHome` directory.
+        """
+        return os.path.relpath(self.OutputPath, self.ProjectHome)
+
+    @property
+    def ContentFilesRelative(self):
+        """
+        Returns a generator iterating over the each file in :attr:`ContentFiles` relative to :attr:`ProjectHome` directory.
+        """
+        return (os.path.relpath(path, self.ProjectHome) for path in sorted(self.ContentFiles, key=self.lower))
+
+    @property
+    def CompileFilesRelative(self):
+        """
+        Returns a generator iterating over the each file in :attr:`ContentFiles` relative to :attr:`ProjectHome` directory.
+        """
+        return (os.path.relpath(path, self.ProjectHome) for path in sorted(self.CompileFiles, key=self.lower))
+
+    @property
+    def DirectoriesRelative(self):
+        """
+        Returns a generator iterating over the each directory referenced by the project, relative to :attr:`ProjectHome` directory.
+        """
+        # Acquire all directories
+        directories = itertools.chain(self.Directories, (os.path.dirname(f) for f in itertools.chain(self.ContentFiles, self.CompileFiles)))
+        directories = set(os.path.relpath(d, self.ProjectHome) for d in directories)
+
+        # We need separate entries for parent directories of directories in the list
+        for path in set(directories):
+            subpath = os.path.dirname(path)
+            while subpath:
+                directories.add(subpath)
+                subpath = os.path.dirname(subpath)
+
+        return sorted(directories)
+
     def insert_files(self, rootpath, directoryInFilter=None, directoryExFilter=None, compileInFilter=None, compileExFilter=None, contentInFilter=None, contentExFilter=None):
         """
         Inserts files by recursive traversing the rootpath and inserting files according the addition filter parameters.
@@ -154,15 +207,3 @@ class VSGProject(VSGWritable, VSGRegisterable):
                         self.CompileFiles.append(filepath)
                     elif filter(filepath, contentInFilter, False) and not filter(filepath, contentExFilter, True):
                         self.ContentFiles.append(filepath)
-
-    def write(self):
-        """
-        Creates the project file.
-        """
-        raise NotImplementedError('{}.write() method not implemented.'.format(self.__class__))
-
-    def register(self):
-        """
-        Registers the project components.
-        """
-        raise NotImplementedError('{}.register() method not implemented.'.format(self.__class__))

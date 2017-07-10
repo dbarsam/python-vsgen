@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" \'$(Configuration)\' == \'\' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{{pyproj.GUID|MSGUID}}</ProjectGuid>
+    <ProjectHome>{{pyproj.ProjectHomeRelative}}</ProjectHome>
+    {% if pyproj.StartupFile %}
+    <StartupFile>{{pyproj.StartupFileRelative}}</StartupFile>
+    {% else %}
+    <StartupFile />
+    {% endif %}
+    <SearchPath>.</SearchPath>
+    <WorkingDirectory>{{pyproj.WorkingDirectoryRelative}}</WorkingDirectory>
+    <OutputPath>{{pyproj.OutputPathRelative}}</OutputPath>
+    <RootNamespace>{{pyproj.RootNamespace}}</RootNamespace>
+    <IsWindowsApplication>{{pyproj.IsWindowsApplication}}</IsWindowsApplication>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <CommandLineArguments />
+    <InterpreterPath />
+    <InterpreterArguments />
+    <VisualStudioVersion Condition="\'$(VisualStudioVersion)\' == \'\'">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="\'$(VSToolsPath)\' == \'\'">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" \'$(VisualStudioVersion)\' == \'\' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    {% for file in pyproj.CompileFilesRelative %}
+    <Compile Include="{{file}}" />
+    {% endfor %}
+  </ItemGroup>
+  <ItemGroup>
+    {% for file in pyproj.ContentFilesRelative %}
+    <Content Include="{{file}}" />
+    {% endfor %}
+  </ItemGroup>
+  <ItemGroup>
+{% for dir in pyproj.DirectoriesRelative %}
+    <Folder Include="{{dir}}" />
+{% endfor %}
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>

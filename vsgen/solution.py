@@ -6,11 +6,12 @@ This module provides the neccessary defintions to generate a Solution File.
 import os
 import uuid
 import errno
+import pkg_resources
 
-from vsgen.writer import VSGWritable
+from vsgen.writer import VSGWritable, VSGJinjaRenderer
 
 
-class VSGSolution(VSGWritable):
+class VSGSolution(VSGWritable, VSGJinjaRenderer):
     """
     VSGSolution encapsulates the logic needed to create a ``.sln`` file.
 
@@ -20,6 +21,8 @@ class VSGSolution(VSGWritable):
     :ivar list Projects: The list of VSGProject derived classes; if not provide the value is [].
     """
     __writable_name__ = "VSG Solution"
+
+    __jinja_template__ = pkg_resources.resource_filename('vsgen', 'data/sln.jinja')
 
     def __init__(self, **kwargs):
         """
@@ -47,57 +50,11 @@ class VSGSolution(VSGWritable):
         """
         Writes the ``.sln`` file to disk.
         """
-        npath = os.path.normpath(self.FileName)
-        (filepath, filename) = os.path.split(npath)
-        try:
-            os.makedirs(filepath)
-        except OSError as exception:
-            if exception.errno != errno.EEXIST:
-                raise
-
-        projectFileName = os.path.normpath(self.FileName)
-        with open(projectFileName, 'wt') as f:
-            f.write('Microsoft Visual Studio Solution File, Format Version 12.00\n')
-            if self.VSVersion == 14.0:
-                f.write('# Visual Studio 14\n')
-                f.write('VisualStudioVersion = 14.0.23107.0\n')
-                f.write('MinimumVisualStudioVersion = 10.0.40219.1\n')
-            elif self.VSVersion == 12.0:
-                f.write('# Visual Studio 2013\n')
-                f.write('VisualStudioVersion = 12.0.31101.0\n')
-                f.write('MinimumVisualStudioVersion = 10.0.40219.1\n')
-            elif self.VSVersion == 11.0:
-                f.write('# Visual Studio 2012\n')
-            for pInfo in self.Projects:
-                f.write('Project("{{{0}}}") = "{1}", "{2}", "{{{3}}}"\n'.format(self.upper(self.GUID), pInfo.Name, os.path.relpath(pInfo.FileName, filepath), pInfo.GUID))
-                f.write('EndProject\n')
-            f.write('Global\n')
-            f.write('\tGlobalSection(SolutionConfigurationPlatforms) = preSolution\n')
-            f.write('\t\tDebug|Any CPU = Debug|Any CPU\n')
-            f.write('\t\tRelease|Any CPU = Release|Any CPU\n')
-            f.write('\tEndGlobalSection\n')
-            f.write('\tGlobalSection(ProjectConfigurationPlatforms) = postSolution\n')
-            for pInfo in self.Projects:
-                f.write('\t\t{{{0}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU\n'.format(self.upper(pInfo.GUID)))
-                f.write('\t\t{{{0}}}.Release|Any CPU.ActiveCfg = Release|Any CPU\n'.format(self.upper(pInfo.GUID)))
-            f.write('\tEndGlobalSection\n')
-            f.write('\tGlobalSection(SolutionProperties) = preSolution\n')
-            f.write('\t\tHideSolutionNode = FALSE\n')
-            f.write('\tEndGlobalSection\n')
-            f.write('\tGlobalSection(SolutionConfigurationPlatf.ms) = postSolution\n')
-            for pInfo in self.Projects:
-                f.write('\t\t{{{0}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU\n'.format(self.upper(pInfo.GUID)))
-                f.write('\t\t{{{0}}}.Release|Any CPU.ActiveCfg = Release|Any CPU\n'.format(self.upper(pInfo.GUID)))
-            f.write('\tEndGlobalSection\n')
-            f.write('\tGlobalSection(SolutionConfigurationPlatf.ms) = preSolution\n')
-            f.write('\t\tDebug|Any CPU = Debug|Any CPU\n')
-            f.write('\t\tRelease|Any CPU = Release|Any CPU\n')
-            f.write('\tEndGlobalSection\n')
-            f.write('\tGlobalSection(ProjectConfigurationPlatf.ms) = postSolution\n')
-            for pInfo in self.Projects:
-                f.write('\t\t{{{0}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU\n'.format(self.upper(pInfo.GUID)))
-                f.write('\t\t{{{0}}}.Debug|Any CPU.Build.0 = Debug|Any CPU\n'.format(self.upper(pInfo.GUID)))
-                f.write('\t\t{{{0}}}.Release|Any CPU.ActiveCfg = Release|Any CPU\n'.format(self.upper(pInfo.GUID)))
-                f.write('\t\t{{{0}}}.Release|Any CPU.Build.0 = Release|Any CPU\n'.format(self.upper(pInfo.GUID)))
-            f.write('\tEndGlobalSection\n')
-            f.write('EndGlobal\n')
+        filters = {
+            'MSGUID': lambda x: ('{%s}' % x).upper(),
+            'basename': os.path.basename
+        }
+        context = {
+            'sln': self
+        }
+        return self.render(self.__jinja_template__, self.FileName, context, filters)

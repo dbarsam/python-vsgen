@@ -2,9 +2,40 @@
 """
 This module provides a simple multi-threaded writer utility for VSGProjects and VSGSolutions
 """
+import os
 import sys
 import time
 import threading
+import itertools
+import jinja2
+import errno
+
+
+class VSGJinjaRenderer(object):
+    """
+    A class defining methods interacting with `Jinja2 <http://jinja.pocoo.org/>`_.
+    """
+
+    def render(self, template, filename, context={}, filters={}):
+        """
+        Renders a Jinja2 template to text.
+        """
+        filename = os.path.normpath(filename)
+        path, file = os.path.split(filename)
+        try:
+            os.makedirs(path)
+        except OSError as exception:
+            if exception.errno != errno.EEXIST:
+                raise
+
+        path, file = os.path.split(template)
+        loader = jinja2.FileSystemLoader(path)
+        env = jinja2.Environment(loader=loader, trim_blocks=True, lstrip_blocks=True)
+        env.filters.update(filters)
+        template = env.get_template(file)
+        text = template.render(context)
+        with open(filename, 'wt') as f:
+            f.write(text)
 
 
 class VSGWritable(object):

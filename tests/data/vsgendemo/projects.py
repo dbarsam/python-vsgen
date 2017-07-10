@@ -7,6 +7,8 @@ import uuid
 import errno
 
 from vsgen import VSGProject
+from vsgen.writer import VSGJinjaRenderer
+from vsgen.writer import VSGWritable, VSGJinjaRenderer
 from vsgen.register import VSGRegisterable, VSGRegisterCommand
 from vsgendemo.settings import VSGDemoSettings
 
@@ -43,7 +45,7 @@ class VSGDemoMockRegisterable(VSGRegisterable):
         pass
 
 
-class VSGDemoBaseProject(VSGProject):
+class VSGDemoBaseProject(VSGProject, VSGDemoSettings, VSGRegisterable, VSGJinjaRenderer):
     """
     VSGDemoBaseProject extends :class:`~vsgen.project.VSGProject` with data and logic needed to create a demo project that is really a simplified `.pyproj` file.
 
@@ -58,6 +60,8 @@ class VSGDemoBaseProject(VSGProject):
     __writable_name__ = "VSGen Simple Demo Project"
 
     __registerable_name__ = "Visual Studio Demo Registerable Type"
+
+    __jinja_template__ = os.path.abspath(os.path.join(os.path.dirname(__file__), 'vsgendemoproject.jinja'))
 
     def __init__(self, name, rootpath, **kwargs):
         """
@@ -87,94 +91,18 @@ class VSGDemoBaseProject(VSGProject):
 
     def write(self):
         """
-        Creates the PTVS project file.
+        Creates a simple PTVS project file.
         """
-        npath = os.path.normpath(self.FileName)
-        (filepath, filename) = os.path.split(npath)
-        try:
-            os.makedirs(filepath)
-        except OSError as exception:
-            if exception.errno != errno.EEXIST:
-                raise
+        filters = {
+            'MSGUID': lambda x: ('{%s}' % x).upper(),
+            'relprojhome': lambda x: os.path.relpath(x, self.ProjectHome),
+            'relprojfile': lambda x: os.path.relpath(x, self.FileName)
+        }
 
-        projectFileName = os.path.normpath(self.FileName)
-        projectRelativeHome = os.path.relpath(self.ProjectHome, filepath)
-        projectRelativeSearchPath = [os.path.relpath(path, self.ProjectHome) for path in self.SearchPath] if self.SearchPath else [self.ProjectHome]
-        projectRelativeWorkingDirectory = os.path.relpath(self.WorkingDirectory, self.ProjectHome)
-        projectRelativeOutputPath = os.path.relpath(self.OutputPath, self.ProjectHome)
-        projectRelativeStartupFile = os.path.relpath(self.StartupFile, self.ProjectHome) if self.StartupFile else None
-        with open(projectFileName, 'wt') as f:
-            f.write('<?xml version="1.0" encoding="utf-8"?>\n')
-            f.write('<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">\n')
-            f.write('  <PropertyGroup>\n')
-            f.write('    <Configuration Condition=" \'$(Configuration)\' == \'\' ">Debug</Configuration>\n')
-            f.write('    <SchemaVersion>2.0</SchemaVersion>\n')
-            f.write('    <ProjectGuid>{{{0}}}</ProjectGuid>\n'.format(self.lower(self.GUID)))
-            f.write('    <ProjectHome>{0}</ProjectHome>\n'.format(projectRelativeHome))
-            f.write('    <StartupFile>{0}</StartupFile>\n'.format(projectRelativeStartupFile))
-            f.write('    <SearchPath>{0}</SearchPath>\n'.format(';'.join(projectRelativeSearchPath)))
-            f.write('    <WorkingDirectory>{0}</WorkingDirectory>\n'.format(projectRelativeWorkingDirectory))
-            f.write('    <OutputPath>{0}</OutputPath>\n'.format(projectRelativeOutputPath))
-            f.write('    <RootNamespace>{0}</RootNamespace>\n'.format(self.RootNamespace))
-            f.write('    <IsWindowsApplication>{0}</IsWindowsApplication>\n'.format(self.IsWindowsApplication))
-            f.write('    <LaunchProvider>Standard Python launcher</LaunchProvider>\n')
-            f.write('    <CommandLineArguments />\n')
-            f.write('    <InterpreterPath />\n')
-            f.write('    <InterpreterArguments>{0}</InterpreterArguments>\n'.format(" ".join(self.PythonInterpreterArgs)))
-            f.write('    <VisualStudioVersion Condition="\'$(VisualStudioVersion)\' == \'\'">10.0</VisualStudioVersion>\n')
-            f.write('    <VSToolsPath Condition="\'$(VSToolsPath)\' == \'\'">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\\v$(VisualStudioVersion)</VSToolsPath>\n')
-            f.write('  </PropertyGroup>\n')
-            f.write('  <PropertyGroup Condition=" \'$(Configuration)\' == \'Debug\' ">\n')
-            f.write('    <DebugSymbols>true</DebugSymbols>\n')
-            f.write('    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>\n')
-            f.write('  </PropertyGroup>\n')
-            f.write('  <PropertyGroup Condition=" \'$(Configuration)\' == \'Release\' ">\n')
-            f.write('    <DebugSymbols>true</DebugSymbols>\n')
-            f.write('    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>\n')
-            f.write('  </PropertyGroup>\n')
-            f.write('  <PropertyGroup>\n')
-            f.write('    <VisualStudioVersion Condition=" \'$(VisualStudioVersion)\' == \'\' ">10.0</VisualStudioVersion>\n')
-            f.write('    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>\n')
-            f.write('  </PropertyGroup>\n')
-
-            if self.ContentFiles:
-                f.write('  <ItemGroup>\n')
-                for fn in [os.path.relpath(path, self.ProjectHome) for path in sorted(self.ContentFiles, key=self.lower)]:
-                    f.write('    <Content Include="' + fn + '" />\n')
-                f.write('  </ItemGroup>\n')
-
-            if self.CompileFiles:
-                f.write('  <ItemGroup>\n')
-                for fn in [os.path.relpath(path, self.ProjectHome) for path in sorted(self.CompileFiles, key=self.lower)]:
-                    f.write('    <Compile Include="' + fn + '" />\n')
-                f.write('  </ItemGroup>\n')
-
-            if self.Directories or self.ContentFiles or self.CompileFiles:
-                fileDirectories = [os.path.dirname(filename) for filename in self.CompileFiles + self.ContentFiles]
-                relativeDirectories = [os.path.relpath(path, self.ProjectHome) for path in self.Directories + fileDirectories]
-                directories = set(relativeDirectories)
-
-                # We need separate entries for parent directories of directories in the list
-                for path in relativeDirectories:
-                    subpath = os.path.dirname(path)
-                    while subpath:
-                        directories.add(subpath)
-                        subpath = os.path.dirname(subpath)
-
-                f.write('  <ItemGroup>\n')
-                for fn in sorted(directories):
-                    f.write('    <Folder Include="' + fn + '" />\n')
-                f.write('  </ItemGroup>\n')
-
-            if self.PythonInterpreters:
-                f.write('  <ItemGroup>\n')
-                for interpreter in self.PythonInterpreters:
-                    f.write('    <InterpreterReference Include="{{{0}}}\\{1}" />\n'.format(self.upper(interpreter.BaseInterpreter), interpreter.Version))
-                f.write('  </ItemGroup>\n')
-
-            f.write('  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />\n')
-            f.write('  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />\n')
-            f.write('</Project>')
+        context = {
+            'pyproj': self,
+        }
+        return self.render(self.__jinja_template__, self.FileName, context, filters)
 
     def register(self):
         """

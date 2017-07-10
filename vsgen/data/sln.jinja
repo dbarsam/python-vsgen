@@ -1,0 +1,49 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+{% if sln.VSVersion == 14.0 %}
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+{% elif sln.VSVersion == 12.0 %}
+# Visual Studio 2013
+'VisualStudioVersion = 12.0.31101.0
+'MinimumVisualStudioVersion = 10.0.40219.1
+{% elif sln.VSVersion == 11.0 %}
+# Visual Studio 2012
+{% endif %}
+{% for project in sln.Projects %}
+Project("{{sln.GUID|MSGUID}}") = "{{project.Name}}", "{{project.FileName|basename}}", "{{project.GUID|MSGUID}}")
+EndProject
+{% endfor %}
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+{% for project in sln.Projects %}
+		{{project.GUID|MSGUID}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{{project.GUID|MSGUID}}.Release|Any CPU.ActiveCfg = Release|Any CPU
+{% endfor %}
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatf.ms) = postSolution
+{% for project in sln.Projects %}
+		{{project.GUID|MSGUID}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{{project.GUID|MSGUID}}.Release|Any CPU.ActiveCfg = Release|Any CPU
+{% endfor %}
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatf.ms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatf.ms) = postSolution
+{% for project in sln.Projects %}
+		{{project.GUID|MSGUID}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{{project.GUID|MSGUID}}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{{project.GUID|MSGUID}}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{{project.GUID|MSGUID}}.Release|Any CPU.Build.0 = Release|Any CPU
+{% endfor %}
+	EndGlobalSection
+EndGlobal
