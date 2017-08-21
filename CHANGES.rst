@@ -5,6 +5,12 @@ Changelog
 -----------------------
 - TBD
 
+0.3.1_ (2017-08-21)
+-------------------
+Features:
+
+- Replaced raw file writer with jinja2 renderer.
+
 0.3.0_ (2017-03-18) 
 -------------------
 Features:
@@ -51,6 +57,7 @@ Bug Fixes:
 ------------------
 - Initial Release.
 
+.. _0.3.1: https://github.com/dbarsam/python-vsgen/compare/0.3.0...0.3.1
 .. _0.3.0: https://github.com/dbarsam/python-vsgen/compare/0.2.4...0.3.0
 .. _0.2.4: https://github.com/dbarsam/python-vsgen/compare/0.2.3...0.2.4
 .. _0.2.3: https://github.com/dbarsam/python-vsgen/compare/0.2.2...0.2.3
