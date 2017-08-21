@@ -20,7 +20,7 @@ TEST_REQUIREMENTS = [
     'pep8'
 ]
 
-# Pre-install pylint in Python 3 at 1.6.5 as a 
+# Pre-install pylint in Python 3 at 1.6.5 as a
 # work around for https://github.com/dbarsam/python-vsgen/issues/14
 if version_info[0] == 3:
     SETUP_REQUIREMENTS = [
