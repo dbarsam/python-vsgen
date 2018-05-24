@@ -52,7 +52,7 @@ class VSGSolution(VSGWritable, VSGJinjaRenderer):
         """
         filters = {
             'MSGUID': lambda x: ('{%s}' % x).upper(),
-            'basename': os.path.basename
+            'relslnfile': lambda x: os.path.relpath(x, os.path.dirname(self.FileName))            
         }
         context = {
             'sln': self

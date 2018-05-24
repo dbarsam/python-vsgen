@@ -11,7 +11,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 # Visual Studio 2012
 {% endif %}
 {% for project in sln.Projects %}
-Project("{{sln.GUID|MSGUID}}") = "{{project.Name}}", "{{project.FileName|basename}}", "{{project.GUID|MSGUID}}")
+Project("{{sln.GUID|MSGUID}}") = "{{project.Name}}", "{{project.FileName|relslnfile}}", "{{project.GUID|MSGUID}}")
 EndProject
 {% endfor %}
 Global
