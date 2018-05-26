@@ -42,7 +42,7 @@ CLASSIFIERS = [
     'Topic :: Software Development ',
     'License :: OSI Approved :: MIT License',
     'Programming Language :: Python :: 2.7',
-    'Programming Language :: Python :: 3.5',
+    'Programming Language :: Python :: 3.6',
     'Topic :: Office/Business :: Groupware',
 ]
 
@@ -90,5 +90,6 @@ setup(
     tests_require=TEST_REQUIREMENTS,
     entry_points=ENTRY_POINTS,
     install_requires=INSTALL_REQUIREMENTS,
+    python_requires='>=2.7, >=3.4',
     use_scm_version=SCM_VERSION
 )
