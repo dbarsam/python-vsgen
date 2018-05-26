@@ -5,6 +5,12 @@ Changelog
 -----------------------
 - TBD
 
+0.3.2_ (Unreleased)
+-------------------
+Fixes:
+
+- Fixed writing project files relative to solution in solution files. Fixes #15.
+
 0.3.1_ (2017-08-21)
 -------------------
 Features:
