@@ -27,13 +27,17 @@ class VSGConfigParser(configparser.ConfigParser):
         kwargs.setdefault('interpolation', configparser.ExtendedInterpolation())
         return super(VSGConfigParser, self).__init__(*args, **kwargs)
 
-    def _convert_to_list(self, value):
+    def _convert_to_list(self, value, delimiters):
         """
         Return a list value translating from other types if necessary.
 
         :param str value:  The value to convert.
         """
-        return [l.strip() for l in value.split(',')] if value else []
+        if not value:
+            return []
+        if delimiters:
+            return [l.strip() for l in value.split(delimiters)]
+        return [l.strip() for l in value.split()]
 
     def _convert_to_path(self, value):
         """
@@ -43,12 +47,12 @@ class VSGConfigParser(configparser.ConfigParser):
         """
         return os.path.normpath(value)
 
-    def getlist(self, section, option, raw=False, vars=None, fallback=[]):
+    def getlist(self, section, option, raw=False, vars=None, fallback=[], delimiters=','):
         """
         A convenience method which coerces the option in the specified section to a list of strings.
         """
         v = self.get(section, option, raw=raw, vars=vars, fallback=fallback)
-        return self._convert_to_list(v)
+        return self._convert_to_list(v, delimiters=delimiters)
 
     def getfile(self, section, option, raw=False, vars=None, fallback="", validate=False):
         """
