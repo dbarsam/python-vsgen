@@ -63,8 +63,8 @@ Bug Fixes:
 - Added missing import; Fixes #2.
 - Fixed misnamed PTVSInterpreter class variable; Fixes #3.
 
-0.2.0, 2016-03-08
-------------------
+0.2.0  (2016-03-08)
+-------------------
 - Initial Release.
 
 .. _0.3.2: https://github.com/dbarsam/python-vsgen/compare/0.3.1...0.3.2
