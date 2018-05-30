@@ -67,7 +67,7 @@ Bug Fixes:
 -------------------
 - Initial Release.
 
-.. _0.3.2: https://github.com/dbarsam/python-vsgen/compare/0.3.1...0.3.2
+.. _0.3.3: https://github.com/dbarsam/python-vsgen/compare/0.3.1...0.3.3
 .. _0.3.1: https://github.com/dbarsam/python-vsgen/compare/0.3.0...0.3.1
 .. _0.3.0: https://github.com/dbarsam/python-vsgen/compare/0.2.4...0.3.0
 .. _0.2.4: https://github.com/dbarsam/python-vsgen/compare/0.2.3...0.2.4
