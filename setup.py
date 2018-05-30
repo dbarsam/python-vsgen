@@ -90,6 +90,6 @@ setup(
     tests_require=TEST_REQUIREMENTS,
     entry_points=ENTRY_POINTS,
     install_requires=INSTALL_REQUIREMENTS,
-    python_requires='>=2.7, >=3.4',
+    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*',
     use_scm_version=SCM_VERSION
 )
